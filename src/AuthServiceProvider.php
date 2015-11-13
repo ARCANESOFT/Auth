@@ -69,9 +69,9 @@ class AuthServiceProvider extends PackageServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            $this->getConfigFile() => config_path($this->vendor . DS . "{$this->package}.php"),
-        ], 'config');
+        $this->registerPublishes();
+
+        $this->app->register(Providers\RouteServiceProvider::class);
     }
 
     /**
@@ -84,5 +84,19 @@ class AuthServiceProvider extends PackageServiceProvider
         return [
             //
         ];
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Register publishes.
+     */
+    private function registerPublishes()
+    {
+        $this->publishes([
+            $this->getConfigFile() => config_path($this->vendor . DS . "{$this->package}.php"),
+        ], 'config');
     }
 }
