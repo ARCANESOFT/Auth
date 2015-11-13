@@ -1,6 +1,6 @@
 {
     "name":        "arcanesoft/auth",
-    "description": "ARCANESOFT Authorization package.",
+    "description": "Authorization package for ARCANESOFT/Foundation.",
     "homepage":    "https://github.com/ARCANESOFT/Auth",
     "keywords":    [
         "arcanedev", "auth", "acl", "authorisation", "authorization", "users", "roles", "permissions"
@@ -21,6 +21,7 @@
         "arcanedev/support":      "~3.0"
     },
     "require-dev": {
+        "arcanesoft/foundation":  "*",
         "orchestra/testbench":    "~3.1",
         "phpunit/phpcov":         "~2.0",
         "phpunit/phpunit":        "~4.0|~5.0"
