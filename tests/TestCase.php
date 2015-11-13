@@ -24,7 +24,7 @@ abstract class TestCase extends BaseTestCase
     protected function getPackageProviders($app)
     {
         return [
-            \Arcanesoft\Auth\AuthServiceProvider::class,
+            \Arcanesoft\Foundation\FoundationServiceProvider::class,
         ];
     }
 
