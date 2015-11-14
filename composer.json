@@ -18,7 +18,8 @@
     "require": {
         "php":                    ">=5.5.9",
         "arcanedev/laravel-auth": "~0.5",
-        "arcanedev/support":      "~3.0"
+        "arcanedev/support":      "~3.0",
+        "arcanesoft/contracts":   "~3.0"
     },
     "require-dev": {
         "arcanesoft/foundation":  "*",
