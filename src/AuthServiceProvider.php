@@ -62,6 +62,7 @@ class AuthServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
+        $this->registerAuthUserModel();
     }
 
     /**
@@ -90,6 +91,17 @@ class AuthServiceProvider extends PackageServiceProvider
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register user auth model.
+     */
+    private function registerAuthUserModel()
+    {
+        /** @var \Illuminate\Config\Repository $config */
+        $config = $this->app['config'];
+
+        $config->set('auth.model', \Arcanesoft\Auth\Models\User::class);
+    }
+
     /**
      * Register publishes.
      */
