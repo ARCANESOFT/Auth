@@ -4,12 +4,12 @@ use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     RolesRoute
+ * Class     RolesRoutes
  *
  * @package  Arcanesoft\Auth\Http\Routes\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RolesRoute extends RouteRegister
+class RolesRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

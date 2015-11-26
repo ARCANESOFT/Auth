@@ -1,15 +1,15 @@
-<?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
+<?php namespace Arcanesoft\Auth\Http\Routes\Front;
 
 use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     PermissionsRoute
+ * Class     AuthenticateRoutes
  *
- * @package  Arcanesoft\Auth\Http\Routes\Foundation
+ * @package  App\Http\Routes
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionsRoute extends RouteRegister
+class AuthenticateRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -24,10 +24,19 @@ class PermissionsRoute extends RouteRegister
     {
         parent::map($router);
 
-        $this->group([
-            'prefix'    => 'permissions'
-        ], function () {
+        $this->get('login', [
+            'as'    => 'login.get',
+            'uses'  => 'AuthController@getLogin'
+        ]);
 
-        });
+        $this->post('login', [
+            'as'    => 'login.post',
+            'uses'  => 'AuthController@postLogin'
+        ]);
+
+        $this->get('logout', [
+            'as'    => 'logout',
+            'uses'  => 'AuthController@getLogout',
+        ]);
     }
 }

@@ -4,12 +4,12 @@ use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     DashboardRoute
+ * Class     UsersRoutes
  *
  * @package  Arcanesoft\Auth\Http\Routes\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class DashboardRoute extends RouteRegister
+class UsersRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -25,7 +25,7 @@ class DashboardRoute extends RouteRegister
         parent::map($router);
 
         $this->group([
-            'prefix'    => 'dashboard'
+            'prefix'    => 'users'
         ], function () {
 
         });
