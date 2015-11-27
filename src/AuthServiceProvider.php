@@ -62,7 +62,13 @@ class AuthServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
+
+        $this->app->register(\Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class);
         $this->registerAuthUserModel();
+
+        if ($this->app->runningInConsole()) {
+            $this->app->register(Providers\CommandServiceProvider::class);
+        }
     }
 
     /**
