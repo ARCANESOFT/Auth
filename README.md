@@ -11,7 +11,7 @@
 [![Packagist Release][badge_release]](https://packagist.org/packages/arcanesoft/auth)
 [![Packagist Downloads][badge_downloads]](https://packagist.org/packages/arcanesoft/auth)
 
-[badge_laravel]:   https://img.shields.io/badge/For%20ARCANESOFT-orange.svg?style=flat-square
+[badge_laravel]:   https://img.shields.io/badge/For-ARCANESOFT%20CMS-orange.svg?style=flat-square
 [badge_license]:   https://img.shields.io/packagist/l/arcanesoft/auth.svg?style=flat-square
 
 [badge_build]:     https://img.shields.io/travis/ARCANESOFT/Auth.svg?style=flat-square
