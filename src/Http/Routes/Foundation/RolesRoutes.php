@@ -25,9 +25,43 @@ class RolesRoutes extends RouteRegister
         parent::map($router);
 
         $this->group([
-            'prefix'    => 'roles'
+            'prefix'    => 'roles',
+            'as'        => 'roles.',
         ], function () {
+            $this->get('/', [
+                'as'   => 'index',
+                'uses' => 'RolesController@index',
+            ]);
 
+            $this->get('create', [
+                'as'   => 'create',
+                'uses' => 'RolesController@create',
+            ]);
+
+            $this->post('store', [
+                'as'   => 'store',
+                'uses' => 'RolesController@store',
+            ]);
+
+            $this->get('{role_id}/show', [
+                'as'   => 'show',
+                'uses' => 'RolesController@show',
+            ]);
+
+            $this->get('{role_id}/edit', [
+                'as'   => 'edit',
+                'uses' => 'RolesController@edit',
+            ]);
+
+            $this->put('{role_id}/update', [
+                'as'   => 'update',
+                'uses' => 'RolesController@update',
+            ]);
+
+            $this->delete('{role_id}/delete', [
+                'as'   => 'delete',
+                'uses' => 'RolesController@delete',
+            ]);
         });
     }
 }

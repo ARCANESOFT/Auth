@@ -25,9 +25,13 @@ class PermissionsRoutes extends RouteRegister
         parent::map($router);
 
         $this->group([
-            'prefix'    => 'permissions'
+            'prefix'    => 'permissions',
+            'as'        => 'permissions.',
         ], function () {
-
+            $this->get('/', [
+                'as'   => 'index',
+                'uses' => 'PermissionsController@index',
+            ]);
         });
     }
 }
