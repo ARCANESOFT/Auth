@@ -77,7 +77,7 @@ class AuthController extends Controller
      */
     public function postRegister(RegisterUserRequest $request)
     {
-        User::createMember($request->all());
+        $this->createMember($request);
 
         return redirect($this->redirectPath());
     }
@@ -100,5 +100,25 @@ class AuthController extends Controller
         return redirect()
             ->route('auth::profile.index')
             ->with('success', 'You\'re account is confirmed !');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Create a member account.
+     *
+     * @param  RegisterUserRequest  $request
+     *
+     * @return bool
+     */
+    private function createMember(RegisterUserRequest $request)
+    {
+        $user = new User($request->all());
+
+        $user->is_active = true;
+
+        return $user->save();
     }
 }
