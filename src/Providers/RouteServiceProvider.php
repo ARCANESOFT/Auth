@@ -86,11 +86,20 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapFoundationRoutes(Router $router)
     {
-        $router->group([
-            'prefix'    => $this->getFoundationAuthPrefix(),
+        $attributes = [
+            'prefix'    => $this->getFoundationPrefix(),
             'as'        => 'auth::foundation.',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Foundation',
-        ], function ($router) {
+        ];
+
+        $router->group($attributes, function (Router $router) {
+            (new Routes\Foundation\ProfileRoutes)->map($router);
+        });
+
+        $router->group(array_merge(
+            $attributes,
+            ['prefix' => $this->getFoundationAuthPrefix()]
+        ), function (Router $router) {
             (new Routes\Foundation\StatsRoutes)->map($router);
             (new Routes\Foundation\UsersRoutes)->map($router);
             (new Routes\Foundation\RolesRoutes)->map($router);
