@@ -10,5 +10,12 @@ use Arcanesoft\Auth\Bases\FoundationController;
  */
 class PermissionsController extends FoundationController
 {
-    //
+    /* ------------------------------------------------------------------------------------------------
+     |  Main Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    public function index()
+    {
+        //
+    }
 }
