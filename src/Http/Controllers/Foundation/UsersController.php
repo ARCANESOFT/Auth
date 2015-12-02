@@ -16,12 +16,12 @@ class UsersController extends FoundationController
      */
     public function index()
     {
-        //
+        return $this->view('foundation.users.list');
     }
 
     public function create()
     {
-        //
+        return $this->view('foundation.users.create');
     }
 
     public function store()
@@ -31,12 +31,12 @@ class UsersController extends FoundationController
 
     public function show($userId)
     {
-        //
+        return $this->view('foundation.users.show');
     }
 
     public function edit($userId)
     {
-        //
+        return $this->view('foundation.users.edit');
     }
 
     public function update($userId)
