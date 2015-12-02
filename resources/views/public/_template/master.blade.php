@@ -30,6 +30,7 @@
     {!! Html::script('assets/js/vendors.js') !!}
     {!! Html::script('assets/js/app.js') !!}
     {!! Html::script('assets/js/auth.js') !!}
+
     @yield('scripts')
 </body>
 </html>
