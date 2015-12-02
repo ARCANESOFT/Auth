@@ -20,6 +20,7 @@ class CommandServiceProvider extends ServiceProvider
     public function register()
     {
         $this->registerPublishCommand();
+        $this->registerSetupCommand();
 
         $this->commands($this->commands);
     }
@@ -33,6 +34,7 @@ class CommandServiceProvider extends ServiceProvider
     {
         return [
             'arcanesoft.auth.commands.publish',
+            'arcanesoft.auth.commands.setup',
         ];
     }
 
@@ -51,5 +53,18 @@ class CommandServiceProvider extends ServiceProvider
         );
 
         $this->commands[] = \Arcanesoft\Auth\Console\PublishCommand::class;
+    }
+
+    /**
+     * Register the setup command.
+     */
+    private function registerSetupCommand()
+    {
+        $this->app->singleton(
+            'arcanesoft.auth.commands.setup',
+            \Arcanesoft\Auth\Console\SetupCommand::class
+        );
+
+        $this->commands[] = \Arcanesoft\Auth\Console\SetupCommand::class;
     }
 }
