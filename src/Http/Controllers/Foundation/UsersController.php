@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
+use Arcanesoft\Auth\Models\User;
 
 /**
  * Class     UsersController
@@ -11,16 +12,39 @@ use Arcanesoft\Auth\Bases\FoundationController;
 class UsersController extends FoundationController
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Instantiate the controller.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setCurrentPage('auth-users');
+        $this->addBreadcrumbRoute('Users', 'auth::foundation.users.index');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
     public function index()
     {
-        return $this->view('foundation.users.list');
+        $users = User::with('roles')->paginate(30);
+
+        $title = 'List of users';
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.users.list', compact('users'));
     }
 
     public function create()
     {
+        $title = 'Create a new user';
+        $this->addBreadcrumb($title);
+
         return $this->view('foundation.users.create');
     }
 
@@ -31,11 +55,19 @@ class UsersController extends FoundationController
 
     public function show($userId)
     {
-        return $this->view('foundation.users.show');
+        $user = User::with('roles', 'roles.permissions')->where('id', $userId)->first();
+
+        $title = 'User details';
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.users.show', compact('user'));
     }
 
     public function edit($userId)
     {
+        $title = 'Edit a user';
+        $this->addBreadcrumb($title);
+
         return $this->view('foundation.users.edit');
     }
 

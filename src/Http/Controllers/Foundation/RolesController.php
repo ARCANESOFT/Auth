@@ -11,6 +11,21 @@ use Arcanesoft\Auth\Bases\FoundationController;
 class RolesController extends FoundationController
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Instantiate the controller.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setCurrentPage('auth-roles');
+        $this->addBreadcrumbRoute('Roles', 'auth::foundation.roles.index');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */

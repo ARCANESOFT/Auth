@@ -10,5 +10,17 @@ use Arcanesoft\Auth\Bases\FoundationController;
  */
 class DashboardController extends FoundationController
 {
-    //
+    /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Instantiate the controller.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setCurrentPage('auth-stats');
+    }
 }

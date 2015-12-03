@@ -16,6 +16,9 @@ class ProfileController extends FoundationController
      */
     public function index()
     {
+        $this->setCurrentPage('auth-profile');
+        $this->addBreadcrumbRoute('Profile', 'auth::foundation.profile.index');
+
         return $this->view('foundation.profile.index');
     }
 }

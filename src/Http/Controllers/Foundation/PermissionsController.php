@@ -11,6 +11,21 @@ use Arcanesoft\Auth\Bases\FoundationController;
 class PermissionsController extends FoundationController
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Instantiate the controller.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->setCurrentPage('auth-permissions');
+        $this->addBreadcrumbRoute('Permissions', 'auth::foundation.permissions.index');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
