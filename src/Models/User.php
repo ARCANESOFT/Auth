@@ -24,8 +24,7 @@ class User extends BaseUserModel
     public function getGravatarAttribute()
     {
         return gravatar()
-            ->setDefaultImage('mm')
-            ->setSize(160)
-            ->src($this->email, $this->username);
+            ->setDefaultImage('mm')->setSize(160)
+            ->src($this->email);
     }
 }
