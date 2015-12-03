@@ -27,13 +27,13 @@ class RouteServiceProvider extends ServiceProvider
     }
 
     /**
-     * Get the foundation route prefix.
+     * Get Foundation route group.
      *
-     * @return string
+     * @return array
      */
-    protected function getFoundationPrefix()
+    protected function getFoundationRouteGroup()
     {
-        return config('arcanesoft.foundation.route.prefix', 'dashboard');
+        return config('arcanesoft.foundation.route', []);
     }
 
     /**
@@ -43,7 +43,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function getFoundationAuthPrefix()
     {
-        return $this->getFoundationPrefix() . '/' . config('arcanesoft.auth.route.prefix', 'authorization');
+        $prefix = array_get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
+
+        return "$prefix/" . config('arcanesoft.auth.route.prefix', 'authorization');
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -86,11 +88,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapFoundationRoutes(Router $router)
     {
-        $attributes = [
-            'prefix'    => $this->getFoundationPrefix(),
+        $attributes = array_merge($this->getFoundationRouteGroup(), [
             'as'        => 'auth::foundation.',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Foundation',
-        ];
+        ]);
 
         $router->group($attributes, function (Router $router) {
             (new Routes\Foundation\ProfileRoutes)->map($router);
