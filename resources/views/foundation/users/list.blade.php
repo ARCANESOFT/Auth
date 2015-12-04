@@ -61,10 +61,10 @@
                                 @endif
                             </td>
                             <td class="text-right">
-                                <a href="{{ route('auth::foundation.users.show', [$user->id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                     <i class="fa fa-fw fa-search"></i>
                                 </a>
-                                <a href="{{ route('auth::foundation.users.edit', [$user->id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
+                                <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
                                     <i class="fa fa-fw fa-pencil"></i>
                                 </a>
                                 @if ($user->isAdmin())

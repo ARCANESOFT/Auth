@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
 
 use Arcanedev\Support\Bases\RouteRegister;
+use Arcanesoft\Auth\Models\User;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
@@ -62,6 +63,10 @@ class UsersRoutes extends RouteRegister
                 'as'   => 'delete',
                 'uses' => 'UsersController@delete',
             ]);
+        });
+
+        $router->bind('user_id', function($hashedId) {
+            return User::firstHashedOrFail($hashedId);
         });
     }
 }

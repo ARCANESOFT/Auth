@@ -53,9 +53,9 @@ class UsersController extends FoundationController
         //
     }
 
-    public function show($userId)
+    public function show(User $user)
     {
-        $user = User::with('roles', 'roles.permissions')->where('id', $userId)->first();
+        $user->load(['roles', 'roles.permissions']);
 
         $title = 'User details';
         $this->addBreadcrumb($title);
@@ -63,8 +63,10 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.show', compact('user'));
     }
 
-    public function edit($userId)
+    public function edit(User $user)
     {
+        $user->load(['roles', 'roles.permissions']);
+
         $title = 'Edit a user';
         $this->addBreadcrumb($title);
 
