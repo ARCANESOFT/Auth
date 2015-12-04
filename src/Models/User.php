@@ -55,6 +55,6 @@ class User extends BaseUserModel
     {
         $id = head(hasher()->decode($hashedId));
 
-        return User::where('id', $id)->firstOrFail();
+        return self::where('id', $id)->firstOrFail();
     }
 }
