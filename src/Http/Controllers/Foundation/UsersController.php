@@ -73,12 +73,12 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.edit');
     }
 
-    public function update($userId)
+    public function update(User $user)
     {
         //
     }
 
-    public function delete($userId)
+    public function delete(User $user)
     {
         //
     }
