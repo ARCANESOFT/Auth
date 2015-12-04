@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
 
 use Arcanedev\Support\Bases\RouteRegister;
+use Arcanesoft\Auth\Models\Role;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
@@ -62,6 +63,10 @@ class RolesRoutes extends RouteRegister
                 'as'   => 'delete',
                 'uses' => 'RolesController@delete',
             ]);
+        });
+
+        $router->bind('role_id', function($hashedId) {
+            return Role::firstHashedOrFail($hashedId);
         });
     }
 }
