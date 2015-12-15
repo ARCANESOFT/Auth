@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
+use Arcanedev\LaravelAuth\Models\Permission;
 use Arcanesoft\Auth\Bases\Seeder;
 use Arcanesoft\Auth\Models\Role;
 
@@ -20,19 +21,15 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->seed([
-            [
-                'name'        => 'Administrator',
-                'description' => 'The system administrator role.',
-                'is_active'   => true,
-                'is_locked'   => true,
-            ],[
-                'name'        => 'Member',
-                'description' => 'The member role.',
-                'is_active'   => true,
-                'is_locked'   => true,
-            ]
-        ]);
+        $roles = $this->prepareRoles($this->getRoles());
+
+        Role::insert($roles);
+
+        /** @var Role $admin */
+        $admin = Role::where('slug', 'administrator')->first();
+        $ids   = Permission::all()->lists('id')->toArray();
+
+        $admin->permissions()->sync($ids);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -40,31 +37,40 @@ class RoleTableSeeder extends Seeder
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Seed roles.
+     * Get default roles.
      *
-     * @param  array  $roles
+     * @return array
      */
-    protected function seed(array $roles)
+    private function getRoles()
     {
-        foreach ($roles as $data) {
-            $this->createRole($data);
-        }
+        return [
+            [
+                'name'        => 'Administrator',
+                'description' => 'The system administrator role.',
+            ],[
+                'name'        => 'Member',
+                'description' => 'The member role.',
+            ]
+        ];
     }
 
     /**
-     * Create a role.
+     * Prepare roles to seed.
      *
-     * @param  array  $data
+     * @param  array  $roles
      *
-     * @return bool
+     * @return array
      */
-    protected function createRole(array $data)
+    private function prepareRoles(array $roles)
     {
-        $role = new Role($data);
+        foreach ($roles as $key => $role) {
+            $roles[$key]['slug']       = str_slug($role['name']);
+            $roles[$key]['is_active']  = true;
+            $roles[$key]['is_locked']  = true;
+            $roles[$key]['created_at'] = \Carbon\Carbon::now();
+            $roles[$key]['updated_at'] = \Carbon\Carbon::now();
+        }
 
-        $role->is_active = $data['is_active'];
-        $role->is_locked = $data['is_locked'];
-
-        return $role->save();
+        return $roles;
     }
 }
