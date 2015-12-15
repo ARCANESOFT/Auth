@@ -71,6 +71,8 @@ class AuthServiceProvider extends PackageServiceProvider
         if ($this->app->runningInConsole()) {
             $this->app->register(Providers\CommandServiceProvider::class);
         }
+
+        $this->app->register(Providers\ComposerServiceProvider::class);
     }
 
     /**
