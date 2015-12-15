@@ -20,4 +20,18 @@ class FoundationController extends Controller
      * @var string
      */
     protected $viewNamespace = 'auth';
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Constructor
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Instantiate the controller.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->addBreadcrumbRoute('Authorization', 'auth::foundation.dashboard');
+    }
 }

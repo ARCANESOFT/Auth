@@ -35,6 +35,7 @@ class UsersController extends FoundationController
         $users = User::with('roles')->paginate(30);
 
         $title = 'List of users';
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
         return $this->view('foundation.users.list', compact('users'));
@@ -43,6 +44,7 @@ class UsersController extends FoundationController
     public function create()
     {
         $title = 'Create a new user';
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
         return $this->view('foundation.users.create');
@@ -58,6 +60,7 @@ class UsersController extends FoundationController
         $user->load(['roles', 'roles.permissions']);
 
         $title = 'User details';
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
         return $this->view('foundation.users.show', compact('user'));
@@ -68,9 +71,10 @@ class UsersController extends FoundationController
         $user->load(['roles', 'roles.permissions']);
 
         $title = 'Edit a user';
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.users.edit');
+        return $this->view('foundation.users.edit', compact('user'));
     }
 
     public function update(User $user)

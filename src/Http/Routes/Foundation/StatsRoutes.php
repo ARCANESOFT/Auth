@@ -27,7 +27,10 @@ class StatsRoutes extends RouteRegister
         $this->group([
             'prefix'    => 'stats'
         ], function () {
-
+            $this->get('/', [
+                'as'   => 'dashboard',
+                'uses' => 'DashboardController@index',
+            ]);
         });
     }
 }

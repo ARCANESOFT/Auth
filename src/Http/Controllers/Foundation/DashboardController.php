@@ -21,6 +21,19 @@ class DashboardController extends FoundationController
     {
         parent::__construct();
 
-        $this->setCurrentPage('auth-stats');
+        $this->setCurrentPage('auth-dashboard');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Main Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    public function index()
+    {
+        $title = 'Authorization - Dashboard';
+        $this->setTitle($title);
+        $this->addBreadcrumb('Statistics');
+
+        return $this->view('foundation.dashboard');
     }
 }
