@@ -66,6 +66,7 @@ class AuthServiceProvider extends PackageServiceProvider
         $this->app->register(\Arcanedev\Gravatar\GravatarServiceProvider::class);
         $this->app->register(\Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class);
         $this->registerAuthUserModel();
+        $this->app->register(Providers\AuthorizationServiceProvider::class);
 
         if ($this->app->runningInConsole()) {
             $this->app->register(Providers\CommandServiceProvider::class);
