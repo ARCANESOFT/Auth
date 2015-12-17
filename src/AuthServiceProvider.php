@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth;
 
-use Arcanedev\Support\PackageServiceProvider;
+use Arcanesoft\Core\Bases\PackageServiceProvider;
 
 /**
  * Class     AuthServiceProvider
@@ -14,13 +14,6 @@ class AuthServiceProvider extends PackageServiceProvider
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Vendor name.
-     *
-     * @var string
-     */
-    protected $vendor       = 'arcanesoft';
-
     /**
      * Package name.
      *
@@ -42,16 +35,6 @@ class AuthServiceProvider extends PackageServiceProvider
         return dirname(__DIR__);
     }
 
-    /**
-     * Get config key.
-     *
-     * @return string
-     */
-    protected function getConfigKey()
-    {
-        return str_slug($this->vendor . ' ' .$this->package, '.');
-    }
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -63,7 +46,8 @@ class AuthServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
 
-        $this->app->register(Providers\PackageServiceProvider::class);
+        $this->app->register(\Arcanesoft\Core\CoreServiceProvider::class);
+        $this->app->register(Providers\PackagesServiceProvider::class);
         $this->app->register(Providers\AuthorizationServiceProvider::class);
         $this->app->register(Providers\ComposerServiceProvider::class);
 
