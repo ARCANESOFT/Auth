@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
-use Arcanesoft\Auth\Bases\Seeder;
-use Arcanesoft\Auth\Models\Permission;
+use Arcanesoft\Auth\Seeds\PermissionsSeeder;
 
 /**
  * Class     PermissionTableSeeder
@@ -9,7 +8,7 @@ use Arcanesoft\Auth\Models\Permission;
  * @package  Arcanesoft\Auth\Seeds\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionTableSeeder extends Seeder
+class PermissionTableSeeder extends PermissionsSeeder
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -20,37 +19,17 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        $permissions = $this->getPermissions();
-        $permissions = $this->preparePermissions($permissions);
-
-        Permission::insert($permissions);
+        $this->seed(array_merge(
+            $this->getUsersSeeds(),
+            $this->getRolesSeeds(),
+            $this->getPermissionsSeeds()
+        ));
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
-    private function preparePermissions(array $permissions)
-    {
-        $now   = \Carbon\Carbon::now();
-
-        foreach ($permissions as $key => $permission) {
-            $seeds[$key]['created_at'] = $now;
-            $seeds[$key]['updated_at'] = $now;
-        }
-
-        return $permissions;
-    }
-
-    private function getPermissions()
-    {
-        return array_merge(
-            $this->getUsersSeeds(),
-            $this->getRolesSeeds(),
-            $this->getPermissionsSeeds()
-        );
-    }
-
     /**
      * Get user's permissions seeds.
      *

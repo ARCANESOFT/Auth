@@ -1,8 +1,10 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
+use Arcanedev\LaravelAuth\Services\UserConfirmator;
 use Arcanesoft\Auth\Bases\Seeder;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;
+use Carbon\Carbon;
 
 /**
  * Class     UserTableSeeder
@@ -33,7 +35,9 @@ class UserTableSeeder extends Seeder
      */
     private function seedAdminUser()
     {
+        /** @var Role $adminRole */
         $adminRole = Role::where('slug', 'administrator')->first();
+
         $adminUser = new User([
             'username'   => 'admin',
             'first_name' => 'Super',
@@ -45,7 +49,13 @@ class UserTableSeeder extends Seeder
         $adminUser->is_admin  = true;
         $adminUser->is_active = true;
 
+        if (UserConfirmator::isEnabled()) {
+            $adminUser->is_confirmed = true;
+            $adminUser->confirmed_at = Carbon::now();
+        }
+
         $adminUser->save();
-        $adminUser->attachRole($adminRole);
+
+        $adminRole->attachUser($adminUser);
     }
 }
