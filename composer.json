@@ -17,6 +17,7 @@
     "license": "MIT",
     "require": {
         "php":                    ">=5.5.9",
+        "arcanedev/gravatar":     "~1.0",
         "arcanedev/laravel-auth": "~0.6",
         "arcanesoft/core":        "~0.1"
     },
