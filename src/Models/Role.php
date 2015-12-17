@@ -29,7 +29,7 @@ class Role extends BaseRoleModel
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get a user from a hashed id or fail if not found.
+     * Get a role from a hashed id or fail if not found.
      *
      * @param  string  $hashedId
      *
