@@ -25,7 +25,7 @@ return [
     ],
 
     'user-confirmation' => [
-        'enabled'   => false,
+        'enabled'   => true,
         'length'    => 30,
     ],
 
