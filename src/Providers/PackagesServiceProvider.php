@@ -1,14 +1,16 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
+use Arcanedev\Gravatar\GravatarServiceProvider;
+use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
 use Arcanedev\Support\ServiceProvider;
 
 /**
- * Class     PackageServiceProvider
+ * Class     PackagesServiceProvider
  *
  * @package  Arcanesoft\Auth\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PackageServiceProvider extends ServiceProvider
+class PackagesServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -19,21 +21,41 @@ class PackageServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->register(\Arcanedev\Gravatar\GravatarServiceProvider::class);
+        $this->registerGravatarPackage();
         $this->registerLaravelAuthPackage();
+
+        $this->configLaravelAuthPackage();
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
+     |  Register Packages
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register the gravatar package.
+     */
+    private function registerGravatarPackage()
+    {
+        $this->app->register(GravatarServiceProvider::class);
+    }
+
     /**
      * Register the laravel auth package.
      */
     private function registerLaravelAuthPackage()
     {
-        $this->app->register(\Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class);
+        $this->app->register(LaravelAuthServiceProvider::class);
+    }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Config Packages
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Config the laravel auth package.
+     */
+    private function configLaravelAuthPackage()
+    {
         /** @var \Illuminate\Config\Repository $config */
         $config      = $this->app['config'];
         $authConfigs = $config->get('arcanesoft.auth');
