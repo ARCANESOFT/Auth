@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
 
 use Arcanedev\Support\Bases\RouteRegister;
+use Arcanesoft\Auth\Models\Permission;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
@@ -29,9 +30,18 @@ class PermissionsRoutes extends RouteRegister
             'as'        => 'permissions.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',  // auth::foundation.permissions.index
+                'as'   => 'index', // auth::foundation.permissions.index
                 'uses' => 'PermissionsController@index',
             ]);
+
+            $this->get('{permission_id}/show', [
+                'as'   => 'show',  // auth::foundation.permissions.show
+                'uses' => 'PermissionsController@show',
+            ]);
+        });
+
+        $router->bind('permission_id', function($hashedId) {
+            return Permission::firstHashedOrFail($hashedId);
         });
     }
 }

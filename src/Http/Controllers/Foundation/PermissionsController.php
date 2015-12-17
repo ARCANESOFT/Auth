@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
+use Arcanesoft\Auth\Models\Permission;
 
 /**
  * Class     PermissionsController
@@ -31,6 +32,21 @@ class PermissionsController extends FoundationController
      */
     public function index()
     {
-        //
+        $permissions = Permission::with('roles')->paginate(30);
+
+        $title = 'List of permissions';
+        $this->setTitle($title);
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.permissions.list', compact('permissions'));
+    }
+
+    public function show(Permission $permission)
+    {
+        $title = 'Permission details';
+        $this->setTitle($title);
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.permissions.show', compact('permission'));
     }
 }
