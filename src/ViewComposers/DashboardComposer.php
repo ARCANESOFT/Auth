@@ -3,6 +3,7 @@
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;
+use Cache;
 use Closure;
 use Illuminate\Contracts\View\View;
 
@@ -114,6 +115,6 @@ class DashboardComposer
      */
     protected function cacheResults($name, Closure $callback)
     {
-        return \Cache::remember($name, $this->minutes, $callback);
+        return Cache::remember($name, $this->minutes, $callback);
     }
 }
