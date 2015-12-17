@@ -38,6 +38,18 @@ class User extends BaseUserModel
             ->src($this->email);
     }
 
+    /**
+     * Get the since date attribute (translated).
+     *
+     * @return string
+     */
+    public function getSinceDateAttribute()
+    {
+        return trans('auth::users.since', [
+            'date' => $this->created_at->toFormattedDateString()
+        ]);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Main Function
      | ------------------------------------------------------------------------------------------------

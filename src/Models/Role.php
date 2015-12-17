@@ -15,7 +15,7 @@ class Role extends BaseRoleModel
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get the user hash id.
+     * Get the role hash id.
      *
      * @return string
      */
