@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
-use Arcanedev\Support\Providers\RouteServiceProvider as ServiceProvider;
+use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Arcanesoft\Auth\Http\Routes;
 use Illuminate\Routing\Router;
 
@@ -24,16 +24,6 @@ class RouteServiceProvider extends ServiceProvider
     protected function getRouteNamespace()
     {
         return 'Arcanesoft\\Auth\\Http\\Routes';
-    }
-
-    /**
-     * Get Foundation route group.
-     *
-     * @return array
-     */
-    protected function getFoundationRouteGroup()
-    {
-        return config('arcanesoft.foundation.route', []);
     }
 
     /**
