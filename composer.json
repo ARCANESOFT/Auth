@@ -17,13 +17,10 @@
     "license": "MIT",
     "require": {
         "php":                    ">=5.5.9",
-        "arcanedev/gravatar":     "~1.0",
         "arcanedev/laravel-auth": "~0.6",
-        "arcanedev/support":      "~3.0",
-        "arcanesoft/contracts":   "~1.0"
+        "arcanesoft/core":        "~0.1"
     },
     "require-dev": {
-        "arcanesoft/foundation":  "~0.4",
         "orchestra/testbench":    "~3.1",
         "phpunit/phpcov":         "~2.0",
         "phpunit/phpunit":        "~4.0|~5.0"
