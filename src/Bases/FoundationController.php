@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Bases;
 
-use Arcanesoft\Foundation\Bases\FoundationController as Controller;
+use Arcanesoft\Core\Bases\FoundationController as Controller;
 
 /**
  * Class     FoundationController
