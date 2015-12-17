@@ -30,37 +30,37 @@ class UsersRoutes extends RouteRegister
             'as'        => 'users.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',
+                'as'   => 'index',  // auth::foundation.users.index
                 'uses' => 'UsersController@index',
             ]);
 
             $this->get('create', [
-                'as'   => 'create',
+                'as'   => 'create', // auth::foundation.users.create
                 'uses' => 'UsersController@create',
             ]);
 
             $this->post('store', [
-                'as'   => 'store',
+                'as'   => 'store',  // auth::foundation.users.store
                 'uses' => 'UsersController@store',
             ]);
 
             $this->get('{user_id}/show', [
-                'as'   => 'show',
+                'as'   => 'show',   // auth::foundation.users.show
                 'uses' => 'UsersController@show',
             ]);
 
             $this->get('{user_id}/edit', [
-                'as'   => 'edit',
+                'as'   => 'edit',   // auth::foundation.users.edit
                 'uses' => 'UsersController@edit',
             ]);
 
             $this->put('{user_id}/update', [
-                'as'   => 'update',
+                'as'   => 'update', // auth::foundation.users.update
                 'uses' => 'UsersController@update',
             ]);
 
             $this->delete('{user_id}/delete', [
-                'as'   => 'delete',
+                'as'   => 'delete', // auth::foundation.users.delete
                 'uses' => 'UsersController@delete',
             ]);
         });

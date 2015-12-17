@@ -28,7 +28,7 @@ class StatsRoutes extends RouteRegister
             'prefix'    => 'stats'
         ], function () {
             $this->get('/', [
-                'as'   => 'dashboard',
+                'as'   => 'dashboard', // auth::foundation.stats.dashboard
                 'uses' => 'DashboardController@index',
             ]);
         });

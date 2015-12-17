@@ -29,7 +29,7 @@ class ProfileRoutes extends RouteRegister
             'as'        => 'profile.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',
+                'as'   => 'index',  // auth::foundation.profile.index
                 'uses' => 'ProfileController@index',
             ]);
         });

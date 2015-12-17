@@ -30,37 +30,37 @@ class RolesRoutes extends RouteRegister
             'as'        => 'roles.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',
+                'as'   => 'index',   // auth::foundation.roles.index
                 'uses' => 'RolesController@index',
             ]);
 
             $this->get('create', [
-                'as'   => 'create',
+                'as'   => 'create',   // auth::foundation.roles.create
                 'uses' => 'RolesController@create',
             ]);
 
             $this->post('store', [
-                'as'   => 'store',
+                'as'   => 'store',   // auth::foundation.roles.store
                 'uses' => 'RolesController@store',
             ]);
 
             $this->get('{role_id}/show', [
-                'as'   => 'show',
+                'as'   => 'show',   // auth::foundation.roles.show
                 'uses' => 'RolesController@show',
             ]);
 
             $this->get('{role_id}/edit', [
-                'as'   => 'edit',
+                'as'   => 'edit',   // auth::foundation.roles.edit
                 'uses' => 'RolesController@edit',
             ]);
 
             $this->put('{role_id}/update', [
-                'as'   => 'update',
+                'as'   => 'update', // auth::foundation.roles.update
                 'uses' => 'RolesController@update',
             ]);
 
             $this->delete('{role_id}/delete', [
-                'as'   => 'delete',
+                'as'   => 'delete', // auth::foundation.roles.delete
                 'uses' => 'RolesController@delete',
             ]);
         });

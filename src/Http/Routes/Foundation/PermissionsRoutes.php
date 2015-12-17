@@ -29,7 +29,7 @@ class PermissionsRoutes extends RouteRegister
             'as'        => 'permissions.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',
+                'as'   => 'index',  // auth::foundation.permissions.index
                 'uses' => 'PermissionsController@index',
             ]);
         });
