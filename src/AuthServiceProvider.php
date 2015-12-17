@@ -63,16 +63,13 @@ class AuthServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
 
-        $this->app->register(\Arcanedev\Gravatar\GravatarServiceProvider::class);
-        $this->app->register(\Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class);
-        $this->registerAuthUserModel();
+        $this->app->register(Providers\PackageServiceProvider::class);
         $this->app->register(Providers\AuthorizationServiceProvider::class);
+        $this->app->register(Providers\ComposerServiceProvider::class);
 
         if ($this->app->runningInConsole()) {
             $this->app->register(Providers\CommandServiceProvider::class);
         }
-
-        $this->app->register(Providers\ComposerServiceProvider::class);
     }
 
     /**
@@ -101,17 +98,6 @@ class AuthServiceProvider extends PackageServiceProvider
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Register user auth model.
-     */
-    private function registerAuthUserModel()
-    {
-        /** @var \Illuminate\Config\Repository $config */
-        $config = $this->app['config'];
-
-        $config->set('auth.model', \Arcanesoft\Auth\Models\User::class);
-    }
-
     /**
      * Register publishes.
      */
