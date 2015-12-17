@@ -5,9 +5,15 @@
 @section('content')
     <div class="box">
         <div class="box-header">
-            <span class="label label-info">
+            <span class="label label-info" style="margin-right: 5px;">
                 Total of users : {{ $users->total() }}
             </span>
+            @if ($users->hasPages())
+                <span class="label label-info">
+                    {{ trans('foundation::pagination.pages', ['current' => $users->currentPage(), 'last' => $users->lastPage()]) }}
+                </span>
+            @endif
+
             <div class="box-tools">
                 <a href="{{ route('auth::foundation.users.create') }}" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">
                     <i class="fa fa-plus"></i>
@@ -15,7 +21,7 @@
             </div>
         </div>
         <div class="box-body no-padding">
-            <table class="table table-striped">
+            <table class="table table-condensed table-hover">
                 <thead>
                     <tr>
                         <th style="width: 40px;"></th>
@@ -23,7 +29,7 @@
                         <th>Full name</th>
                         <th>Email</th>
                         <th>Roles</th>
-                        <th class="text-center" style="width: 60px;">Status</th>
+                        <th class="text-center" style="width: 80px;">Status</th>
                         <th class="text-right" style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
@@ -44,12 +50,17 @@
                             </td>
                             <td>
                                 @foreach($user->roles as $role)
-                                    <span class="label label-primary">
+                                    <span class="label label-primary" style="margin-right: 5px;">
                                         {{  $role->name }}
                                     </span>
                                 @endforeach
                             </td>
                             <td class="text-center">
+                                @if ($user->isAdmin())
+                                    <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
+                                        <i class="fa fa-fw fa-star"></i>
+                                    </span>
+                                @endif
                                 @if ($user->isActive())
                                     <span class="label label-success">
                                         <i class="fa fa-check"></i>
@@ -83,12 +94,6 @@
             </table>
         </div>
         <div class="box-footer clearfix">
-            @if ($users->total())
-                <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $users->currentPage(), 'last' => $users->lastPage()]) }}
-                </span>
-            @endif
-
             {!! $users->render() !!}
         </div>
     </div>

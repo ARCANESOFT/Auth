@@ -11,7 +11,7 @@
                         {!! Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) !!}
                     </div>
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
-                    <h5 class="widget-user-desc">Member since {{ $user->created_at->toFormattedDateString() }}</h5>
+                    <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
                 </div>
                 <div class="box-body">
                     <table class="table table-condensed">
@@ -35,6 +35,22 @@
                                 <td>{{ $user->email }}</td>
                             </tr>
                             <tr>
+                                <th>Status</th>
+                                <td>
+                                    @if ($user->isAdmin())
+                                        <span class="label label-warning" style="margin-right: 5px;">
+                                            <i class="fa fa-fw fa-star"></i> SUPER ADMIN
+                                        </span>
+                                    @endif
+
+                                    @if ($user->isActive())
+                                        <span class="label label-success">Acitve</span>
+                                    @else
+                                        <span class="label label-success">Disabled</span>
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
                                 <th>Created at</th>
                                 <td>{{ $user->created_at }}</td>
                             </tr>
@@ -49,13 +65,48 @@
                     <a href="#" class="btn btn-xs btn-warning">
                         <i class="fa fa-fw fa-pencil"></i> Edit
                     </a>
-                    <a href="#" class="btn btn-xs btn-danger">
-                        <i class="fa fa-fw fa-trash-o"></i> Delete
-                    </a>
+                    @if ($user->isAdmin())
+                        <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled"  data-toggle="tooltip" data-original-title="Delete">
+                            <i class="fa fa-fw fa-trash-o"></i> Delete
+                        </a>
+                    @else
+                        <a href="#" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">
+                            <i class="fa fa-fw fa-trash-o"></i> Delete
+                        </a>
+                    @endif
                 </div>
             </div>
         </div>
         <div class="col-sm-7">
+            <div class="box box-primary">
+                <div class="box-header">
+                    <h3 class="box-title">Roles</h3>
+                </div>
+                <div class="box-body table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($user->roles as $role)
+                                <tr>
+                                    <td><span class="label label-primary">{{ $role->name }}</span></td>
+                                    <td>{{ $role->description }}</td>
+                                    <td class="text-right">
+                                        <a href="#" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                            <i class="fa fa-fw fa-search"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @endsection
