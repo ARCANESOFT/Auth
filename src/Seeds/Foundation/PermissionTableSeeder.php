@@ -106,6 +106,10 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'name'        => 'Auth - List all permissions',
                 'description' => 'Allow to list all permissions.',
                 'slug'        => 'auth.permissions.list',
+            ],[
+                'name'        => 'Auth - View a permission',
+                'description' => "Allow to view the permission's details.",
+                'slug'        => 'auth.permissions.show',
             ],
         ];
     }

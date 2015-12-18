@@ -43,6 +43,8 @@ class PermissionsController extends FoundationController
 
     public function show(Permission $permission)
     {
+        $permission->load(['roles', 'roles.users']);
+
         $title = 'Permission details';
         $this->setTitle($title);
         $this->addBreadcrumb($title);

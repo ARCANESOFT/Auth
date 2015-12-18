@@ -3,21 +3,29 @@
 @endsection
 
 @section('content')
-    <div class="box">
+    <div class="box box-success">
         <div class="box-header">
             <span class="label label-info">
-                Total of roles : {{ $permissions->total() }}
+                Total of permissions : {{ $permissions->total() }}
             </span>
+
+            <div class="box-tools">
+                @if ($permissions->hasPages())
+                    <span class="label label-info">
+                        {{ trans('foundation::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
+                    </span>
+                @endif
+            </div>
         </div>
         <div class="box-body no-padding">
-            <table class="table table-striped">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th>Slug</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th>Roles</th>
-                        <th class="text-right">Actions</th>
+                        <th class="text-center">Roles</th>
+                        <th class="text-right" style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,14 +36,12 @@
                             </td>
                             <td>{{ $permission->name }}</td>
                             <td>{{ $permission->description }}</td>
-                            <td>
-                                @foreach ($permission->roles as $role)
-                                    <span class="label label-primary" style="margin-right: 5px;">
-                                        {{ $role->name }}
-                                    </span>
-                                @endforeach
+                            <td class="text-center">
+                                <span class="label label-{{ $permission->roles->count() ? 'info' : 'default'}}">
+                                    {{ $permission->roles->count() }}
+                                </span>
                             </td>
-                            <td>
+                            <td class="text-right">
                                 <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                     <i class="fa fa-fw fa-search"></i>
                                 </a>
@@ -45,15 +51,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="box-footer clearfix">
-            @if ($permissions->hasPages())
-                <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
-                </span>
-            @endif
-
-            {!! $permissions->render() !!}
-        </div>
+        @if ($permissions->hasPages())
+            <div class="box-footer clearfix">
+                {!! $permissions->render() !!}
+            </div>
+        @endif
     </div>
 @endsection
 
