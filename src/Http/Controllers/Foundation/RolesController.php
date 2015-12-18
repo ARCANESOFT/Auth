@@ -74,7 +74,11 @@ class RolesController extends FoundationController
     {
         $role->load(['users', 'permissions']);
 
-        return $this->view('foundation.roles.show');
+        $title = 'Role details';
+        $this->setTitle($title);
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.roles.show', compact('role'));
     }
 
     public function edit(Role $role)
