@@ -43,4 +43,14 @@ class Role extends BaseRoleModel
 
         return self::where('id', $id)->firstOrFail();
     }
+
+    /**
+     * @param  string  $value
+     *
+     * @return string
+     */
+    public function makeSlugName($value)
+    {
+        return $this->slugify($value);
+    }
 }

@@ -3,11 +3,17 @@
 @endsection
 
 @section('content')
-    <div class="box">
+    <div class="box box-warning">
         <div class="box-header">
-            <span class="label label-info">
+            <span class="label label-info" style="margin-right: 5px;">
                 Total of roles : {{ $roles->total() }}
             </span>
+            @if ($roles->hasPages())
+                <span class="label label-info">
+                    {{ trans('foundation::pagination.pages', ['current' => $roles->currentPage(), 'last' => $roles->lastPage()]) }}
+                </span>
+            @endif
+
             <div class="box-tools">
                 <a href="{{ route('auth::foundation.roles.create') }}" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">
                     <i class="fa fa-plus"></i>
@@ -24,6 +30,7 @@
                         <th class="text-center">N° Users</th>
                         <th class="text-center">N° Permissions</th>
                         <th class="text-center" style="width: 60px;">Status</th>
+                        <th class="text-center" style="width: 60px;">Locked</th>
                         <th class="text-right" style="width: 120px;">Actions</th>
                     </tr>
                 </thead>
@@ -46,28 +53,30 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                @if ($role->isActive())
-                                    <span class="label label-success">
-                                        <i class="fa fa-fw fa-check"></i>
-                                    </span>
-                                @else
-                                    <span class="label label-default">
-                                        <i class="fa fa-fw fa-ban-o"></i>
-                                    </span>
-                                @endif
+                                <span class="label label-{{ $role->isActive() ? 'success' : 'default'}}">
+                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban-o'}}"></i>
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success'}}">
+                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock'}}"></i>
+                                </span>
                             </td>
                             <td class="text-right">
                                 <a href="{{ route('auth::foundation.roles.show', [$role->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                     <i class="fa fa-fw fa-search"></i>
                                 </a>
-                                <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="edit">
-                                    <i class="fa fa-fw fa-pencil"></i>
-                                </a>
                                 @if ($role->isLocked())
+                                    <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled" data-toggle="tooltip" data-original-title="Edit">
+                                        <i class="fa fa-fw fa-pencil"></i>
+                                    </a>
                                     <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled"  data-toggle="tooltip" data-original-title="Delete">
                                         <i class="fa fa-fw fa-trash-o"></i>
                                     </a>
                                 @else
+                                    <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
+                                        <i class="fa fa-fw fa-pencil"></i>
+                                    </a>
                                     <a href="#" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">
                                         <i class="fa fa-fw fa-trash-o"></i>
                                     </a>
@@ -78,15 +87,12 @@
                 </tbody>
             </table>
         </div>
-        <div class="box-footer clearfix">
-            @if ($roles->total())
-                <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $roles->currentPage(), 'last' => $roles->lastPage()]) }}
-                </span>
-            @endif
 
-            {!! $roles->render() !!}
-        </div>
+        @if ($roles->hasPages())
+            <div class="box-footer clearfix">
+                {!! $roles->render() !!}
+            </div>
+        @endif
     </div>
 @endsection
 
