@@ -2,6 +2,7 @@
 
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
+use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Illuminate\Support\Facades\Log;
@@ -84,13 +85,28 @@ class RolesController extends FoundationController
     public function edit(Role $role)
     {
         $role->load(['users', 'permissions']);
+        $permissions = Permission::all();
 
-        return $this->view('foundation.roles.show');
+        $title = 'Edit Role';
+        $this->setTitle($title);
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.roles.edit', compact('role', 'permissions'));
     }
 
-    public function update(Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $role->fill($request->only('name', 'slug', 'description'));
+        $role->save();
+        $role->permissions()->sync($request->get('permissions'));
+
+        $message = 'The role was successfully updated !';
+
+        Log::info($message, $role->toArray());
+
+        return redirect()
+            ->route('auth::foundation.roles.show', [$role->hashed_id])
+            ->with('success', $message);
     }
 
     public function delete(Role $role)
