@@ -43,4 +43,14 @@ class Permission extends BasePermissionModel
 
         return self::where('id', $id)->firstOrFail();
     }
+
+    /**
+     * Get the ids of all permissions.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getIds()
+    {
+        return self::orderBy('id')->lists('id');
+    }
 }
