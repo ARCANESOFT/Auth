@@ -3,7 +3,6 @@
 use Arcanesoft\Auth\Bases\FormRequest;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
-use Illuminate\Contracts\Validation\Validator;
 
 /**
  * Class     CreateRoleRequest
