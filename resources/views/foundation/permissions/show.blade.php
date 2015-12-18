@@ -29,7 +29,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Roles</th>
+                                <th>N° Roles</th>
                                 <td>
                                     <span class="label label-{{ $permission->roles->count() ? 'info' : 'default'}}">
                                         {{ $permission->roles->count() }}
@@ -60,7 +60,7 @@
                             <tr>
                                 <th>Name</th>
                                 <th>Description</th>
-                                <th class="text-center">Users</th>
+                                <th class="text-center">N° Users</th>
                                 <th class="text-right">Actions</th>
                             </tr>
                         </thead>

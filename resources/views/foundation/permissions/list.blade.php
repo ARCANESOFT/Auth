@@ -24,7 +24,7 @@
                         <th>Slug</th>
                         <th>Name</th>
                         <th>Description</th>
-                        <th class="text-center">Roles</th>
+                        <th class="text-center">N° Roles</th>
                         <th class="text-right" style="width: 80px;">Actions</th>
                     </tr>
                 </thead>
