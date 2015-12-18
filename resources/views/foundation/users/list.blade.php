@@ -3,8 +3,8 @@
 @endsection
 
 @section('content')
-    <div class="box">
-        <div class="box-header">
+    <div class="box box-primary">
+        <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
                 Total of users : {{ $users->total() }}
             </span>
@@ -93,9 +93,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="box-footer clearfix">
-            {!! $users->render() !!}
-        </div>
+        @if ($users->hasPages())
+            <div class="box-footer clearfix">
+                {!! $users->render() !!}
+            </div>
+        @endif
     </div>
 @endsection
 

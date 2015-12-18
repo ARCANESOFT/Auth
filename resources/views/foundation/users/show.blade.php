@@ -78,8 +78,8 @@
             </div>
         </div>
         <div class="col-sm-7">
-            <div class="box box-primary">
-                <div class="box-header">
+            <div class="box box-warning">
+                <div class="box-header with-border">
                     <h3 class="box-title">Roles</h3>
                 </div>
                 <div class="box-body table-responsive">
@@ -97,7 +97,7 @@
                                     <td><span class="label label-primary">{{ $role->name }}</span></td>
                                     <td>{{ $role->description }}</td>
                                     <td class="text-right">
-                                        <a href="#" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                        <a href="{{ route('auth::foundation.roles.show', [$role->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                             <i class="fa fa-fw fa-search"></i>
                                         </a>
                                     </td>
