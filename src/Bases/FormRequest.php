@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Bases;
 
 use Arcanedev\Support\Bases\FormRequest as BaseFormRequest;
-use Illuminate\Contracts\Validation\Validator;
 
 /**
  * Class     FormRequest
@@ -20,24 +19,5 @@ abstract class FormRequest extends BaseFormRequest
      *
      * @var string
      */
-    protected $messageFormat = '<i class="fa fa-fw fa-exclamation-circle"></i> :message';
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * {@inheritdoc}
-     */
-    protected function formatErrors(Validator $validator)
-    {
-        $errors   = [];
-        $messages = $validator->getMessageBag();
-
-        foreach ($messages->keys() as $key) {
-            $errors[$key] = $messages->get($key, $this->messageFormat);
-        }
-
-        return $errors;
-    }
+    protected $errorsFormat = '<i class="fa fa-fw fa-exclamation-circle"></i> :message';
 }
