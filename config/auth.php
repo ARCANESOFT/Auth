@@ -19,6 +19,11 @@ return [
         'model' => Arcanesoft\Auth\Models\Role::class,
     ],
 
+    'permissions-group' => [
+        'table' => 'permissions_group',
+        'model' => Arcanesoft\Auth\Models\PermissionsGroup::class,
+    ],
+
     'permissions'       => [
         'table' => 'permissions',
         'model' => Arcanesoft\Auth\Models\Permission::class,
