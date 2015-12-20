@@ -70,7 +70,7 @@
                                     <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled" data-toggle="tooltip" data-original-title="Edit">
                                         <i class="fa fa-fw fa-pencil"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled"  data-toggle="tooltip" data-original-title="Delete">
+                                    <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled" data-toggle="tooltip" data-original-title="Delete">
                                         <i class="fa fa-fw fa-trash-o"></i>
                                     </a>
                                 @else

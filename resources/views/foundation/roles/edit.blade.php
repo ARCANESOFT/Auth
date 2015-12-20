@@ -3,9 +3,9 @@
 @endsection
 
 @section('content')
-    {!! Form::open(['route' => ['auth::foundation.roles.update', $role->hashed_id], 'method' => 'PUT', 'id' => 'updateRoleForm', 'class' => 'form']) !!}
+    {!! Form::open(['route' => ['auth::foundation.roles.update', $role->hashed_id], 'method' => 'PUT', 'id' => 'updateRoleForm', 'class' => 'form form-loading']) !!}
         <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">Edit Role</h3>
@@ -40,44 +40,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-7">
-                <div class="box box-success">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Permissions</h3>
-
-                        @if ($errors->has('permissions'))
-                            <div class="box-tools">
-                                <span class="text-red">{!! $errors->first('permissions') !!}</span>
-                            </div>
-                        @endif
-                    </div>
-                    <div class="box-body no-padding">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Slug</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($permissions as $permission)
-                                    <tr>
-                                        <td>
-                                            {!! Form::checkbox('permissions[]', $permission->id, in_array($permission->id, old('permissions', $role->permissions->lists('id')->toArray()))) !!}
-                                        </td>
-                                        <td>
-                                            <span class="label label-success">{{ $permission->slug }}</span>
-                                        </td>
-                                        <td>{{ $permission->name }}</td>
-                                        <td>{{ $permission->description }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <div class="col-md-8">
+                @include('auth::foundation.roles._partials.permissions-checkbox', ['old' => old('permissions', $role->permissions->lists('id')->toArray())])
             </div>
         </div>
     {!! Form::close() !!}

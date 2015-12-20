@@ -4,23 +4,34 @@
 
 @section('content')
     <div class="box box-success">
-        <div class="box-header">
-            <span class="label label-info">
+        <div class="box-header with-border">
+            <span class="label label-info" style="margin-right: 5px;">
                 Total of permissions : {{ $permissions->total() }}
             </span>
+            @if ($permissions->hasPages())
+                <span class="label label-info">
+                    {{ trans('foundation::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
+                </span>
+            @endif
 
             <div class="box-tools">
-                @if ($permissions->hasPages())
-                    <span class="label label-info">
-                        {{ trans('foundation::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
-                    </span>
-                @endif
+                <div class="dropdown pull-right">
+                    <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="groupFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        Group <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="groupFilter">
+                        @foreach ($groupFilters as $groupFilter)
+                            <li>{!! $groupFilter !!}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
         <div class="box-body no-padding">
             <table class="table table-hover">
                 <thead>
                     <tr>
+                        <th>Group</th>
                         <th>Slug</th>
                         <th>Name</th>
                         <th>Description</th>
@@ -31,6 +42,13 @@
                 <tbody>
                     @foreach ($permissions as $permission)
                         <tr>
+                            <td>
+                                @if ($permission->hasGroup())
+                                    <span class="label label-primary">{{ $permission->group->name }}</span>
+                                @else
+                                    <span class="label label-default">Custom</span>
+                                @endif
+                            </td>
                             <td>
                                 <span class="label label-success">{{ $permission->slug }}</span>
                             </td>

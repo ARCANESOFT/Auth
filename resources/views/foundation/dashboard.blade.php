@@ -11,7 +11,7 @@
                 </span>
                 <div class="info-box-content">
                     <span class="info-box-text">Total Users</span>
-                    <span class="info-box-number">{{ $authUsersTotal }}</span>
+                    <span class="info-box-number">{{ $authUsersCount }}</span>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
                 </span>
                 <div class="info-box-content">
                     <span class="info-box-text">Total Roles</span>
-                    <span class="info-box-number">{{ $authRolesTotal }}</span>
+                    <span class="info-box-number">{{ $authRolesCount }}</span>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                 </span>
                 <div class="info-box-content">
                     <span class="info-box-text">Total Permissions</span>
-                    <span class="info-box-number">{{ $authPermissionsTotal }}</span>
+                    <span class="info-box-number">{{ $authPermissionsCount }}</span>
                 </div>
             </div>
         </div>
