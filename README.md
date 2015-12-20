@@ -37,12 +37,18 @@ Feel free to check out the [releases](https://github.com/ARCANESOFT/Auth/release
 
 ### TODOS
 
+  - [ ] Users management.
+  - [ ] Roles management.
+  - [ ] Permissions management.
   - [ ] Login form / Logout.
   - [ ] User registration form.
-  - [ ] User confirmation system.
+  - [ ] User confirmation system (email verification).
   - [ ] Password reminder/reset system.
-  - [ ] Users, roles and permissions management.
   - [ ] Documentation.
+
+## Security
+
+If you discover any security related issues, please email arcanedev-maroc@gmail.com instead of using the issue tracker.
 
 ## Contribution
 
