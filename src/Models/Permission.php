@@ -53,4 +53,18 @@ class Permission extends BasePermissionModel
     {
         return self::orderBy('id')->lists('id');
     }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Check Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Check if permission has a group.
+     *
+     * @return bool
+     */
+    public function hasGroup()
+    {
+        return $this->group_id !== 0;
+    }
 }
