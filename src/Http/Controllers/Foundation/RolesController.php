@@ -4,6 +4,7 @@ use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
 use Arcanesoft\Auth\Models\Permission;
+use Arcanesoft\Auth\Models\PermissionsGroup;
 use Arcanesoft\Auth\Models\Role;
 use Illuminate\Support\Facades\Log;
 
@@ -47,13 +48,11 @@ class RolesController extends FoundationController
 
     public function create()
     {
-        $permissions = Permission::all();
-
         $title = 'Create a role';
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.roles.create', compact('permissions'));
+        return $this->view('foundation.roles.create');
     }
 
     public function store(CreateRoleRequest $request, Role $role)
@@ -73,7 +72,7 @@ class RolesController extends FoundationController
 
     public function show(Role $role)
     {
-        $role->load(['users', 'permissions']);
+        $role->load(['users', 'permissions', 'permissions.group']);
 
         $title = 'Role details';
         $this->setTitle($title);
@@ -85,13 +84,12 @@ class RolesController extends FoundationController
     public function edit(Role $role)
     {
         $role->load(['users', 'permissions']);
-        $permissions = Permission::all();
 
         $title = 'Edit Role';
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.roles.edit', compact('role', 'permissions'));
+        return $this->view('foundation.roles.edit', compact('role'));
     }
 
     public function update(UpdateRoleRequest $request, Role $role)
