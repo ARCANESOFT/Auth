@@ -19,11 +19,20 @@ class PermissionTableSeeder extends PermissionsSeeder
      */
     public function run()
     {
-        $this->seed(array_merge(
-            $this->getUsersSeeds(),
-            $this->getRolesSeeds(),
-            $this->getPermissionsSeeds()
-        ));
+        $this->seed([
+            [
+                'group'       => [
+                    'name'        => 'Auth',
+                    'slug'        => 'auth',
+                    'description' => 'Auth permissions group',
+                ],
+                'permissions' => array_merge(
+                    $this->getUsersSeeds(),
+                    $this->getRolesSeeds(),
+                    $this->getPermissionsSeeds()
+                ),
+            ],
+        ]);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -39,23 +48,23 @@ class PermissionTableSeeder extends PermissionsSeeder
     {
         return [
             [
-                'name'        => 'Auth - List all users',
+                'name'        => 'Users - List all users',
                 'description' => 'Allow to list all users.',
                 'slug'        => 'auth.users.list',
             ],[
-                'name'        => 'Auth - View a user',
+                'name'        => 'Users - View a user',
                 'description' => "Allow to view a user's details.",
                 'slug'        => 'auth.users.show',
             ],[
-                'name'        => 'Auth - Add/Create a user',
+                'name'        => 'Users - Add/Create a user',
                 'description' => 'Allow to create a new user.',
                 'slug'        => 'auth.users.create',
             ],[
-                'name'        => 'Auth - Edit/Update a user',
+                'name'        => 'Users - Edit/Update a user',
                 'description' => 'Allow to update a user.',
                 'slug'        => 'auth.users.update',
             ],[
-                'name'        => 'Auth - Delete a user',
+                'name'        => 'Users - Delete a user',
                 'description' => 'Allow to delete a user.',
                 'slug'        => 'auth.users.delete',
             ],
@@ -71,23 +80,23 @@ class PermissionTableSeeder extends PermissionsSeeder
     {
         return [
             [
-                'name'        => 'Auth - List all roles',
+                'name'        => 'Roles - List all roles',
                 'description' => 'Allow to list all roles.',
                 'slug'        => 'auth.roles.list',
             ],[
-                'name'        => 'Auth - View a role',
+                'name'        => 'Roles - View a role',
                 'description' => "Allow to view the role's details.",
                 'slug'        => 'auth.roles.show',
             ],[
-                'name'        => 'Auth - Add/Create a role',
+                'name'        => 'Roles - Add/Create a role',
                 'description' => 'Allow to create a new role.',
                 'slug'        => 'auth.roles.create',
             ],[
-                'name'        => 'Auth - Edit/Update a role',
+                'name'        => 'Roles - Edit/Update a role',
                 'description' => 'Allow to update a role.',
                 'slug'        => 'auth.roles.update',
             ],[
-                'name'        => 'Auth - Delete a role',
+                'name'        => 'Roles - Delete a role',
                 'description' => 'Allow to delete a role.',
                 'slug'        => 'auth.roles.delete',
             ],
@@ -103,11 +112,11 @@ class PermissionTableSeeder extends PermissionsSeeder
     {
         return [
             [
-                'name'        => 'Auth - List all permissions',
+                'name'        => 'Permissions - List all permissions',
                 'description' => 'Allow to list all permissions.',
                 'slug'        => 'auth.permissions.list',
             ],[
-                'name'        => 'Auth - View a permission',
+                'name'        => 'Permissions - View a permission',
                 'description' => "Allow to view the permission's details.",
                 'slug'        => 'auth.permissions.show',
             ],

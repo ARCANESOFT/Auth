@@ -2,7 +2,7 @@
 
 use Arcanesoft\Auth\Bases\Seeder;
 use Arcanesoft\Auth\Models\Permission;
-use Carbon\Carbon;
+use Arcanesoft\Auth\Models\PermissionsGroup;
 
 /**
  * Class     PermissionsSeeder
@@ -19,33 +19,17 @@ abstract class PermissionsSeeder extends Seeder
     /**
      * Seed permissions.
      *
-     * @param  array  $permissions
+     * @param  array  $seeds
      */
-    public function seed(array $permissions)
+    public function seed(array $seeds)
     {
-        $seeds = $this->prepareSeeds($permissions);
+        foreach ($seeds as $seed) {
+            $group       = PermissionsGroup::create($seed['group']);
+            $permissions = array_map(function ($permission) {
+                return new Permission($permission);
+            }, $seed['permissions']);
 
-        Permission::insert($seeds);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * @param array $seeds
-     *
-     * @return array
-     */
-    protected function prepareSeeds(array $seeds)
-    {
-        $now   = Carbon::now();
-
-        foreach ($seeds as $key => $permission) {
-            $seeds[$key]['created_at'] = $now;
-            $seeds[$key]['updated_at'] = $now;
+            $group->permissions()->saveMany($permissions);
         }
-
-        return $seeds;
     }
 }

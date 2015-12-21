@@ -73,6 +73,23 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="box-footer text-right">
+                    @if ($role->isLocked())
+                        <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled">
+                            <i class="fa fa-fw fa-pencil"></i> Update
+                        </a>
+                        <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
+                            <i class="fa fa-fw fa-trash-o"></i> Delete
+                        </a>
+                    @else
+                        <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
+                            <i class="fa fa-fw fa-pencil"></i> Update
+                        </a>
+                        <a href="#" class="btn btn-xs btn-danger">
+                            <i class="fa fa-fw fa-trash-o"></i> Delete
+                        </a>
+                    @endif
+                </div>
             </div>
         </div>
         <div class="col-md-8">
@@ -99,40 +116,48 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($role->users as $user)
+                                @if ($role->users->count())
+                                    @foreach ($role->users as $user)
+                                        <tr>
+                                            <td class="text-center">
+                                                {!! Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) !!}
+                                            </td>
+                                            <td>{{ $user->username }}</td>
+                                            <td>{{ $user->full_name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td class="text-center">
+                                                @if ($user->isAdmin())
+                                                    <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
+                                                        <i class="fa fa-fw fa-star"></i>
+                                                    </span>
+                                                @endif
+                                                @if ($user->isActive())
+                                                    <span class="label label-success">
+                                                        <i class="fa fa-check"></i>
+                                                    </span>
+                                                @else
+                                                    <span class="label label-default">
+                                                        <i class="fa fa-ban"></i>
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="text-right">
+                                                <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                                    <i class="fa fa-fw fa-search"></i>
+                                                </a>
+                                                <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
+                                                    <i class="fa fa-fw fa-pencil"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td class="text-center">
-                                            {!! Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) !!}
-                                        </td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->full_name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td class="text-center">
-                                            @if ($user->isAdmin())
-                                                <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
-                                                    <i class="fa fa-fw fa-star"></i>
-                                                </span>
-                                            @endif
-                                            @if ($user->isActive())
-                                                <span class="label label-success">
-                                                    <i class="fa fa-check"></i>
-                                                </span>
-                                            @else
-                                                <span class="label label-default">
-                                                    <i class="fa fa-ban"></i>
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="text-right">
-                                            <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                <i class="fa fa-fw fa-search"></i>
-                                            </a>
-                                            <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
-                                                <i class="fa fa-fw fa-pencil"></i>
-                                            </a>
+                                        <td colspan="6" class="text-center">
+                                            <span class="label label-default">No user has this role.</span>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -141,6 +166,7 @@
                         <table class="table table-hover">
                             <thead>
                                 <tr>
+                                    <th>Group</th>
                                     <th>Slug</th>
                                     <th>Name</th>
                                     <th>Description</th>
@@ -148,8 +174,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($role->permissions as $permission)
+                                @foreach ($role->permissions->sortByDesc('group_id') as $permission)
                                     <tr>
+                                        <td>
+                                            <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }}">
+                                                {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
+                                            </span>
+                                        </td>
                                         <td>
                                             <span class="label label-success">{{ $permission->slug }}</span>
                                         </td>

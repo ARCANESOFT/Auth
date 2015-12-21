@@ -1,21 +1,23 @@
 <?php namespace Arcanesoft\Auth\Models;
 
-use Arcanedev\LaravelAuth\Models\Permission as BasePermissionModel;
+use \Arcanedev\LaravelAuth\Models\PermissionsGroup as BasePermissionsGroupModel;
 
 /**
- * Class     Permission
+ * Class     PermissionsGroup
  *
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @property  string  hashed_id
  */
-class Permission extends BasePermissionModel
+class PermissionsGroup extends BasePermissionsGroupModel
 {
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get the role hash id.
+     * Get the permissions group hash id.
      *
      * @return string
      */
@@ -42,29 +44,5 @@ class Permission extends BasePermissionModel
         $id = head(hasher()->decode($hashedId));
 
         return self::where('id', $id)->firstOrFail();
-    }
-
-    /**
-     * Get the ids of all permissions.
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
-     */
-    public static function getIds()
-    {
-        return self::orderBy('id')->lists('id');
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Check Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Check if permission has a group.
-     *
-     * @return bool
-     */
-    public function hasGroup()
-    {
-        return $this->group_id !== 0;
     }
 }
