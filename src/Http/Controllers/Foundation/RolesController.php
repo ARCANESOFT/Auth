@@ -3,8 +3,6 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
-use Arcanesoft\Auth\Models\Permission;
-use Arcanesoft\Auth\Models\PermissionsGroup;
 use Arcanesoft\Auth\Models\Role;
 use Illuminate\Support\Facades\Log;
 
