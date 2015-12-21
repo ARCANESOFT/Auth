@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
 use Arcanedev\Support\ServiceProvider;
-use Arcanesoft\Auth\ViewComposers;
 
 /**
  * Class     ComposerServiceProvider
@@ -30,7 +29,17 @@ class ComposerServiceProvider extends ServiceProvider
     {
         view()->composer(
             'auth::foundation.dashboard',
-            ViewComposers\DashboardComposer::class
+            'Arcanesoft\Auth\ViewComposers\DashboardComposer@compose'
+        );
+
+        view()->composer(
+            'auth::foundation.roles._partials.permissions-checkbox',
+            'Arcanesoft\Auth\ViewComposers\PermissionsComposer@composeRolePermissions'
+        );
+
+        view()->composer(
+            'auth::foundation.permissions.list',
+            'Arcanesoft\Auth\ViewComposers\PermissionsGroupsComposer@composeFilters'
         );
     }
 }

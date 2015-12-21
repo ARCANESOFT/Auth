@@ -1,10 +1,9 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
+use Arcanesoft\Auth\Bases\ViewComposer;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;
-use Cache;
-use Closure;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -13,17 +12,12 @@ use Illuminate\Contracts\View\View;
  * @package  Arcanesoft\Auth\ViewComposers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class DashboardComposer
+class DashboardComposer extends ViewComposer
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * @var \Illuminate\Contracts\View\View
-     */
-    protected $view;
-
     /**
      * @var \Arcanesoft\Auth\Models\User
      */
@@ -38,11 +32,6 @@ class DashboardComposer
      * @var \Arcanesoft\Auth\Models\Permission
      */
     protected $permissions;
-
-    /**
-     * @var int
-     */
-    protected $minutes = 5;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -80,41 +69,28 @@ class DashboardComposer
 
     protected function composeUsersTotal()
     {
-        $total = $this->cacheResults('auth-users-count', function() {
+        $count = $this->cacheResults('auth-users-count', function() {
             return $this->users->count();
         });
 
-        $this->view->with('authUsersTotal', $total);
+        $this->view->with('authUsersCount', $count);
     }
 
     protected function composeRolesTotal()
     {
-        $total = $this->cacheResults('auth-roles-count', function() {
+        $count = $this->cacheResults('auth-roles-count', function() {
             return $this->roles->count();
         });
 
-        $this->view->with('authRolesTotal', $total);
+        $this->view->with('authRolesCount', $count);
     }
 
     protected function composePermissionsTotal()
     {
-        $total = $this->cacheResults('auth-permissions-count', function() {
+        $count = $this->cacheResults('auth-permissions-count', function() {
             return $this->permissions->count();
         });
 
-        $this->view->with('authPermissionsTotal', $total);
-    }
-
-    /**
-     * Cache the results.
-     *
-     * @param  string    $name
-     * @param  \Closure  $callback
-     *
-     * @return mixed
-     */
-    protected function cacheResults($name, Closure $callback)
-    {
-        return Cache::remember($name, $this->minutes, $callback);
+        $this->view->with('authPermissionsCount', $count);
     }
 }
