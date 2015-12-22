@@ -1,15 +1,15 @@
-<?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
+<?php namespace Arcanesoft\Auth\Http\Routes\Front;
 
 use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     StatsRoutes
+ * Class     ApiRoutes
  *
- * @package  Arcanesoft\Auth\Http\Routes\Foundation
+ * @package  Arcanesoft\Auth\Http\Routes\Front
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class StatsRoutes extends RouteRegister
+class ApiRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -25,11 +25,12 @@ class StatsRoutes extends RouteRegister
         parent::map($router);
 
         $this->group([
-            'prefix'    => 'stats',
+            'prefix' => 'auth',
+            'as'     => 'auth.',
         ], function () {
-            $this->get('/', [
-                'as'   => 'dashboard', // auth::foundation.dashboard
-                'uses' => 'DashboardController@index',
+            $this->get('check', [
+                'as'    => 'check', // auth::api.auth.check
+                'uses'  => 'ApiController@check',
             ]);
         });
     }

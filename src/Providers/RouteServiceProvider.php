@@ -60,14 +60,23 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapPublicRoutes(Router $router)
     {
-        $router->group([
+        $attributes = [
             'prefix'    => 'auth',
             'as'        => 'auth::',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
-        ], function ($router) {
+        ];
+
+        $router->group($attributes, function ($router) {
             (new Routes\Front\AuthenticateRoutes)->map($router);
             (new Routes\Front\RegisterRoutes)->map($router);
             (new Routes\Front\ReminderRoutes)->map($router);
+        });
+
+        $router->group(array_merge($attributes, [
+            'prefix' => 'api',
+            'as'     => $attributes['as'] . 'api',
+        ]), function ($router) {
+            (new Routes\Front\ApiRoutes)->map($router);
         });
     }
 
@@ -95,6 +104,13 @@ class RouteServiceProvider extends ServiceProvider
             (new Routes\Foundation\UsersRoutes)->map($router);
             (new Routes\Foundation\RolesRoutes)->map($router);
             (new Routes\Foundation\PermissionsRoutes)->map($router);
+        });
+
+        $router->group(array_merge(
+            $attributes,
+            ['prefix' => $this->getFoundationAuthPrefix()]
+        ), function (Router $router) {
+            (new Routes\Foundation\ApiRoutes)->map($router);
         });
     }
 }

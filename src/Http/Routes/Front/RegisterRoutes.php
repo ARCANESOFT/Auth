@@ -18,28 +18,29 @@ class RegisterRoutes extends RouteRegister
     /**
      * Map routes.
      *
-     * @param  Registrar  $router
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function map(Registrar $router)
     {
         parent::map($router);
 
         $this->group([
-            'prefix' => 'register'
+            'prefix' => 'register',
+            'as'     => 'register.',
         ], function () {
             $this->get('/', [
-                'as'    => 'register.get',
-                'uses'  => 'AuthController@getRegister',
+                'as'   => 'get',     // auth::register.get
+                'uses' => 'AuthController@getRegister',
             ]);
 
             $this->post('/', [
-                'as'    => 'register.post',
-                'uses'  => 'AuthController@postRegister',
+                'as'   => 'post',    // auth::register.post
+                'uses' => 'AuthController@postRegister',
             ]);
 
             $this->get('confirm/{code}', [
-                'as'    => 'register.confirm',
-                'uses'  => 'AuthController@getConfirm',
+                'as'   => 'confirm', // auth::register.confirm
+                'uses' => 'AuthController@getConfirm',
             ]);
         });
     }
