@@ -18,7 +18,7 @@ class ReminderRoutes extends RouteRegister
     /**
      * Map routes.
      *
-     * @param  Registrar  $router
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function map(Registrar $router)
     {
@@ -28,25 +28,35 @@ class ReminderRoutes extends RouteRegister
             'prefix'    => 'password',
             'as'        => 'password.'
         ], function () {
-            $this->get('email', [
-                'as'    => 'email.get',
-                'uses'  => 'PasswordController@getEmail',
-            ]);
+            $this->group([
+                'prefix' => 'email',
+                'as'     => 'email.',
+            ], function () {
+                $this->get('/', [
+                    'as'    => 'get',  // auth::password.email.get
+                    'uses'  => 'PasswordController@getEmail',
+                ]);
 
-            $this->post('email', [
-                'as'    => 'email.post',
-                'uses'  => 'PasswordController@postEmail',
-            ]);
+                $this->post('/', [
+                    'as'    => 'post', // auth::password.email.post
+                    'uses'  => 'PasswordController@postEmail',
+                ]);
+            });
 
-            $this->get('reset/{token}', [
-                'as'    => 'reset.get',
-                'uses'  => 'PasswordController@getReset',
-            ]);
+            $this->group([
+                'prefix' => 'reset',
+                'as'     => 'reset.',
+            ], function () {
+                $this->get('{token}', [
+                    'as'    => 'get',  // auth::password.reset.get
+                    'uses'  => 'PasswordController@getReset',
+                ]);
 
-            $this->get('reset', [
-                'as'    => 'reset.post',
-                'uses'  => 'PasswordController@postReset',
-            ]);
+                $this->get('/', [
+                    'as'    => 'post', // auth::password.reset.post
+                    'uses'  => 'PasswordController@postReset',
+                ]);
+            });
         });
     }
 }

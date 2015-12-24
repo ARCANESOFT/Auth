@@ -4,12 +4,12 @@ use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     StatsRoutes
+ * Class     ApiRoutes
  *
  * @package  Arcanesoft\Auth\Http\Routes\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class StatsRoutes extends RouteRegister
+class ApiRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -23,14 +23,5 @@ class StatsRoutes extends RouteRegister
     public function map(Registrar $router)
     {
         parent::map($router);
-
-        $this->group([
-            'prefix'    => 'stats',
-        ], function () {
-            $this->get('/', [
-                'as'   => 'dashboard', // auth::foundation.dashboard
-                'uses' => 'DashboardController@index',
-            ]);
-        });
     }
 }

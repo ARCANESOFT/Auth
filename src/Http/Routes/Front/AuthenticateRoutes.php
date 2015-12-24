@@ -18,25 +18,30 @@ class AuthenticateRoutes extends RouteRegister
     /**
      * Map routes.
      *
-     * @param  Registrar  $router
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function map(Registrar $router)
     {
         parent::map($router);
 
-        $this->get('login', [
-            'as'    => 'login.get',
-            'uses'  => 'AuthController@getLogin'
-        ]);
+        $this->group([
+            'prefix' => 'login',
+            'as'     => 'login.',
+        ], function () {
+            $this->get('/', [
+                'as'   => 'get',  // auth::login.get
+                'uses' => 'AuthController@getLogin',
+            ]);
 
-        $this->post('login', [
-            'as'    => 'login.post',
-            'uses'  => 'AuthController@postLogin'
-        ]);
+            $this->post('/', [
+                'as'   => 'post', // auth::login.post
+                'uses' => 'AuthController@postLogin',
+            ]);
+        });
 
         $this->get('logout', [
-            'as'    => 'logout',
-            'uses'  => 'AuthController@getLogout',
+            'as'   => 'logout',   // auth::logout
+            'uses' => 'AuthController@getLogout',
         ]);
     }
 }

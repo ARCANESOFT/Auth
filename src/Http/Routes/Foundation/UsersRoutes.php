@@ -19,7 +19,7 @@ class UsersRoutes extends RouteRegister
     /**
      * Map routes.
      *
-     * @param  Registrar  $router
+     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
     public function map(Registrar $router)
     {
