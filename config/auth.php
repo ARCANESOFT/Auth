@@ -1,47 +1,73 @@
 <?php
 
 return [
-    'route'             => [
+    /* ------------------------------------------------------------------------------------------------
+     |  Route
+     | ------------------------------------------------------------------------------------------------
+     */
+    'route'              => [
         'prefix' => 'authorization',
     ],
 
-    'database'          => [
+    /* ------------------------------------------------------------------------------------------------
+     |  Database
+     | ------------------------------------------------------------------------------------------------
+     */
+    'database'           => [
         'connection' => config('database.default'),
     ],
 
-    'users'             => [
-        'table' => 'users',
-        'model' => Arcanesoft\Auth\Models\User::class,
+    /* ------------------------------------------------------------------------------------------------
+     |  Models
+     | ------------------------------------------------------------------------------------------------
+     */
+    'users'              => [
+        'table'    => 'users',
+        'model'    => Arcanesoft\Auth\Models\User::class,
+        'observer' => Arcanesoft\Auth\Observers\UserObserver::class,
     ],
 
-    'roles'             => [
-        'table' => 'roles',
-        'model' => Arcanesoft\Auth\Models\Role::class,
+    'roles'              => [
+        'table'    => 'roles',
+        'model'    => Arcanesoft\Auth\Models\Role::class,
+        'observer' => Arcanesoft\Auth\Observers\RoleObserver::class,
     ],
 
-    'permissions-group' => [
-        'table' => 'permissions_group',
-        'model' => Arcanesoft\Auth\Models\PermissionsGroup::class,
+    'permissions-groups' => [
+        'table'    => 'permissions_groups',
+        'model'    => Arcanesoft\Auth\Models\PermissionsGroup::class,
+        'observer' => Arcanesoft\Auth\Observers\PermissionsGroupObserver::class,
     ],
 
-    'permissions'       => [
-        'table' => 'permissions',
-        'model' => Arcanesoft\Auth\Models\Permission::class,
+    'permissions'        => [
+        'table'    => 'permissions',
+        'model'    => Arcanesoft\Auth\Models\Permission::class,
+        'observer' => Arcanesoft\Auth\Observers\PermissionObserver::class,
     ],
 
-    'user-confirmation' => [
+    /* ------------------------------------------------------------------------------------------------
+     |  User confirmation
+     | ------------------------------------------------------------------------------------------------
+     */
+    'user-confirmation'  => [
         'enabled'   => true,
         'length'    => 30,
     ],
 
-    'throttles'         => [
+    /* ------------------------------------------------------------------------------------------------
+     |  Throttles
+     | ------------------------------------------------------------------------------------------------
+     */
+    'throttles'          => [
         'enabled' => true,
         'table'   => 'throttles',
     ],
 
-    'slug-separator'    => '.',
-
-    'seeds'             => [
+    /* ------------------------------------------------------------------------------------------------
+     |  Seeds
+     | ------------------------------------------------------------------------------------------------
+     */
+    'seeds'              => [
         'users' => [
             [
                 'username'   => 'admin',
@@ -50,4 +76,12 @@ return [
             ],
         ],
     ],
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other stuff
+     | ------------------------------------------------------------------------------------------------
+     */
+    'use-observers'      => true,
+
+    'slug-separator'     => '.',
 ];
