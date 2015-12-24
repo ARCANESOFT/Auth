@@ -107,6 +107,26 @@ class RolesController extends FoundationController
 
     public function delete(Role $role)
     {
-        //
+        self::onlyAjax();
+
+        try {
+            $role->delete();
+
+            $message = "The role {$role->name} has been successfully deleted.";
+            Log::info($message, $role->toArray());
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch(\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
     }
 }
