@@ -174,25 +174,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($role->permissions->sortByDesc('group_id') as $permission)
+                                @if ($role->permissions->count())
+                                    @foreach ($role->permissions->sortByDesc('group_id') as $permission)
+                                        <tr>
+                                            <td>
+                                                <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }}">
+                                                    {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="label label-success">{{ $permission->slug }}</span>
+                                            </td>
+                                            <td>{{ $permission->name }}</td>
+                                            <td>{{ $permission->description }}</td>
+                                            <td class="text-right">
+                                                <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                                    <i class="fa fa-fw fa-search"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
                                     <tr>
-                                        <td>
-                                            <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }}">
-                                                {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <span class="label label-success">{{ $permission->slug }}</span>
-                                        </td>
-                                        <td>{{ $permission->name }}</td>
-                                        <td>{{ $permission->description }}</td>
-                                        <td class="text-right">
-                                            <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                <i class="fa fa-fw fa-search"></i>
-                                            </a>
+                                        <td colspan="5" class="text-center">
+                                            <span class="label label-default">No permission belongs to this role.</span>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @endif
                             </tbody>
                         </table>
                     </div>
@@ -205,23 +213,23 @@
     <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
         <div class="modal-dialog" role="document">
             {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading']) !!}
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                            <i class="fa fa-fw fa-trash-o"></i> DELETE
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                        <i class="fa fa-fw fa-trash-o"></i> DELETE
-                    </button>
-                </div>
-            </div>
             {!! Form::close() !!}
         </div>
     </div>

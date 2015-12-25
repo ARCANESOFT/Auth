@@ -40,7 +40,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($permissions as $permission)
+                    @if ($permissions->count())
+                        @foreach ($permissions as $permission)
                         <tr>
                             <td>
                                 @if ($permission->hasGroup())
@@ -65,7 +66,14 @@
                                 </a>
                             </td>
                         </tr>
-                    @endforeach
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <span class="label label-default">The permission list is empty.</span>
+                            </td>
+                        </tr>
+                    @endif
                 </tbody>
             </table>
         </div>
