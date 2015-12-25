@@ -1,8 +1,8 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
-use Arcanesoft\Auth\Models\Permission;
-use Arcanesoft\Auth\Models\PermissionsGroup;
+use Arcanesoft\Contracts\Auth\Models\Permission;
+use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
 
 /**
  * Class     PermissionsController
@@ -18,6 +18,9 @@ class PermissionsController extends FoundationController
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
+    /** @var  \Arcanesoft\Contracts\Auth\Models\Permission  */
+    protected $permission;
+
     /** @var int */
     protected $perPage = 30;
 
@@ -27,10 +30,14 @@ class PermissionsController extends FoundationController
      */
     /**
      * Instantiate the controller.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\Permission  $permission
      */
-    public function __construct()
+    public function __construct(Permission $permission)
     {
         parent::__construct();
+
+        $this->permission = $permission;
 
         $this->setCurrentPage('auth-permissions');
         $this->addBreadcrumbRoute('Permissions', 'auth::foundation.permissions.index');
@@ -40,9 +47,9 @@ class PermissionsController extends FoundationController
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public function index(Permission $permission)
+    public function index()
     {
-        $permissions = $permission->with('group', 'roles')
+        $permissions = $this->permission->with('group', 'roles')
             ->orderBy('group_id')
             ->paginate($this->perPage);
 
@@ -53,11 +60,11 @@ class PermissionsController extends FoundationController
         return $this->view('foundation.permissions.list', compact('permissions'));
     }
 
-    public function group(Permission $permission, PermissionsGroup $group)
+    public function group(PermissionsGroup $group)
     {
         $groupId = $group->id ? $group->id : 0;
 
-        $permissions = $permission->where('group_id', $groupId)
+        $permissions = $this->permission->where('group_id', $groupId)
             ->with('group', 'roles')
             ->paginate($this->perPage);
 

@@ -1,7 +1,8 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
-use Arcanesoft\Auth\Models\User;
+use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
+use Arcanesoft\Contracts\Auth\Models\User;
 
 /**
  * Class     UsersController
@@ -32,9 +33,9 @@ class UsersController extends FoundationController
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public function index()
+    public function index(User $user)
     {
-        $users = User::with('roles')->paginate(30);
+        $users = $user->with('roles')->paginate(30);
 
         $title = 'List of users';
         $this->setTitle($title);
@@ -52,9 +53,13 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.create');
     }
 
-    public function store()
+    public function store(CreateUserRequest $request, User $user)
     {
-        //
+        $user->fill($request->only([
+            'username', 'email', 'first_name', 'last_name', 'password'
+        ]));
+
+        dd($user->toArray());
     }
 
     public function show(User $user)

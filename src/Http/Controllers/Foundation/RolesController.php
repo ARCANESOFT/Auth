@@ -3,7 +3,7 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
-use Arcanesoft\Auth\Models\Role;
+use Arcanesoft\Contracts\Auth\Models\Role;
 use Illuminate\Support\Facades\Log;
 
 /**
@@ -11,19 +11,32 @@ use Illuminate\Support\Facades\Log;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo: Adding the authorization checks
  */
 class RolesController extends FoundationController
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    /** @var \Arcanesoft\Contracts\Auth\Models\Role */
+    protected $role;
+
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\Role  $role
      */
-    public function __construct()
+    public function __construct(Role $role)
     {
         parent::__construct();
+
+        $this->role = $role;
 
         $this->setCurrentPage('auth-roles');
         $this->addBreadcrumbRoute('Roles', 'auth::foundation.roles.index');
@@ -35,7 +48,7 @@ class RolesController extends FoundationController
      */
     public function index()
     {
-        $roles = Role::with('users', 'permissions')->paginate(30);
+        $roles = $this->role->with('users', 'permissions')->paginate(30);
 
         $title = 'List of roles';
         $this->setTitle($title);
@@ -53,15 +66,15 @@ class RolesController extends FoundationController
         return $this->view('foundation.roles.create');
     }
 
-    public function store(CreateRoleRequest $request, Role $role)
+    public function store(CreateRoleRequest $request)
     {
-        $role->fill($request->only('name', 'slug', 'description'));
-        $role->save();
-        $role->permissions()->attach($request->get('permissions'));
+        $this->role->fill($request->only('name', 'slug', 'description'));
+        $this->role->save();
+        $this->role->permissions()->attach($request->get('permissions'));
 
         $message = 'The new role was successfully created !';
 
-        Log::info($message, $role->toArray());
+        Log::info($message, $this->role->toArray());
         $this->notifySuccess($message, 'Role created !');
 
         return redirect()
