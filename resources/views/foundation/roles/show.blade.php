@@ -85,9 +85,9 @@
                         <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
                             <i class="fa fa-fw fa-pencil"></i> Update
                         </a>
-                        <a href="#" class="btn btn-xs btn-danger">
+                        <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteRoleModal">
                             <i class="fa fa-fw fa-trash-o"></i> Delete
-                        </a>
+                        </button>
                     @endif
                 </div>
             </div>
@@ -200,7 +200,67 @@
             </div>
         </div>
     </div>
+
+    {{-- MODALS --}}
+    <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
+        <div class="modal-dialog" role="document">
+            {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading']) !!}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                        <i class="fa fa-fw fa-trash-o"></i> DELETE
+                    </button>
+                </div>
+            </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
+    <script>
+        var deleteRoleModal = $('div#deleteRoleModal'),
+            deleteRoleForm  = $('form#deleteRoleForm');
+
+        deleteRoleForm.submit(function (event) {
+            event.preventDefault();
+            var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.button('loading');
+
+            $.ajax({
+                url:      $(this).attr('action'),
+                type:     $(this).attr('method'),
+                dataType: 'json',
+                data:     $(this).serialize(),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        deleteRoleModal.modal('hide');
+                        location.replace("{{ route('auth::foundation.roles.index') }}");
+                    }
+                    else {
+                        alert('ERROR ! Check the console !');
+                        console.error(data.message);
+                        submitBtn.button('reset');
+                    }
+                },
+                error: function(xhr) {
+                    alert('AJAX ERROR ! Check the console !');
+                    console.error(xhr);
+                    submitBtn.button('reset');
+                }
+            });
+
+            return false;
+        });
+    </script>
 @endsection
