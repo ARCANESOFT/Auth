@@ -23,12 +23,10 @@ class PackagesServiceProvider extends ServiceProvider
     {
         $this->registerGravatarPackage();
         $this->registerLaravelAuthPackage();
-
-        $this->configLaravelAuthPackage();
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Register Packages
+     |  Gravatar Package
      | ------------------------------------------------------------------------------------------------
      */
     /**
@@ -39,18 +37,21 @@ class PackagesServiceProvider extends ServiceProvider
         $this->app->register(GravatarServiceProvider::class);
     }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Auth Package
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Register the laravel auth package.
      */
     private function registerLaravelAuthPackage()
     {
         $this->app->register(LaravelAuthServiceProvider::class);
+
+        $this->configLaravelAuthPackage();
+        $this->rebindModels();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Config Packages
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
      * Config the laravel auth package.
      */
@@ -62,5 +63,31 @@ class PackagesServiceProvider extends ServiceProvider
 
         $config->set('auth.model', \Arcanesoft\Auth\Models\User::class);
         $config->set('laravel-auth', array_except($authConfigs, ['route', 'hasher']));
+    }
+
+    /**
+     * Rebind the auth models.
+     */
+    private function rebindModels()
+    {
+        $bindings = [
+            [
+                'abstract' => \Arcanesoft\Contracts\Auth\Models\User::class,
+                'concrete' => \Arcanesoft\Auth\Models\User::class,
+            ],[
+                'abstract' => \Arcanesoft\Contracts\Auth\Models\Role::class,
+                'concrete' => \Arcanesoft\Auth\Models\Role::class,
+            ],[
+                'abstract' => \Arcanesoft\Contracts\Auth\Models\Permission::class,
+                'concrete' => \Arcanesoft\Auth\Models\Permission::class,
+            ],[
+                'abstract' => \Arcanesoft\Contracts\Auth\Models\PermissionsGroup::class,
+                'concrete' => \Arcanesoft\Auth\Models\PermissionsGroup::class,
+            ],
+        ];
+
+        foreach ($bindings as $binding) {
+            $this->bind($binding['abstract'], $binding['concrete']);
+        }
     }
 }
