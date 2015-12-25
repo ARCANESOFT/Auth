@@ -9,6 +9,8 @@ use Arcanesoft\Auth\Models\PermissionsGroup;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo: Adding the authorization checks
  */
 class PermissionsController extends FoundationController
 {

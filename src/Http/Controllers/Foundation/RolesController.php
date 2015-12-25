@@ -62,6 +62,7 @@ class RolesController extends FoundationController
         $message = 'The new role was successfully created !';
 
         Log::info($message, $role->toArray());
+        $this->notifySuccess($message, 'Role created !');
 
         return redirect()
             ->route('auth::foundation.roles.index')
@@ -99,6 +100,7 @@ class RolesController extends FoundationController
         $message = 'The role was successfully updated !';
 
         Log::info($message, $role->toArray());
+        $this->notifySuccess($message, 'Role updated !');
 
         return redirect()
             ->route('auth::foundation.roles.show', [$role->hashed_id])
@@ -112,8 +114,9 @@ class RolesController extends FoundationController
         try {
             $role->delete();
 
-            $message = "The role {$role->name} has been successfully deleted.";
+            $message = "The role {$role->name} has been successfully deleted !";
             Log::info($message, $role->toArray());
+            $this->notifySuccess($message, 'Role deleted !');
 
             $ajax = [
                 'status'  => 'success',

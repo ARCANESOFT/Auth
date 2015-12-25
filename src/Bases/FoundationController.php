@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Bases;
 
 use Arcanesoft\Core\Bases\FoundationController as Controller;
+use Arcanesoft\Core\Traits\Notifyable;
 
 /**
  * Class     FoundationController
@@ -10,6 +11,12 @@ use Arcanesoft\Core\Bases\FoundationController as Controller;
  */
 class FoundationController extends Controller
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use Notifyable;
+
     /* ------------------------------------------------------------------------------------------------
      |  Properties
      | ------------------------------------------------------------------------------------------------

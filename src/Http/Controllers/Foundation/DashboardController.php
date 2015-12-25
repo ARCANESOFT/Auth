@@ -7,6 +7,8 @@ use Arcanesoft\Auth\Bases\FoundationController;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo: Adding the authorization checks
  */
 class DashboardController extends FoundationController
 {
