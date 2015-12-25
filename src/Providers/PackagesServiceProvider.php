@@ -26,7 +26,7 @@ class PackagesServiceProvider extends ServiceProvider
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Gravatar Package
+     |  Register Packages
      | ------------------------------------------------------------------------------------------------
      */
     /**
@@ -37,10 +37,6 @@ class PackagesServiceProvider extends ServiceProvider
         $this->app->register(GravatarServiceProvider::class);
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Auth Package
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
      * Register the laravel auth package.
      */
@@ -52,12 +48,16 @@ class PackagesServiceProvider extends ServiceProvider
         $this->rebindModels();
     }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Config Packages
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Config the laravel auth package.
      */
     private function configLaravelAuthPackage()
     {
-        /** @var \Illuminate\Config\Repository $config */
+        /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config      = $this->app['config'];
         $authConfigs = $config->get('arcanesoft.auth');
 
@@ -70,19 +70,21 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function rebindModels()
     {
+        /** @var  \Illuminate\Contracts\Config\Repository  $config */
+        $config   = $this->app['config'];
         $bindings = [
             [
                 'abstract' => \Arcanesoft\Contracts\Auth\Models\User::class,
-                'concrete' => \Arcanesoft\Auth\Models\User::class,
+                'concrete' => $config->get('arcanesoft.auth.users.model'),
             ],[
                 'abstract' => \Arcanesoft\Contracts\Auth\Models\Role::class,
-                'concrete' => \Arcanesoft\Auth\Models\Role::class,
+                'concrete' => $config->get('arcanesoft.auth.roles.model'),
             ],[
                 'abstract' => \Arcanesoft\Contracts\Auth\Models\Permission::class,
-                'concrete' => \Arcanesoft\Auth\Models\Permission::class,
+                'concrete' => $config->get('arcanesoft.auth.permissions.model'),
             ],[
                 'abstract' => \Arcanesoft\Contracts\Auth\Models\PermissionsGroup::class,
-                'concrete' => \Arcanesoft\Auth\Models\PermissionsGroup::class,
+                'concrete' => $config->get('arcanesoft.auth.permissions-groups.model'),
             ],
         ];
 
