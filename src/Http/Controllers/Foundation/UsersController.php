@@ -2,6 +2,7 @@
 
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
+use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Arcanesoft\Contracts\Auth\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -102,20 +103,36 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.show', compact('user'));
     }
 
-    public function edit(User $user)
+    public function edit(User $user, Role $role)
     {
         $user->load(['roles', 'roles.permissions']);
+        $roles = $role->all();
 
         $title = 'Edit a user';
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.users.edit', compact('user'));
+        return $this->view('foundation.users.edit', compact('user', 'roles'));
     }
 
-    public function update(User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        //
+        $inputs = ['username', 'email', 'first_name', 'last_name'];
+
+        if ($request->has('password')) {
+            $inputs[] = 'password';
+        }
+
+        $user->update($request->only($inputs));
+        $user->roles()->sync($request->get('roles'));
+
+        $message = "The user {$user->username} was updated successfully !";
+        Log::info($message, $user->toArray());
+        $this->notifySuccess($message, 'User Updated !');
+
+        return redirect()->route('auth::foundation.users.show', [
+            $user->hashed_id
+        ]);
     }
 
     public function restore(User $user)
