@@ -34,6 +34,11 @@ class UsersRoutes extends RouteRegister
                 'uses' => 'UsersController@index',
             ]);
 
+            $this->get('trash', [
+                'as'   => 'trash',  // auth::foundation.users.trash
+                'uses' => 'UsersController@trashList',
+            ]);
+
             $this->get('create', [
                 'as'   => 'create', // auth::foundation.users.create
                 'uses' => 'UsersController@create',
@@ -57,6 +62,11 @@ class UsersRoutes extends RouteRegister
             $this->put('{user_id}/update', [
                 'as'   => 'update', // auth::foundation.users.update
                 'uses' => 'UsersController@update',
+            ]);
+
+            $this->put('{user_id}/restore', [
+                'as'   => 'restore', // auth::foundation.users.restore
+                'uses' => 'UsersController@restore',
             ]);
 
             $this->delete('{user_id}/delete', [
