@@ -2,7 +2,9 @@
 
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
+use Arcanesoft\Contracts\Auth\Models\Role;
 use Arcanesoft\Contracts\Auth\Models\User;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class     UsersController
@@ -15,15 +17,24 @@ use Arcanesoft\Contracts\Auth\Models\User;
 class UsersController extends FoundationController
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    /** @var  \Arcanesoft\Contracts\Auth\Models\User  */
+    protected $user;
+
+    /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
      */
-    public function __construct()
+    public function __construct(User $user)
     {
         parent::__construct();
+
+        $this->user = $user;
 
         $this->setCurrentPage('auth-users');
         $this->addBreadcrumbRoute('Users', 'auth::foundation.users.index');
@@ -33,33 +44,51 @@ class UsersController extends FoundationController
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
-    public function index(User $user)
+    public function index($trashed = false)
     {
-        $users = $user->with('roles')->paginate(30);
+        $users = $this->user->with('roles');
+        $users = $trashed
+            ? $users->onlyTrashed()->paginate(30)
+            : $users->paginate(30);
 
-        $title = 'List of users';
+        $title = 'List of users' . ($trashed ? ' - Trashed' : '');
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.users.list', compact('users'));
+        return $this->view('foundation.users.list', compact('trashed', 'users'));
     }
 
-    public function create()
+    public function trashList()
     {
+        return $this->index(true);
+    }
+
+    public function create(Role $role)
+    {
+        $roles = $role->all();
+
         $title = 'Create a new user';
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('foundation.users.create');
+        return $this->view('foundation.users.create', compact('roles'));
     }
 
     public function store(CreateUserRequest $request, User $user)
     {
-        $user->fill($request->only([
+        $data = $request->only([
             'username', 'email', 'first_name', 'last_name', 'password'
-        ]));
+        ]);
+        $user->fill($data);
+        $user->is_active = true;
+        $user->save();
+        $user->roles()->sync($request->get('roles'));
 
-        dd($user->toArray());
+        $message = "The user {$user->username} was created successfully !";
+        Log::info($message, $user->toArray());
+        $this->notifySuccess($message, 'User created !');
+
+        return redirect()->route('auth::foundation.users.index');
     }
 
     public function show(User $user)
@@ -89,8 +118,61 @@ class UsersController extends FoundationController
         //
     }
 
+    public function restore(User $user)
+    {
+        self::onlyAjax();
+
+        try {
+            $user->restore();
+
+            $message = "The user {$user->username} has been successfully restored !";
+            Log::info($message, $user->toArray());
+            $this->notifySuccess($message, 'User restored !');
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch (\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
+    }
+
     public function delete(User $user)
     {
-        //
+        self::onlyAjax();
+
+        try {
+            if ($user->trashed()) {
+                $user->forceDelete();
+                $message = "The user {$user->username} has been successfully deleted !";
+                Log::info($message, $user->toArray());
+            }
+            else {
+                $user->delete();
+                $message = "The user {$user->username} was placed in trashed users !";
+            }
+
+            $this->notifySuccess($message, 'User deleted !');
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch(\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
     }
 }
