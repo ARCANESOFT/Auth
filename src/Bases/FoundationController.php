@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Bases;
 
-use Arcanesoft\Core\Bases\FoundationController as Controller;
+use Arcanesoft\Core\Bases\FoundationController as BaseController;
 use Arcanesoft\Core\Traits\Notifyable;
 
 /**
@@ -9,7 +9,7 @@ use Arcanesoft\Core\Traits\Notifyable;
  * @package  Arcanesoft\Auth\Bases
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class FoundationController extends Controller
+class FoundationController extends BaseController
 {
     /* ------------------------------------------------------------------------------------------------
      |  Traits
