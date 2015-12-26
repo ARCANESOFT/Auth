@@ -79,9 +79,9 @@
                     </a>
 
                     @if ($user->trashed())
-                        <a href="#restoreUserModal" class="btn btn-xs btn-primary" data-toggle="modal">
+                        <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#restoreUserModal">
                             <i class="fa fa-fw fa-reply"></i> Restore
-                        </a>
+                        </button>
                     @endif
 
                     @if ($user->isAdmin())
@@ -89,9 +89,9 @@
                             <i class="fa fa-fw fa-trash-o"></i> Delete
                         </a>
                     @else
-                        <a href="#deleteUserModal" class="btn btn-xs btn-danger" data-toggle="modal">
+                        <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteUserModal">
                             <i class="fa fa-fw fa-trash-o"></i> Delete
-                        </a>
+                        </button>
                     @endif
                 </div>
             </div>

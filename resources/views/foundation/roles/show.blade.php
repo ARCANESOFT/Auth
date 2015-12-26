@@ -75,10 +75,10 @@
                 </div>
                 <div class="box-footer text-right">
                     @if ($role->isLocked())
-                        <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled">
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
                             <i class="fa fa-fw fa-pencil"></i> Update
                         </a>
-                        <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
+                        <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
                             <i class="fa fa-fw fa-trash-o"></i> Delete
                         </a>
                     @else

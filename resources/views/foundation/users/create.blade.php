@@ -68,56 +68,18 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-footer text-right">
-                        <button type="submit" class="btn btn-sm btn-primary">
+                    <div class="box-footer">
+                        <a href="{{ route('auth::foundation.users.index') }}" class="btn btn-sm btn-default">
+                            Cancel
+                        </a>
+                        <button type="submit" class="btn btn-sm btn-primary pull-right">
                             <i class="fa fa-fw fa-plus"></i> Add
                         </button>
                     </div>
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="box box-warning">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Roles</h3>
-                        <div class="box-tools">
-                            @if ($errors->has('roles'))
-                                <span class="text-red">{!! $errors->first('roles') !!}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <table class="table table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th>Description</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($roles->count())
-                                    @foreach ($roles as $role)
-                                        <tr>
-                                            <td>
-                                                {!! Form::checkbox('roles[]', $role->id, in_array($role->id, old('roles', []))) !!}
-                                            </td>
-                                            <td>
-                                                {{ $role->name }}
-                                            </td>
-                                            <td>
-                                                <span class="label label-primary">{{ $role->name }}</span>
-                                            </td>
-                                            <td>
-                                                {{ $role->description }}
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @include('auth::foundation.users._partials.roles-checkbox', ['old' => old('roles', [])])
             </div>
         </div>
     {!! Form::close() !!}
