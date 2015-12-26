@@ -67,6 +67,8 @@ class User extends BaseUserModel
     {
         $id = head(hasher()->decode($hashedId));
 
-        return self::where('id', $id)->firstOrFail();
+        return self::withTrashed()
+            ->where('id', $id)
+            ->firstOrFail();
     }
 }
