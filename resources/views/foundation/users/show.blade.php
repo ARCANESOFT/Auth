@@ -48,6 +48,12 @@
                                     @else
                                         <span class="label label-success">Disabled</span>
                                     @endif
+
+                                    @if ($user->trashed())
+                                        <span class="label label-danger" style="margin-left: 5px;">
+                                            <i class="fa fa-fw fa-trash-o"></i> Trashed
+                                        </span>
+                                    @endif
                                 </td>
                             </tr>
                             <tr>
@@ -58,19 +64,32 @@
                                 <th>Updated at</th>
                                 <td>{{ $user->updated_at }}</td>
                             </tr>
+                            @if ($user->trashed())
+                                <tr>
+                                    <th>Deleted at</th>
+                                    <td>{{ $user->deleted_at }}</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </div>
-                <div class="box-footer">
-                    <a href="#" class="btn btn-xs btn-warning">
+                <div class="box-footer text-right">
+                    <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning">
                         <i class="fa fa-fw fa-pencil"></i> Edit
                     </a>
+
+                    @if ($user->trashed())
+                        <a href="#restoreUserModal" class="btn btn-xs btn-primary" data-toggle="modal">
+                            <i class="fa fa-fw fa-reply"></i> Restore
+                        </a>
+                    @endif
+
                     @if ($user->isAdmin())
-                        <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled"  data-toggle="tooltip" data-original-title="Delete">
+                        <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
                             <i class="fa fa-fw fa-trash-o"></i> Delete
                         </a>
                     @else
-                        <a href="#" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Delete">
+                        <a href="#deleteUserModal" class="btn btn-xs btn-danger" data-toggle="modal">
                             <i class="fa fa-fw fa-trash-o"></i> Delete
                         </a>
                     @endif
@@ -109,7 +128,132 @@
             </div>
         </div>
     </div>
+
+    {{-- MODALS --}}
+    <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+        <div class="modal-dialog" role="document">
+            {!! Form::open(['route' => ['auth::foundation.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading']) !!}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                            <i class="fa fa-fw fa-trash-o"></i> DELETE
+                        </button>
+                    </div>
+                </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+
+    @if ($user->trashed())
+        <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
+            <div class="modal-dialog" role="document">
+                {!! Form::open(['route' => ['auth::foundation.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-reply"></i> RESTORE
+                            </button>
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+            </div>
+        </div>
+    @endif
 @endsection
 
 @section('scripts')
+    <script>
+        var deleteUserModal = $('div#deleteUserModal'),
+            deleteUserForm  = $('form#deleteUserForm'),
+            redirectUrl     = "{{ $user->trashed() ? route('auth::foundation.users.index') : route('auth::foundation.users.show', $user->hashed_id) }}";
+
+        deleteUserForm.submit(function (event) {
+            event.preventDefault();
+            var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.button('loading');
+
+            $.ajax({
+                url:      $(this).attr('action'),
+                type:     $(this).attr('method'),
+                dataType: 'json',
+                data:     $(this).serialize(),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        deleteUserModal.modal('hide');
+                        location.replace(redirectUrl);
+                    }
+                    else {
+                        alert('ERROR ! Check the console !');
+                        console.error(data.message);
+                        submitBtn.button('reset');
+                    }
+                },
+                error: function(xhr) {
+                    alert('AJAX ERROR ! Check the console !');
+                    console.error(xhr);
+                    submitBtn.button('reset');
+                }
+            });
+
+            return false;
+        });
+    </script>
+
+    @if ($user->trashed())
+        <script>
+            var restoreUserModal = $('div#restoreUserModal'),
+                restoreUserForm  = $('form#restoreUserForm');
+
+            restoreUserForm.submit(function (event) {
+                event.preventDefault();
+                var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.button('loading');
+
+                $.ajax({
+                    url:      $(this).attr('action'),
+                    type:     $(this).attr('method'),
+                    dataType: 'json',
+                    data:     $(this).serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            restoreUserModal.modal('hide');
+                            location.reload();
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
+                            submitBtn.button('reset');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
+                        submitBtn.button('reset');
+                    }
+                });
+
+                return false;
+            });
+        </script>
+    @endif
 @endsection
