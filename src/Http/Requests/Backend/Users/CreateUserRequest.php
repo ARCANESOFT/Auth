@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Users;
 
 use Arcanesoft\Auth\Bases\FormRequest;
+use Illuminate\Support\Facades\Cache;
 
 /**
  * Class     CreateUserRequest
@@ -25,7 +26,8 @@ class CreateUserRequest extends FormRequest
         'first_name'            => 'required|min:2',
         'last_name'             => 'required|min:2',
         'password'              => 'required|min:8|confirmed',
-        'password_confirmation' => 'required|min:8'
+        'password_confirmation' => 'required|min:8',
+        'roles'                 => 'required|array|min:1',
     ];
 
     /* ------------------------------------------------------------------------------------------------
@@ -49,7 +51,11 @@ class CreateUserRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->rules;
+        $rules = $this->rules;
+
+        $rules['roles'] .= '|in:' . $this->getRoleIds()->implode(',');
+
+        return $rules;
     }
 
     /**
@@ -60,5 +66,21 @@ class CreateUserRequest extends FormRequest
         return array_merge(parent::all(), [
             'username' => str_slug($this->get('username'))
         ]);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the role ids.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getRoleIds()
+    {
+        return Cache::remember('auth.roles.ids', 5, function () {
+            return app(\Arcanesoft\Contracts\Auth\Models\Role::class)->lists('id');
+        });
     }
 }
