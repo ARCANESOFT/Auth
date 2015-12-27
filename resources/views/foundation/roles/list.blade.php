@@ -98,7 +98,7 @@
     {{-- MODALS --}}
     <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
         <div class="modal-dialog" role="document">
-            {!! Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading']) !!}
+            {!! Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
