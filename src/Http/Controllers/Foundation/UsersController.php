@@ -135,6 +135,40 @@ class UsersController extends FoundationController
         ]);
     }
 
+    public function activate(User $user)
+    {
+        self::onlyAjax();
+
+        try {
+            if ($user->isActive()) {
+                $title   = 'User disabled !';
+                $message = "The user {$user->username} has been successfully disabled !";
+                $user->deactivate();
+            }
+            else {
+                $title   = 'User activated !';
+                $message = "The user {$user->username} has been successfully activated !";
+                $user->activate();
+            }
+
+            Log::info($message, $user->toArray());
+            $this->notifySuccess($message, $title);
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch (\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
+    }
+
     public function restore(User $user)
     {
         self::onlyAjax();
