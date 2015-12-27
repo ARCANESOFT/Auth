@@ -46,7 +46,7 @@
                                     @if ($user->isActive())
                                         <span class="label label-success">Acitve</span>
                                     @else
-                                        <span class="label label-success">Disabled</span>
+                                        <span class="label label-default">Disabled</span>
                                     @endif
 
                                     @if ($user->trashed())
@@ -77,6 +77,28 @@
                     <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning">
                         <i class="fa fa-fw fa-pencil"></i> Edit
                     </a>
+
+                    @if ($user->isAdmin())
+                        @if ($user->isActive())
+                            <a href="javascript:void(0);" class="btn btn-xs btn-inverse" disabled="disabled">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </a>
+                        @else
+                            <a href="javascript:void(0);" class="btn btn-xs btn-success" disabled="disabled">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </a>
+                        @endif
+                    @else
+                        @if ($user->isActive())
+                            <button class="btn btn-xs btn-inverse" data-toggle="modal" data-target="#activateUserModal">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </button>
+                        @else
+                            <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#activateUserModal">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </button>
+                        @endif
+                    @endif
 
                     @if ($user->trashed())
                         <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#restoreUserModal">
@@ -129,35 +151,50 @@
         </div>
     </div>
 
-    {{-- MODALS --}}
-    <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+    {{-- ACTIVATE MODAL --}}
+    <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
         <div class="modal-dialog" role="document">
-            {!! Form::open(['route' => ['auth::foundation.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading']) !!}
+            {!! Form::open(['route' => ['auth::foundation.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+                        <h4 class="modal-title" id="activateUserModalLabel">
+                            {!! $user->isActive() ? 'Disable User' : 'Activate User' !!}
+                        </h4>
                     </div>
                     <div class="modal-body">
-                        <p>Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                        <p>
+                            @if ($user->isActive())
+                                Are you sure you want to <span class="label label-inverse">disable</span> this user : <strong>{{ $user->username }}</strong> ?
+                            @else
+                                Are you sure you want to <span class="label label-success">activate</span> this user : <strong>{{ $user->username }}</strong> ?
+                            @endif
+                        </p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> DELETE
-                        </button>
+                        @if ($user->isActive())
+                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </button>
+                        @else
+                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </button>
+                        @endif
                     </div>
                 </div>
             {!! Form::close() !!}
         </div>
     </div>
 
+    {{-- RESTORE MODAL --}}
     @if ($user->trashed())
         <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading']) !!}
+                {!! Form::open(['route' => ['auth::foundation.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -179,15 +216,40 @@
             </div>
         </div>
     @endif
+
+    {{-- DELETE MODAL --}}
+    <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+        <div class="modal-dialog" role="document">
+            {!! Form::open(['route' => ['auth::foundation.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                            <i class="fa fa-fw fa-trash-o"></i> DELETE
+                        </button>
+                    </div>
+                </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
 @endsection
 
 @section('scripts')
+    {{-- ACTIVATE SCRIPT --}}
     <script>
-        var deleteUserModal = $('div#deleteUserModal'),
-            deleteUserForm  = $('form#deleteUserForm'),
-            redirectUrl     = "{{ $user->trashed() ? route('auth::foundation.users.index') : route('auth::foundation.users.show', $user->hashed_id) }}";
+        var activateUserModal = $('div#activateUserModal'),
+            activateUserForm  = $('form#activateUserForm');
 
-        deleteUserForm.submit(function (event) {
+        activateUserForm.submit(function (event) {
             event.preventDefault();
             var submitBtn = $(this).find('button[type="submit"]');
                 submitBtn.button('loading');
@@ -199,8 +261,8 @@
                 data:     $(this).serialize(),
                 success: function(data) {
                     if (data.status === 'success') {
-                        deleteUserModal.modal('hide');
-                        location.replace(redirectUrl);
+                        activateUserModal.modal('hide');
+                        location.reload();
                     }
                     else {
                         alert('ERROR ! Check the console !');
@@ -219,6 +281,7 @@
         });
     </script>
 
+    {{-- RESTORE SCRIPT --}}
     @if ($user->trashed())
         <script>
             var restoreUserModal = $('div#restoreUserModal'),
@@ -256,4 +319,42 @@
             });
         </script>
     @endif
+
+    {{-- DELETE SCRIPT --}}
+    <script>
+        var deleteUserModal = $('div#deleteUserModal'),
+            deleteUserForm  = $('form#deleteUserForm'),
+            redirectUrl     = "{{ $user->trashed() ? route('auth::foundation.users.index') : route('auth::foundation.users.show', $user->hashed_id) }}";
+
+        deleteUserForm.submit(function (event) {
+            event.preventDefault();
+            var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.button('loading');
+
+            $.ajax({
+                url:      $(this).attr('action'),
+                type:     $(this).attr('method'),
+                dataType: 'json',
+                data:     $(this).serialize(),
+                success: function(data) {
+                    if (data.status === 'success') {
+                        deleteUserModal.modal('hide');
+                        location.replace(redirectUrl);
+                    }
+                    else {
+                        alert('ERROR ! Check the console !');
+                        console.error(data.message);
+                        submitBtn.button('reset');
+                    }
+                },
+                error: function(xhr) {
+                    alert('AJAX ERROR ! Check the console !');
+                    console.error(xhr);
+                    submitBtn.button('reset');
+                }
+            });
+
+            return false;
+        });
+    </script>
 @endsection
