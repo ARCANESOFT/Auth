@@ -64,6 +64,11 @@ class UsersRoutes extends RouteRegister
                 'uses' => 'UsersController@update',
             ]);
 
+            $this->put('{user_id}/activate', [
+                'as'   => 'activate', // auth::foundation.users.activate
+                'uses' => 'UsersController@activate',
+            ]);
+
             $this->put('{user_id}/restore', [
                 'as'   => 'restore', // auth::foundation.users.restore
                 'uses' => 'UsersController@restore',
