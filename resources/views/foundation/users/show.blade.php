@@ -161,17 +161,15 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <h4 class="modal-title" id="activateUserModalLabel">
-                            {!! $user->isActive() ? 'Disable User' : 'Activate User' !!}
+                            {{ $user->isActive() ? 'Disable User' : 'Activate User' }}
                         </h4>
                     </div>
                     <div class="modal-body">
-                        <p>
-                            @if ($user->isActive())
-                                Are you sure you want to <span class="label label-inverse">disable</span> this user : <strong>{{ $user->username }}</strong> ?
-                            @else
-                                Are you sure you want to <span class="label label-success">activate</span> this user : <strong>{{ $user->username }}</strong> ?
-                            @endif
-                        </p>
+                        @if ($user->isActive())
+                            <p>Are you sure you want to <span class="label label-inverse">disable</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                        @else
+                            <p>Are you sure you want to <span class="label label-success">activate</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                        @endif
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
