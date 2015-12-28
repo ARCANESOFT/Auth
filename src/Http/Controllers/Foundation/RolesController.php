@@ -20,7 +20,11 @@ class RolesController extends FoundationController
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /** @var \Arcanesoft\Contracts\Auth\Models\Role */
+    /**
+     * The Role model.
+     *
+     * @var \Arcanesoft\Contracts\Auth\Models\Role|\Arcanesoft\Auth\Models\Role
+     */
     protected $role;
 
     /* ------------------------------------------------------------------------------------------------
@@ -84,6 +88,7 @@ class RolesController extends FoundationController
 
     public function show(Role $role)
     {
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions', 'permissions.group']);
 
         $title = 'Role details';
@@ -95,6 +100,7 @@ class RolesController extends FoundationController
 
     public function edit(Role $role)
     {
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions']);
 
         $title = 'Edit Role';
@@ -106,6 +112,7 @@ class RolesController extends FoundationController
 
     public function update(UpdateRoleRequest $request, Role $role)
     {
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->fill($request->only('name', 'slug', 'description'));
         $role->save();
         $role->permissions()->sync($request->get('permissions'));
@@ -120,8 +127,45 @@ class RolesController extends FoundationController
             ->with('success', $message);
     }
 
+    public function activate(Role $role)
+    {
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
+        self::onlyAjax();
+
+        try {
+            if ($role->isActive()) {
+                $role->deactivate();
+                $title   = 'Role disabled !';
+                $message = "The role {$role->name} has been successfully disabled !";
+            }
+            else {
+                $role->activate();
+                $title   = 'Role activated !';
+                $message = "The role {$role->name} has been successfully activated !";
+            }
+
+
+            Log::info($message, $role->toArray());
+            $this->notifySuccess($message, $title);
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch(\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
+    }
+
     public function delete(Role $role)
     {
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         self::onlyAjax();
 
         try {
