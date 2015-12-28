@@ -36,7 +36,7 @@ class PermissionsRoutes extends RouteRegister
             ]);
 
             $this->get('group/{perms_group_id}', [
-                'as'   => 'group',  // auth::foundation.permissions.group
+                'as'   => 'group', // auth::foundation.permissions.group
                 'uses' => 'PermissionsController@group',
             ]);
 
