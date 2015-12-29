@@ -37,9 +37,9 @@ class ProfileController extends FoundationController
     {
         parent::__construct();
 
-        $this->setCurrentPage('auth-profile');
-
         $this->user = auth()->user();
+
+        $this->setCurrentPage('auth-profile');
     }
 
     /* ------------------------------------------------------------------------------------------------

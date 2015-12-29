@@ -30,6 +30,8 @@ class UsersController extends FoundationController
      */
     /**
      * Instantiate the controller.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
      */
     public function __construct(User $user)
     {

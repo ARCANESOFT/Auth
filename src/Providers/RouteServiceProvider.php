@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
-use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Arcanesoft\Auth\Http\Routes;
+use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Illuminate\Routing\Router;
 
 /**

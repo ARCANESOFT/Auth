@@ -1,8 +1,8 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
 use Arcanedev\Support\ServiceProvider;
-use Illuminate\Contracts\Foundation\Application;
 use Closure;
+use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Class     ValidatorServiceProvider
