@@ -74,7 +74,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $router->group(array_merge($attributes, [
             'prefix' => 'api',
-            'as'     => $attributes['as'] . 'api',
+            'as'     => $attributes['as'] . 'api.',
         ]), function ($router) {
             (new Routes\Front\ApiRoutes)->map($router);
         });
