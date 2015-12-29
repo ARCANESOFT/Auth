@@ -29,9 +29,19 @@ class ProfileRoutes extends RouteRegister
             'as'        => 'profile.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',  // auth::foundation.profile.index
+                'as'   => 'index',           // auth::foundation.profile.index
                 'uses' => 'ProfileController@index',
             ]);
+
+            $this->group([
+                'prefix' => '{user_id}/password',
+                'as'     => 'password.',
+            ], function () {
+                $this->put('/', [
+                    'as'   => 'update', // auth::foundation.profile.password.update
+                    'uses' => 'ProfileController@updatePassword',
+                ]);
+            });
         });
     }
 }
