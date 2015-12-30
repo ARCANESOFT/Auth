@@ -44,6 +44,11 @@ class PermissionsRoutes extends RouteRegister
                 'as'   => 'show',  // auth::foundation.permissions.show
                 'uses' => 'PermissionsController@show',
             ]);
+
+            $this->delete('{permission_id}/roles/{role_id}/detach', [
+                'as'   => 'roles.detach',  // auth::foundation.permissions.roles.detach
+                'uses' => 'PermissionsController@detachRole',
+            ]);
         });
 
         $router->bind('permission_id', function($hashedId) {

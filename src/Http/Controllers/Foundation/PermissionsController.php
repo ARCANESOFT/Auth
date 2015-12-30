@@ -3,6 +3,8 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Contracts\Auth\Models\Permission;
 use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
+use Arcanesoft\Contracts\Auth\Models\Role;
+use Log;
 
 /**
  * Class     PermissionsController
@@ -87,5 +89,33 @@ class PermissionsController extends FoundationController
         $this->addBreadcrumb($title);
 
         return $this->view('foundation.permissions.show', compact('permission'));
+    }
+
+    public function detachRole(Permission $permission, Role $role)
+    {
+        self::onlyAjax();
+
+        try {
+            $permission->detachRole($role, false);
+
+            $title   = 'Role detached !';
+            $message = "The role {$role->name} has been successfully detached from {$permission->name} !";
+
+            Log::info($message, compact('permission', 'role'));
+            $this->notifySuccess($message, $title);
+
+            $ajax = [
+                'status'  => 'success',
+                'message' => $message,
+            ];
+        }
+        catch(\Exception $e) {
+            $ajax = [
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ];
+        }
+
+        return response()->json($ajax);
     }
 }
