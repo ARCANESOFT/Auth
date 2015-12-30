@@ -5,7 +5,7 @@ use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Arcanesoft\Contracts\Auth\Models\User;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 /**
  * Class     UsersController
@@ -21,7 +21,11 @@ class UsersController extends FoundationController
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
-    /** @var  \Arcanesoft\Contracts\Auth\Models\User  */
+    /**
+     * The user model.
+     *
+     * @var  \Arcanesoft\Contracts\Auth\Models\User
+     */
     protected $user;
 
     /* ------------------------------------------------------------------------------------------------

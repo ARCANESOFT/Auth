@@ -4,7 +4,7 @@ use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
 use Arcanesoft\Contracts\Auth\Models\Role;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 /**
  * Class     RolesController
@@ -23,7 +23,7 @@ class RolesController extends FoundationController
     /**
      * The Role model.
      *
-     * @var \Arcanesoft\Contracts\Auth\Models\Role|\Arcanesoft\Auth\Models\Role
+     * @var \Arcanesoft\Contracts\Auth\Models\Role
      */
     protected $role;
 

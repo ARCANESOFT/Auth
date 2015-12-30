@@ -3,7 +3,7 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Profile\UpdatePasswordRequest;
 use Arcanesoft\Contracts\Auth\Models\User;
-use Illuminate\Support\Facades\Log;
+use Log;
 
 /**
  * Class     ProfileController
