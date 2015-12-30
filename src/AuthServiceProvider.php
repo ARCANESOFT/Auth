@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth;
 
 use Arcanesoft\Core\Bases\PackageServiceProvider;
+use Arcanesoft\Core\CoreServiceProvider;
 
 /**
  * Class     AuthServiceProvider
@@ -46,7 +47,7 @@ class AuthServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
 
-        $this->app->register(\Arcanesoft\Core\CoreServiceProvider::class);
+        $this->app->register(CoreServiceProvider::class);
         $this->app->register(Providers\PackagesServiceProvider::class);
         $this->app->register(Providers\AuthorizationServiceProvider::class);
         $this->app->register(Providers\ComposerServiceProvider::class);
