@@ -15,15 +15,7 @@ class ComposerServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register the service provider.
-     */
-    public function register()
-    {
-        //
-    }
-
-    /**
-     * Register bindings in the container.
+     * {@inheritdoc}
      */
     public function boot()
     {
@@ -38,8 +30,21 @@ class ComposerServiceProvider extends ServiceProvider
         );
 
         view()->composer(
+            'auth::foundation.users.list',
+            'Arcanesoft\Auth\ViewComposers\RolesComposer@composeFilters'
+        );
+
+        view()->composer(
             'auth::foundation.permissions.list',
             'Arcanesoft\Auth\ViewComposers\PermissionsGroupsComposer@composeFilters'
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function register()
+    {
+        //
     }
 }
