@@ -27,6 +27,18 @@ class User extends BaseUserModel
     }
 
     /**
+     * Get the full name attribute or use the username if empty.
+     *
+     * @return string
+     */
+    public function getFullNameAttribute()
+    {
+        $fullName = trim($this->first_name . ' ' . $this->last_name);
+
+        return empty($fullName) ? $this->username : $fullName;
+    }
+
+    /**
      * Get the gravatar attribute.
      *
      * @return string
