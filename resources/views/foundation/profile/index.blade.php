@@ -15,20 +15,10 @@
                 </div>
                 <div class="box-body">
                     <table class="table table-condensed">
-                        <thead>
+                        <tbody>
                             <tr>
                                 <th>Username</th>
                                 <td>{{ $user->username }}</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th>First Name</th>
-                                <td>{{ $user->first_name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Last Name</th>
-                                <td>{{ $user->last_name }}</td>
                             </tr>
                             <tr>
                                 <th>Email</th>
@@ -48,28 +38,16 @@
                                     @else
                                         <span class="label label-default">Disabled</span>
                                     @endif
-
-                                    @if ($user->trashed())
-                                        <span class="label label-danger" style="margin-left: 5px;">
-                                            <i class="fa fa-fw fa-trash-o"></i> Trashed
-                                        </span>
-                                    @endif
                                 </td>
                             </tr>
                             <tr>
                                 <th>Created at</th>
-                                <td>{{ $user->created_at }}</td>
+                                <td><small>{{ $user->created_at }}</small></td>
                             </tr>
                             <tr>
                                 <th>Updated at</th>
-                                <td>{{ $user->updated_at }}</td>
+                                <td><small>{{ $user->updated_at }}</small></td>
                             </tr>
-                            @if ($user->trashed())
-                                <tr>
-                                    <th>Deleted at</th>
-                                    <td>{{ $user->deleted_at }}</td>
-                                </tr>
-                            @endif
                         </tbody>
                     </table>
                 </div>
