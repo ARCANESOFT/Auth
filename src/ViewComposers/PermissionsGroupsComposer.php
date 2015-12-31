@@ -1,7 +1,8 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
 use Arcanesoft\Auth\Bases\ViewComposer;
-use Arcanesoft\Auth\Models\PermissionsGroup;
+use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
+use Arcanesoft\Contracts\Auth\Models\Permission;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -17,9 +18,18 @@ class PermissionsGroupsComposer extends ViewComposer
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * @var  \Arcanesoft\Auth\Models\PermissionsGroup
+     * The permissions group model.
+     *
+     * @var  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup
      */
     protected $permissionsGroup;
+
+    /**
+     * The permission model.
+     *
+     * @var  \Arcanesoft\Contracts\Auth\Models\Permission
+     */
+    protected $permission;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
@@ -28,11 +38,13 @@ class PermissionsGroupsComposer extends ViewComposer
     /**
      * PermissionsGroupsComposer constructor.
      *
-     * @param  \Arcanesoft\Auth\Models\PermissionsGroup  $permissionsGroup
+     * @param  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup  $permissionsGroup
+     * @param  \Arcanesoft\Contracts\Auth\Models\Permission        $permission
      */
-    public function __construct(PermissionsGroup $permissionsGroup)
+    public function __construct(PermissionsGroup $permissionsGroup, Permission $permission)
     {
         $this->permissionsGroup = $permissionsGroup;
+        $this->permission       = $permission;
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -46,21 +58,31 @@ class PermissionsGroupsComposer extends ViewComposer
      */
     public function composeFilters(View $view)
     {
-        $filters   = [];
-        $groups    = $this->cacheResults('auth-permissions-groups', function () {
-            return $this->permissionsGroup->all();
-        });
+        $filters        = [];
 
-        $filters[] = link_to_route('auth::foundation.permissions.index', 'All');
+        // All Permission group
+        //----------------------------------
+        $filters['all'] = link_to_route('auth::foundation.permissions.index', 'All');
+
+        // Permission groups
+        //----------------------------------
+        $groups      = $this->cacheResults('permissions-groups.filters', function () {
+            return $this->permissionsGroup->has('permissions')->get();
+        });
         foreach ($groups as $group) {
             /** @var  PermissionsGroup  $group */
-            $filters[] = link_to_route('auth::foundation.permissions.group', $group->name, [
+            $filters[$group->slug] = link_to_route('auth::foundation.permissions.group', $group->name, [
                 $group->hashed_id
             ]);
         }
-        $filters[] = link_to_route('auth::foundation.permissions.group', 'Custom', [
-            hasher()->encode(0)
-        ]);
+
+        // Custom Permission group
+        //----------------------------------
+        if ($this->permission->where('group_id', 0)->count()) {
+            $filters['custom'] = link_to_route('auth::foundation.permissions.group', 'Custom', [
+                hasher()->encode(0)
+            ]);
+        }
 
         $view->with('groupFilters', $filters);
     }

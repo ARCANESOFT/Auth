@@ -43,6 +43,6 @@ abstract class ViewComposer
      */
     protected function cacheResults($name, Closure $callback)
     {
-        return Cache::remember($name, $this->minutes, $callback);
+        return Cache::remember('cache::' . $name, $this->minutes, $callback);
     }
 }
