@@ -30,52 +30,57 @@ class UsersRoutes extends RouteRegister
             'as'        => 'users.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index',    // auth::foundation.users.index
+                'as'   => 'index',         // auth::foundation.users.index
                 'uses' => 'UsersController@index',
             ]);
 
             $this->get('trash', [
-                'as'   => 'trash',    // auth::foundation.users.trash
+                'as'   => 'trash',         // auth::foundation.users.trash
                 'uses' => 'UsersController@trashList',
             ]);
 
+            $this->get('roles-filter/{role_id}', [
+                'as'   => 'roles-filter.index',  // auth::foundation.users.roles-filter.index
+                'uses' => 'UsersController@listByRole',
+            ]);
+
             $this->get('create', [
-                'as'   => 'create',   // auth::foundation.users.create
+                'as'   => 'create',        // auth::foundation.users.create
                 'uses' => 'UsersController@create',
             ]);
 
             $this->post('store', [
-                'as'   => 'store',    // auth::foundation.users.store
+                'as'   => 'store',         // auth::foundation.users.store
                 'uses' => 'UsersController@store',
             ]);
 
             $this->get('{user_id}/show', [
-                'as'   => 'show',     // auth::foundation.users.show
+                'as'   => 'show',          // auth::foundation.users.show
                 'uses' => 'UsersController@show',
             ]);
 
             $this->get('{user_id}/edit', [
-                'as'   => 'edit',     // auth::foundation.users.edit
+                'as'   => 'edit',          // auth::foundation.users.edit
                 'uses' => 'UsersController@edit',
             ]);
 
             $this->put('{user_id}/update', [
-                'as'   => 'update',   // auth::foundation.users.update
+                'as'   => 'update',        // auth::foundation.users.update
                 'uses' => 'UsersController@update',
             ]);
 
             $this->put('{user_id}/activate', [
-                'as'   => 'activate', // auth::foundation.users.activate
+                'as'   => 'activate',      // auth::foundation.users.activate
                 'uses' => 'UsersController@activate',
             ]);
 
             $this->put('{user_id}/restore', [
-                'as'   => 'restore',  // auth::foundation.users.restore
+                'as'   => 'restore',       // auth::foundation.users.restore
                 'uses' => 'UsersController@restore',
             ]);
 
             $this->delete('{user_id}/delete', [
-                'as'   => 'delete',   // auth::foundation.users.delete
+                'as'   => 'delete',        // auth::foundation.users.delete
                 'uses' => 'UsersController@delete',
             ]);
         });

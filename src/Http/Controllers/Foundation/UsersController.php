@@ -51,9 +51,17 @@ class UsersController extends FoundationController
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * List the users.
+     *
+     * @param  bool  $trashed
+     *
+     * @return \Illuminate\View\View
+     */
     public function index($trashed = false)
     {
         $users = $this->user->with('roles');
+
         $users = $trashed
             ? $users->onlyTrashed()->paginate(30)
             : $users->paginate(30);
@@ -65,11 +73,42 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.list', compact('trashed', 'users'));
     }
 
+    /**
+     * List the trashed users.
+     *
+     * @return \Illuminate\View\View
+     */
     public function trashList()
     {
         return $this->index(true);
     }
 
+    /**
+     * List the users by a role.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\Role  $role
+     * @param  bool                                    $trashed
+     *
+     * @return \Illuminate\View\View
+     */
+    public function listByRole(Role $role, $trashed = false)
+    {
+        $users = $role->users()->with('roles')->paginate(30);
+
+        $title = "List of users - {$role->name} Role" . ($trashed ? ' - Trashed' : '');
+        $this->setTitle($title);
+        $this->addBreadcrumb($title);
+
+        return $this->view('foundation.users.list', compact('trashed', 'users'));
+    }
+
+    /**
+     * Show the create a new user form.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\Role  $role
+     *
+     * @return \Illuminate\View\View
+     */
     public function create(Role $role)
     {
         $roles = $role->all();
@@ -81,6 +120,14 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.create', compact('roles'));
     }
 
+    /**
+     * Store the new user.
+     *
+     * @param  \Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest  $request
+     * @param  \Arcanesoft\Contracts\Auth\Models\User                          $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(CreateUserRequest $request, User $user)
     {
         $data = $request->only([
@@ -98,6 +145,13 @@ class UsersController extends FoundationController
         return redirect()->route('auth::foundation.users.index');
     }
 
+    /**
+     * Show the user's details.
+     *
+     * @param \Arcanesoft\Contracts\Auth\Models\User $user
+     *
+     * @return \Illuminate\View\View
+     */
     public function show(User $user)
     {
         $user->load(['roles', 'roles.permissions']);
@@ -109,6 +163,14 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.show', compact('user'));
     }
 
+    /**
+     * Show the edit the user form.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Contracts\Auth\Models\Role  $role
+     *
+     * @return \Illuminate\View\View
+     */
     public function edit(User $user, Role $role)
     {
         $user->load(['roles', 'roles.permissions']);
@@ -121,6 +183,14 @@ class UsersController extends FoundationController
         return $this->view('foundation.users.edit', compact('user', 'roles'));
     }
 
+    /**
+     * Update the user.
+     *
+     * @param  \Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest  $request
+     * @param  \Arcanesoft\Contracts\Auth\Models\User                          $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(UpdateUserRequest $request, User $user)
     {
         $inputs = ['username', 'email', 'first_name', 'last_name'];
@@ -141,6 +211,13 @@ class UsersController extends FoundationController
         ]);
     }
 
+    /**
+     * Activate/Disable a user.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function activate(User $user)
     {
         self::onlyAjax();
@@ -175,6 +252,13 @@ class UsersController extends FoundationController
         return response()->json($ajax);
     }
 
+    /**
+     * Restore the trashed user.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function restore(User $user)
     {
         self::onlyAjax();
@@ -201,6 +285,13 @@ class UsersController extends FoundationController
         return response()->json($ajax);
     }
 
+    /**
+     * Delete a user.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function delete(User $user)
     {
         self::onlyAjax();

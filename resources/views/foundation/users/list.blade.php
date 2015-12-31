@@ -25,6 +25,19 @@
                     </a>
                 </div>
 
+                @unless($trashed)
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Roles <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            @foreach($rolesFilters as $filterLink)
+                                <li>{!! $filterLink !!}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endunless
+
                 <a href="{{ route('auth::foundation.users.create') }}" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">
                     <i class="fa fa-plus"></i>
                 </a>
