@@ -38,11 +38,12 @@ class PublishCommand extends Command
     public function handle()
     {
         $this->call('vendor:publish', [
-            '--provider' => \Arcanesoft\Auth\AuthServiceProvider::class,
+            '--provider' => \Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class,
+            '--tag'      => ['migrations', 'factories'],
         ]);
 
         $this->call('vendor:publish', [
-            '--provider' => \Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class,
+            '--provider' => \Arcanesoft\Auth\AuthServiceProvider::class,
         ]);
     }
 }
