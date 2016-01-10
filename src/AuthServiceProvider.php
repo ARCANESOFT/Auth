@@ -46,7 +46,7 @@ class AuthServiceProvider extends PackageServiceProvider
     public function register()
     {
         $this->registerConfig();
-
+        $this->registerSidebarItems();
         $this->app->register(CoreServiceProvider::class);
         $this->app->register(Providers\PackagesServiceProvider::class);
         $this->app->register(Providers\AuthorizationServiceProvider::class);
@@ -107,5 +107,8 @@ class AuthServiceProvider extends PackageServiceProvider
         $this->publishes([
             $translationsPath => base_path('resources/lang/vendor/auth'),
         ], 'lang');
+
+        // Sidebar items
+        $this->publishSidebarItems();
     }
 }
