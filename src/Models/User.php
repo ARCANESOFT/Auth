@@ -83,4 +83,18 @@ class User extends BaseUserModel
             ->where('id', $id)
             ->firstOrFail();
     }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Check Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Check if user is an administrator.
+     *
+     * @return bool
+     */
+    public function isAdmin()
+    {
+        return parent::isAdmin() || $this->is('administrator');
+    }
 }
