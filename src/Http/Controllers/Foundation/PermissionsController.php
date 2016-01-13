@@ -11,8 +11,6 @@ use Log;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @todo: Adding the authorization checks
  */
 class PermissionsController extends FoundationController
 {
@@ -51,6 +49,8 @@ class PermissionsController extends FoundationController
      */
     public function index()
     {
+        $this->authorize('auth.permissions.list');
+
         $permissions = $this->permission->with('group', 'roles')
             ->orderBy('group_id')
             ->paginate($this->perPage);
@@ -64,6 +64,8 @@ class PermissionsController extends FoundationController
 
     public function group(PermissionsGroup $group)
     {
+        $this->authorize('auth.permissions.list');
+
         $groupId = $group->id ? $group->id : 0;
 
         $permissions = $this->permission->where('group_id', $groupId)
@@ -82,6 +84,8 @@ class PermissionsController extends FoundationController
 
     public function show(Permission $permission)
     {
+        $this->authorize('auth.permissions.show');
+
         $permission->load(['roles', 'roles.users']);
 
         $title = 'Permission details';
@@ -94,6 +98,7 @@ class PermissionsController extends FoundationController
     public function detachRole(Permission $permission, Role $role)
     {
         self::onlyAjax();
+        $this->authorize('auth.permissions.update');
 
         try {
             $permission->detachRole($role, false);

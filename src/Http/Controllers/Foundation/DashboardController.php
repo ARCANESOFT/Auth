@@ -32,6 +32,8 @@ class DashboardController extends FoundationController
      */
     public function index()
     {
+        $this->authorize('auth.dashboard.stats');
+
         $title = 'Authorization - Dashboard';
         $this->setTitle($title);
         $this->addBreadcrumb('Statistics');

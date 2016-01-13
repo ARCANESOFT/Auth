@@ -60,6 +60,8 @@ class UsersController extends FoundationController
      */
     public function index($trashed = false)
     {
+        $this->authorize('auth.users.list');
+
         $users = $this->user->with('roles');
 
         $users = $trashed
@@ -93,6 +95,8 @@ class UsersController extends FoundationController
      */
     public function listByRole(Role $role, $trashed = false)
     {
+        $this->authorize('auth.users.list');
+
         $users = $role->users()->with('roles')->paginate(30);
 
         $title = "List of users - {$role->name} Role" . ($trashed ? ' - Trashed' : '');
@@ -111,6 +115,8 @@ class UsersController extends FoundationController
      */
     public function create(Role $role)
     {
+        $this->authorize('auth.users.create');
+
         $roles = $role->all();
 
         $title = 'Create a new user';
@@ -130,6 +136,8 @@ class UsersController extends FoundationController
      */
     public function store(CreateUserRequest $request, User $user)
     {
+        $this->authorize('auth.users.create');
+
         $data = $request->only([
             'username', 'email', 'first_name', 'last_name', 'password'
         ]);
@@ -154,6 +162,8 @@ class UsersController extends FoundationController
      */
     public function show(User $user)
     {
+        $this->authorize('auth.users.show');
+
         $user->load(['roles', 'roles.permissions']);
 
         $title = 'User details';
@@ -173,6 +183,8 @@ class UsersController extends FoundationController
      */
     public function edit(User $user, Role $role)
     {
+        $this->authorize('auth.users.update');
+
         $user->load(['roles', 'roles.permissions']);
         $roles = $role->all();
 
@@ -193,6 +205,8 @@ class UsersController extends FoundationController
      */
     public function update(UpdateUserRequest $request, User $user)
     {
+        $this->authorize('auth.users.update');
+
         $inputs = ['username', 'email', 'first_name', 'last_name'];
 
         if ($request->has('password')) {
@@ -221,6 +235,7 @@ class UsersController extends FoundationController
     public function activate(User $user)
     {
         self::onlyAjax();
+        $this->authorize('auth.users.update');
 
         try {
             if ($user->isActive()) {
@@ -262,6 +277,7 @@ class UsersController extends FoundationController
     public function restore(User $user)
     {
         self::onlyAjax();
+        $this->authorize('auth.users.update');
 
         try {
             $user->restore();
@@ -295,6 +311,7 @@ class UsersController extends FoundationController
     public function delete(User $user)
     {
         self::onlyAjax();
+        $this->authorize('auth.users.delete');
 
         try {
             if ($user->trashed()) {
