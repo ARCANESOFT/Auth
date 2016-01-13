@@ -4,11 +4,13 @@
             {{ auth()->user()->full_name }} <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
-            <li>
-                <a href="{{ route('foundation::home') }}">
-                    <i class="fa fa-fw fa-tachometer"></i> Dashboard
-                </a>
-            </li>
+            @if (auth()->user()->isAdmin())
+                <li>
+                    <a href="{{ route('foundation::home') }}">
+                        <i class="fa fa-fw fa-tachometer"></i> Dashboard
+                    </a>
+                </li>
+            @endif
             <li>
                 <a href="#">
                     <i class="fa fa-fw fa-user"></i> Profile
