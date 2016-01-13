@@ -13,28 +13,28 @@ return [
             'route'       => 'auth::foundation.dashboard',
             'icon'        => 'fa fa-fw fa-bar-chart',
             'roles'       => [],
-            'permissions' => [],
+            'permissions' => ['auth.dashboard.stats'],
         ],[
             'title'       => 'Users',
             'name'        => 'auth-users',
             'route'       => 'auth::foundation.users.index',
             'icon'        => 'fa fa-fw fa-users',
             'roles'       => [],
-            'permissions' => [],
+            'permissions' => ['auth.users.list'],
         ],[
             'title'       => 'Roles',
             'name'        => 'auth-roles',
             'route'       => 'auth::foundation.roles.index',
             'icon'        => 'fa fa-fw fa-lock',
             'roles'       => [],
-            'permissions' => [],
+            'permissions' => ['auth.roles.list'],
         ],[
             'title'       => 'Permissions',
             'name'        => 'auth-permissions',
             'route'       => 'auth::foundation.permissions.index',
             'icon'        => 'fa fa-fw fa-check-circle',
             'roles'       => [],
-            'permissions' => [],
+            'permissions' => ['auth.permissions.list'],
         ]
     ],
 ];
