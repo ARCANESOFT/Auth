@@ -108,154 +108,159 @@
         @endif
     </div>
 
-    {{-- ACTIVATE MODAL --}}
-    <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
-        <div class="modal-dialog" role="document">
-            {!! Form::open(['method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="activateUserModalLabel"></h4>
-                    </div>
-                    <div class="modal-body">
-                        <p></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
-                            <i class="fa fa-fw fa-power-off"></i> Activate
-                        </button>
-                        <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;" style="display: none;">
-                            <i class="fa fa-fw fa-power-off"></i> Disable
-                        </button>
-                    </div>
-                </div>
-            {!! Form::close() !!}
-        </div>
-    </div>
-
-    {{-- RESTORE MODAL --}}
-    @if ($trashed)
-        <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
+    @can('auth.users.update')
+        {{-- ACTIVATE MODAL --}}
+        <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                {!! Form::open(['method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="activateUserModalLabel"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </button>
+                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;" style="display: none;">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-reply"></i> RESTORE
-                        </button>
-                    </div>
-                </div>
                 {!! Form::close() !!}
             </div>
         </div>
-    @endif
 
-    {{-- DELETE MODAL --}}
-    <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
-        <div class="modal-dialog" role="document">
-            {!! Form::open(['method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+        {{-- RESTORE MODAL --}}
+        @if ($trashed)
+            <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
+                <div class="modal-dialog" role="document">
+                    {!! Form::open(['method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-reply"></i> RESTORE
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> DELETE
-                        </button>
-                    </div>
+                    {!! Form::close() !!}
                 </div>
-            {!! Form::close() !!}
+            </div>
+        @endif
+    @endcan
+
+    @can('auth.users.delete')
+        {{-- DELETE MODAL --}}
+        <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+            <div class="modal-dialog" role="document">
+                {!! Form::open(['method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-trash-o"></i> DELETE
+                            </button>
+                        </div>
+                    </div>
+                {!! Form::close() !!}
+            </div>
         </div>
-    </div>
+    @endcan
 @endsection
 
 @section('scripts')
-    {{-- ACTIVATE SCRIPT --}}
-    <script>
-        var activateUserModal = $('div#activateUserModal'),
-            activateUserForm  = $('form#activateUserForm'),
-            activateUserUrl   = "{{ route('auth::foundation.users.activate', [':id']) }}";
+    @can('auth.users.update')
+        {{-- ACTIVATE SCRIPT --}}
+        <script>
+            var activateUserModal = $('div#activateUserModal'),
+                activateUserForm  = $('form#activateUserForm'),
+                activateUserUrl   = "{{ route('auth::foundation.users.activate', [':id']) }}";
 
-        $('a[href="#activateUserModal"]').click(function (event) {
-            event.preventDefault();
-            var enabled      = $(this).data('user-status') === 'enabled',
-                modalMessage = 'Are you sure you want to ' + (enabled ? '<span class="label label-inverse">disable</span>' : '<span class="label label-success">activate</span>') + ' this user : <strong>:username</strong> ?';
+            $('a[href="#activateUserModal"]').click(function (event) {
+                event.preventDefault();
+                var enabled      = $(this).data('user-status') === 'enabled',
+                    modalMessage = 'Are you sure you want to ' + (enabled ? '<span class="label label-inverse">disable</span>' : '<span class="label label-success">activate</span>') + ' this user : <strong>:username</strong> ?';
 
-            activateUserForm.attr('action', activateUserUrl.replace(':id', $(this).data('user-id')));
-            activateUserModal.find('.modal-title').text((enabled ? 'Disable' : 'Activate') + ' User');
-            activateUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
-            if (enabled) {
-                activateUserForm.find('button#activateBtn').hide();
-                activateUserForm.find('button#disableBtn').show();
-            }
-            else {
-                activateUserForm.find('button#activateBtn').show();
-                activateUserForm.find('button#disableBtn').hide();
-            }
-            activateUserModal.modal('show');
-        });
-
-        activateUserModal.on('hidden.bs.modal', function () {
-            activateUserForm.removeAttr('action');
-            activateUserModal.find('.modal-title').text('');
-            $(this).find('.modal-body p').html('');
-
-            activateUserForm.find('button[type="submit"]').hide();
-        });
-
-        activateUserForm.submit(function (event) {
-            event.preventDefault();
-            var submitBtn = $(this).find('button[type="submit"]');
-                submitBtn.button('loading');
-
-            $.ajax({
-                url:      $(this).attr('action'),
-                type:     $(this).attr('method'),
-                dataType: 'json',
-                data:     $(this).serialize(),
-                success: function(data) {
-                    if (data.status === 'success') {
-                        activateUserModal.modal('hide');
-                        location.reload();
-                    }
-                    else {
-                        alert('ERROR ! Check the console !');
-                        console.error(data.message);
-                        submitBtn.button('reset');
-                    }
-                },
-                error: function(xhr) {
-                    alert('AJAX ERROR ! Check the console !');
-                    console.error(xhr);
-                    submitBtn.button('reset');
+                activateUserForm.attr('action', activateUserUrl.replace(':id', $(this).data('user-id')));
+                activateUserModal.find('.modal-title').text((enabled ? 'Disable' : 'Activate') + ' User');
+                activateUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
+                if (enabled) {
+                    activateUserForm.find('button#activateBtn').hide();
+                    activateUserForm.find('button#disableBtn').show();
                 }
+                else {
+                    activateUserForm.find('button#activateBtn').show();
+                    activateUserForm.find('button#disableBtn').hide();
+                }
+                activateUserModal.modal('show');
             });
 
-            return false;
-        });
-    </script>
+            activateUserModal.on('hidden.bs.modal', function () {
+                activateUserForm.removeAttr('action');
+                activateUserModal.find('.modal-title').text('');
+                $(this).find('.modal-body p').html('');
 
-    @if ($trashed)
+                activateUserForm.find('button[type="submit"]').hide();
+            });
+
+            activateUserForm.submit(function (event) {
+                event.preventDefault();
+                var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.button('loading');
+
+                $.ajax({
+                    url:      $(this).attr('action'),
+                    type:     $(this).attr('method'),
+                    dataType: 'json',
+                    data:     $(this).serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            activateUserModal.modal('hide');
+                            location.reload();
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
+                            submitBtn.button('reset');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
+                        submitBtn.button('reset');
+                    }
+                });
+
+                return false;
+            });
+        </script>
+
+        @if ($trashed)
         {{-- RESTORE SCRIPT --}}
         <script>
             var restoreUserModal = $('div#restoreUserModal'),
@@ -308,58 +313,61 @@
                 return false;
             });
         </script>
-    @endif
+        @endif
+    @endcan
 
-    {{-- DELETE SCRIPT --}}
-    <script>
-        var deleteUserModal = $('div#deleteUserModal'),
-            deleteUserForm  = $('form#deleteUserForm'),
-            deleteUserUrl   = "{{ route('auth::foundation.users.delete', [':id']) }}";
+    @can('auth.users.update')
+        {{-- DELETE SCRIPT --}}
+        <script>
+            var deleteUserModal = $('div#deleteUserModal'),
+                deleteUserForm  = $('form#deleteUserForm'),
+                deleteUserUrl   = "{{ route('auth::foundation.users.delete', [':id']) }}";
 
-        $('a[href="#deleteUserModal"]').click(function (event) {
-            event.preventDefault();
-            var modalMessage = 'Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>:username</strong> ?';
+            $('a[href="#deleteUserModal"]').click(function (event) {
+                event.preventDefault();
+                var modalMessage = 'Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>:username</strong> ?';
 
-            deleteUserForm.attr('action', deleteUserUrl.replace(':id', $(this).data('user-id')));
-            deleteUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
+                deleteUserForm.attr('action', deleteUserUrl.replace(':id', $(this).data('user-id')));
+                deleteUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
 
-            deleteUserModal.modal('show');
-        });
-
-        deleteUserModal.on('hidden.bs.modal', function () {
-            deleteUserForm.removeAttr('action');
-            $(this).find('.modal-body p').html('');
-        });
-
-        deleteUserForm.submit(function (event) {
-            event.preventDefault();
-            var submitBtn = $(this).find('button[type="submit"]');
-            submitBtn.button('loading');
-
-            $.ajax({
-                url:      $(this).attr('action'),
-                type:     $(this).attr('method'),
-                dataType: 'json',
-                data:     $(this).serialize(),
-                success: function(data) {
-                    if (data.status === 'success') {
-                        deleteUserModal.modal('hide');
-                        location.reload();
-                    }
-                    else {
-                        alert('ERROR ! Check the console !');
-                        console.error(data.message);
-                        submitBtn.button('reset');
-                    }
-                },
-                error: function(xhr) {
-                    alert('AJAX ERROR ! Check the console !');
-                    console.error(xhr);
-                    submitBtn.button('reset');
-                }
+                deleteUserModal.modal('show');
             });
 
-            return false;
-        });
-    </script>
+            deleteUserModal.on('hidden.bs.modal', function () {
+                deleteUserForm.removeAttr('action');
+                $(this).find('.modal-body p').html('');
+            });
+
+            deleteUserForm.submit(function (event) {
+                event.preventDefault();
+                var submitBtn = $(this).find('button[type="submit"]');
+                submitBtn.button('loading');
+
+                $.ajax({
+                    url:      $(this).attr('action'),
+                    type:     $(this).attr('method'),
+                    dataType: 'json',
+                    data:     $(this).serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            deleteUserModal.modal('hide');
+                            location.reload();
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
+                            submitBtn.button('reset');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
+                        submitBtn.button('reset');
+                    }
+                });
+
+                return false;
+            });
+        </script>
+    @endcan
 @endsection
