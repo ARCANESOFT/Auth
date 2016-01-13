@@ -75,37 +75,48 @@
                 </div>
                 <div class="box-footer text-right">
                     @if ($role->isLocked())
-                        <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
-                            <i class="fa fa-fw fa-pencil"></i> Update
-                        </a>
-                        @if ($role->isActive())
-                            <a href="javascript:void(0);" class="btn btn-xs btn-inverse" disabled="disabled">
-                                <i class="fa fa-fw fa-power-off"></i> Disable
+                        @can('auth.roles.update')
+                            <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
+                                <i class="fa fa-fw fa-pencil"></i> Update
                             </a>
-                        @else
-                            <a href="javascript:void(0);" class="btn btn-xs btn-success" disabled="disabled">
-                                <i class="fa fa-fw fa-power-off"></i> Activate
+
+                            @if ($role->isActive())
+                                <a href="javascript:void(0);" class="btn btn-xs btn-inverse" disabled="disabled">
+                                    <i class="fa fa-fw fa-power-off"></i> Disable
+                                </a>
+                            @else
+                                <a href="javascript:void(0);" class="btn btn-xs btn-success" disabled="disabled">
+                                    <i class="fa fa-fw fa-power-off"></i> Activate
+                                </a>
+                            @endif
+                        @endcan
+
+                        @can('auth.roles.delete')
+                            <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
+                                <i class="fa fa-fw fa-trash-o"></i> Delete
                             </a>
-                        @endif
-                        <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
-                            <i class="fa fa-fw fa-trash-o"></i> Delete
-                        </a>
+                        @endcan
                     @else
-                        <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
-                            <i class="fa fa-fw fa-pencil"></i> Update
-                        </a>
-                        @if ($role->isActive())
-                            <button class="btn btn-xs btn-inverse" data-toggle="modal" data-target="#activateRoleModal">
-                                <i class="fa fa-fw fa-power-off"></i> Disable
+                        @can('auth.roles.update')
+                            <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
+                                <i class="fa fa-fw fa-pencil"></i> Update
+                            </a>
+                            @if ($role->isActive())
+                                <button class="btn btn-xs btn-inverse" data-toggle="modal" data-target="#activateRoleModal">
+                                    <i class="fa fa-fw fa-power-off"></i> Disable
+                                </button>
+                            @else
+                                <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#activateRoleModal">
+                                    <i class="fa fa-fw fa-power-off"></i> Activate
+                                </button>
+                            @endif
+                        @endcan
+
+                        @can('auth.roles.delete')
+                            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteRoleModal">
+                                <i class="fa fa-fw fa-trash-o"></i> Delete
                             </button>
-                        @else
-                            <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#activateRoleModal">
-                                <i class="fa fa-fw fa-power-off"></i> Activate
-                            </button>
-                        @endif
-                        <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteRoleModal">
-                            <i class="fa fa-fw fa-trash-o"></i> Delete
-                        </button>
+                        @endcan
                     @endif
                 </div>
             </div>
@@ -160,12 +171,16 @@
                                                 @endif
                                             </td>
                                             <td class="text-right">
-                                                <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                    <i class="fa fa-fw fa-search"></i>
-                                                </a>
-                                                <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
-                                                    <i class="fa fa-fw fa-pencil"></i>
-                                                </a>
+                                                @can('auth.users.show')
+                                                    <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                                        <i class="fa fa-fw fa-search"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('auth.users.update')
+                                                    <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
+                                                        <i class="fa fa-fw fa-pencil"></i>
+                                                    </a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -206,9 +221,11 @@
                                             <td>{{ $permission->name }}</td>
                                             <td>{{ $permission->description }}</td>
                                             <td class="text-right">
-                                                <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                    <i class="fa fa-fw fa-search"></i>
-                                                </a>
+                                                @can('auth.permissions.show')
+                                                    <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                                        <i class="fa fa-fw fa-search"></i>
+                                                    </a>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach
@@ -227,141 +244,149 @@
         </div>
     </div>
 
-    {{-- ACTIVATE MODAL --}}
-    <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
-        <div class="modal-dialog" role="document">
-            {!! Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="activateRoleModalLabel">
-                            {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        @if ($role->isActive())
-                            <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                        @else
-                            <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        @if ($role->isActive())
-                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-power-off"></i> Disable
+    @can('auth.roles.update')
+        {{-- ACTIVATE MODAL --}}
+        <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
+            <div class="modal-dialog" role="document">
+                {!! Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
-                        @else
-                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-power-off"></i> Activate
-                            </button>
-                        @endif
+                            <h4 class="modal-title" id="activateRoleModalLabel">
+                                {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            @if ($role->isActive())
+                                <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                            @else
+                                <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            @if ($role->isActive())
+                                <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
+                                    <i class="fa fa-fw fa-power-off"></i> Disable
+                                </button>
+                            @else
+                                <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
+                                    <i class="fa fa-fw fa-power-off"></i> Activate
+                                </button>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            {!! Form::close() !!}
+                {!! Form::close() !!}
+            </div>
         </div>
-    </div>
+    @endcan
 
-    {{-- DELETE MODAL --}}
-    <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
-        <div class="modal-dialog" role="document">
-            {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+    @can('auth.roles.delete')
+        {{-- DELETE MODAL --}}
+        <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
+            <div class="modal-dialog" role="document">
+                {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-trash-o"></i> DELETE
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> DELETE
-                        </button>
-                    </div>
-                </div>
-            {!! Form::close() !!}
+                {!! Form::close() !!}
+            </div>
         </div>
-    </div>
+    @endcan
 @endsection
 
 @section('scripts')
-    {{-- ACTIVATE SCRIPT --}}
-    <script>
-        var activateRoleModal = $('div#activateRoleModal'),
-            activateRoleForm  = $('form#activateRoleForm');
+    @can('auth.roles.update')
+        {{-- ACTIVATE SCRIPT --}}
+        <script>
+            var activateRoleModal = $('div#activateRoleModal'),
+                activateRoleForm  = $('form#activateRoleForm');
 
-        activateRoleForm.submit(function (event) {
-            event.preventDefault();
-            var submitBtn = $(this).find('button[type="submit"]');
-                submitBtn.button('loading');
+            activateRoleForm.submit(function (event) {
+                event.preventDefault();
+                var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.button('loading');
 
-            $.ajax({
-                url:      $(this).attr('action'),
-                type:     $(this).attr('method'),
-                dataType: 'json',
-                data:     $(this).serialize(),
-                success: function(data) {
-                    if (data.status === 'success') {
-                        activateRoleModal.modal('hide');
-                        location.reload();
-                    }
-                    else {
-                        alert('ERROR ! Check the console !');
-                        console.error(data.message);
+                $.ajax({
+                    url:      $(this).attr('action'),
+                    type:     $(this).attr('method'),
+                    dataType: 'json',
+                    data:     $(this).serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            activateRoleModal.modal('hide');
+                            location.reload();
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
+                            submitBtn.button('reset');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
                         submitBtn.button('reset');
                     }
-                },
-                error: function(xhr) {
-                    alert('AJAX ERROR ! Check the console !');
-                    console.error(xhr);
-                    submitBtn.button('reset');
-                }
+                });
+
+                return false;
             });
+        </script>
+    @endcan
 
-            return false;
-        });
-    </script>
+    @can('auth.roles.delete')
+        {{-- DELETE SCRIPT --}}
+        <script>
+            var deleteRoleModal = $('div#deleteRoleModal'),
+                deleteRoleForm  = $('form#deleteRoleForm');
 
-    {{-- DELETE SCRIPT --}}
-    <script>
-        var deleteRoleModal = $('div#deleteRoleModal'),
-            deleteRoleForm  = $('form#deleteRoleForm');
+            deleteRoleForm.submit(function (event) {
+                event.preventDefault();
+                var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.button('loading');
 
-        deleteRoleForm.submit(function (event) {
-            event.preventDefault();
-            var submitBtn = $(this).find('button[type="submit"]');
-                submitBtn.button('loading');
-
-            $.ajax({
-                url:      $(this).attr('action'),
-                type:     $(this).attr('method'),
-                dataType: 'json',
-                data:     $(this).serialize(),
-                success: function(data) {
-                    if (data.status === 'success') {
-                        deleteRoleModal.modal('hide');
-                        location.replace("{{ route('auth::foundation.roles.index') }}");
-                    }
-                    else {
-                        alert('ERROR ! Check the console !');
-                        console.error(data.message);
+                $.ajax({
+                    url:      $(this).attr('action'),
+                    type:     $(this).attr('method'),
+                    dataType: 'json',
+                    data:     $(this).serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            deleteRoleModal.modal('hide');
+                            location.replace("{{ route('auth::foundation.roles.index') }}");
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
+                            submitBtn.button('reset');
+                        }
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
                         submitBtn.button('reset');
                     }
-                },
-                error: function(xhr) {
-                    alert('AJAX ERROR ! Check the console !');
-                    console.error(xhr);
-                    submitBtn.button('reset');
-                }
-            });
+                });
 
-            return false;
-        });
-    </script>
+                return false;
+            });
+        </script>
+    @endcan
 @endsection
