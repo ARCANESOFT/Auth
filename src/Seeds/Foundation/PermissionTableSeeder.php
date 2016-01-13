@@ -29,7 +29,8 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'permissions' => array_merge(
                     $this->getUsersSeeds(),
                     $this->getRolesSeeds(),
-                    $this->getPermissionsSeeds()
+                    $this->getPermissionsSeeds(),
+                    $this->getOtherSeeds()
                 ),
             ],
         ]);
@@ -53,7 +54,7 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'slug'        => 'auth.users.list',
             ],[
                 'name'        => 'Users - View a user',
-                'description' => "Allow to view a user's details.",
+                'description' => 'Allow to view a user\'s details.',
                 'slug'        => 'auth.users.show',
             ],[
                 'name'        => 'Users - Add/Create a user',
@@ -85,7 +86,7 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'slug'        => 'auth.roles.list',
             ],[
                 'name'        => 'Roles - View a role',
-                'description' => "Allow to view the role's details.",
+                'description' => 'Allow to view the role\'s details.',
                 'slug'        => 'auth.roles.show',
             ],[
                 'name'        => 'Roles - Add/Create a role',
@@ -117,9 +118,29 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'slug'        => 'auth.permissions.list',
             ],[
                 'name'        => 'Permissions - View a permission',
-                'description' => "Allow to view the permission's details.",
+                'description' => 'Allow to view the permission\'s details.',
                 'slug'        => 'auth.permissions.show',
+            ],[
+                'name'        => 'Permissions - Update a permission',
+                'description' => 'Allow to update a permission.',
+                'slug'        => 'auth.permissions.update',
             ],
+        ];
+    }
+
+    /**
+     * Get the other permissions seeds for auth module.
+     *
+     * @return array
+     */
+    private function getOtherSeeds()
+    {
+        return [
+            [
+                'name'        => 'Dashboard - View the dashboard stats',
+                'description' => 'Allow to view a auth stats.',
+                'slug'        => 'auth.dashboard.stats',
+            ]
         ];
     }
 }
