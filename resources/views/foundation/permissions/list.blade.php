@@ -61,9 +61,11 @@
                                 </span>
                             </td>
                             <td class="text-right">
-                                <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                    <i class="fa fa-fw fa-search"></i>
-                                </a>
+                                @can('auth.permissions.show')
+                                    <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                        <i class="fa fa-fw fa-search"></i>
+                                    </a>
+                                @endcan
                             </td>
                         </tr>
                         @endforeach
