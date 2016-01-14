@@ -24,8 +24,6 @@ class PermissionsRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
-
         $this->group([
             'prefix'    => 'permissions',
             'as'        => 'permissions.',

@@ -22,8 +22,6 @@ class ReminderRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
-
         $this->group([
             'prefix'    => 'password',
             'as'        => 'password.'

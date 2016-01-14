@@ -45,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Define the routes for the application.
      *
-     * @param  Router $router
+     * @param  \Illuminate\Routing\Router  $router
      */
     public function map(Router $router)
     {
@@ -66,17 +66,17 @@ class RouteServiceProvider extends ServiceProvider
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
         ];
 
-        $router->group($attributes, function ($router) {
-            (new Routes\Front\AuthenticateRoutes)->map($router);
-            (new Routes\Front\RegisterRoutes)->map($router);
-            (new Routes\Front\ReminderRoutes)->map($router);
+        $router->group($attributes, function (Router $router) {
+            Routes\Front\AuthenticateRoutes::register($router);
+            Routes\Front\RegisterRoutes::register($router);
+            Routes\Front\ReminderRoutes::register($router);
         });
 
         $router->group(array_merge($attributes, [
             'prefix' => 'api',
             'as'     => $attributes['as'] . 'api.',
-        ]), function ($router) {
-            (new Routes\Front\ApiRoutes)->map($router);
+        ]), function (Router $router) {
+            Routes\Front\ApiRoutes::register($router);
         });
     }
 
@@ -93,24 +93,24 @@ class RouteServiceProvider extends ServiceProvider
         ]);
 
         $router->group($attributes, function (Router $router) {
-            (new Routes\Foundation\ProfileRoutes)->map($router);
+            Routes\Foundation\ProfileRoutes::register($router);
         });
 
         $router->group(array_merge(
             $attributes,
             ['prefix' => $this->getFoundationAuthPrefix()]
         ), function (Router $router) {
-            (new Routes\Foundation\StatsRoutes)->map($router);
-            (new Routes\Foundation\UsersRoutes)->map($router);
-            (new Routes\Foundation\RolesRoutes)->map($router);
-            (new Routes\Foundation\PermissionsRoutes)->map($router);
+            Routes\Foundation\StatsRoutes::register($router);
+            Routes\Foundation\UsersRoutes::register($router);
+            Routes\Foundation\RolesRoutes::register($router);
+            Routes\Foundation\PermissionsRoutes::register($router);
         });
 
         $router->group(array_merge(
             $attributes,
             ['prefix' => $this->getFoundationAuthPrefix()]
         ), function (Router $router) {
-            (new Routes\Foundation\ApiRoutes)->map($router);
+            Routes\Foundation\ApiRoutes::register($router);
         });
     }
 }

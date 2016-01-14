@@ -22,8 +22,6 @@ class AuthenticateRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
-
         $this->group([
             'prefix' => 'login',
             'as'     => 'login.',

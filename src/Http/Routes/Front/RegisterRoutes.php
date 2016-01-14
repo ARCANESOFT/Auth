@@ -22,8 +22,6 @@ class RegisterRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
-
         $this->group([
             'prefix' => 'register',
             'as'     => 'register.',

@@ -22,6 +22,6 @@ class ApiRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
+        //
     }
 }

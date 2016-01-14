@@ -23,8 +23,6 @@ class UsersRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        parent::map($router);
-
         $this->group([
             'prefix'    => 'users',
             'as'        => 'users.',
