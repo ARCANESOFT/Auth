@@ -1,8 +1,9 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
+use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;
+use Arcanesoft\Auth\Policies;
 use Arcanesoft\Contracts\Auth\Models\User;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 /**
  * Class     AuthorizationServiceProvider
@@ -55,25 +56,10 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     private function registerUsersPolicies(GateContract $gate)
     {
-        $gate->define('auth.users.list', function (User $user) {
-            return $user->may('auth.users.list');
-        });
-
-        $gate->define('auth.users.show', function (User $user) {
-            return $user->may('auth.users.show');
-        });
-
-        $gate->define('auth.users.create', function (User $user) {
-            return $user->may('auth.users.create');
-        });
-
-        $gate->define('auth.users.update', function (User $user) {
-            return $user->may('auth.users.update');
-        });
-
-        $gate->define('auth.users.delete', function (User $user) {
-            return $user->may('auth.users.delete');
-        });
+        $this->defineMany($gate,
+            Policies\UsersPolicy::class,
+            Policies\UsersPolicy::getPolicies()
+        );
     }
 
     /**
@@ -83,25 +69,10 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     private function registerRolesPolicies(GateContract $gate)
     {
-        $gate->define('auth.roles.list', function (User $user) {
-            return $user->may('auth.roles.list');
-        });
-
-        $gate->define('auth.roles.show', function (User $user) {
-            return $user->may('auth.roles.show');
-        });
-
-        $gate->define('auth.roles.create', function (User $user) {
-            return $user->may('auth.roles.create');
-        });
-
-        $gate->define('auth.roles.update', function (User $user) {
-            return $user->may('auth.roles.update');
-        });
-
-        $gate->define('auth.roles.delete', function (User $user) {
-            return $user->may('auth.roles.delete');
-        });
+        $this->defineMany($gate,
+            Policies\RolesPolicy::class,
+            Policies\RolesPolicy::getPolicies()
+        );
     }
 
     /**
@@ -111,17 +82,10 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     private function registerPermissionsPolicies(GateContract $gate)
     {
-        $gate->define('auth.permissions.list', function (User $user) {
-            return $user->may('auth.permissions.list');
-        });
-
-        $gate->define('auth.permissions.show', function (User $user) {
-            return $user->may('auth.permissions.show');
-        });
-
-        $gate->define('auth.permissions.update', function (User $user) {
-            return $user->may('auth.permissions.update');
-        });
+        $this->defineMany($gate,
+            Policies\PermissionsPolicy::class,
+            Policies\PermissionsPolicy::getPolicies()
+        );
     }
 
     /**
