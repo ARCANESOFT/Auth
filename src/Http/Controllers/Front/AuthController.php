@@ -71,7 +71,7 @@ class AuthController extends Controller
     /**
      * Handle a registration request for the application.
      *
-     * @param  RegisterUserRequest  $request
+     * @param  \Arcanesoft\Auth\Http\Requests\Front\RegisterUserRequest  $request
      *
      * @return \Illuminate\Http\Response
      */
@@ -109,11 +109,11 @@ class AuthController extends Controller
     /**
      * Create a member account.
      *
-     * @param  RegisterUserRequest  $request
+     * @param  \Arcanesoft\Auth\Http\Requests\Front\RegisterUserRequest  $request
      *
      * @return bool
      */
-    private function createMember(RegisterUserRequest $request)
+    protected function createMember(RegisterUserRequest $request)
     {
         $user = new User($request->all());
 

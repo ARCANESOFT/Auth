@@ -40,6 +40,11 @@ class ApiController extends Controller
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if the user is authenticated.
+     *
+     * @return array
+     */
     public function check()
     {
         self::onlyAjax();
