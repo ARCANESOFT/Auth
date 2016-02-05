@@ -29,31 +29,35 @@ class PermissionsRoutes extends RouteRegister
             'as'        => 'permissions.',
         ], function () {
             $this->get('/', [
-                'as'   => 'index', // auth::foundation.permissions.index
+                'as'   => 'index',         // auth::foundation.permissions.index
                 'uses' => 'PermissionsController@index',
             ]);
 
             $this->get('group/{perms_group_id}', [
-                'as'   => 'group', // auth::foundation.permissions.group
+                'as'   => 'group',         // auth::foundation.permissions.group
                 'uses' => 'PermissionsController@group',
             ]);
 
-            $this->get('{permission_id}/show', [
-                'as'   => 'show',  // auth::foundation.permissions.show
-                'uses' => 'PermissionsController@show',
-            ]);
+            $this->group([
+                'prefix' => '{permission_id}'
+            ], function () {
+                $this->get('show', [
+                    'as'   => 'show',      // auth::foundation.permissions.show
+                    'uses' => 'PermissionsController@show',
+                ]);
 
-            $this->delete('{permission_id}/roles/{role_id}/detach', [
-                'as'   => 'roles.detach',  // auth::foundation.permissions.roles.detach
-                'uses' => 'PermissionsController@detachRole',
-            ]);
+                $this->delete('roles/{role_id}/detach', [
+                    'as'   => 'roles.detach',  // auth::foundation.permissions.roles.detach
+                    'uses' => 'PermissionsController@detachRole',
+                ]);
+            });
         });
 
-        $router->bind('permission_id', function($hashedId) {
+        $this->bind('permission_id', function($hashedId) {
             return Permission::firstHashedOrFail($hashedId);
         });
 
-        $router->bind('perms_group_id', function($hashedId) {
+        $this->bind('perms_group_id', function($hashedId) {
             if (head(hasher()->decode($hashedId)) === 0) {
                 return null;
             }

@@ -52,38 +52,42 @@ class UsersRoutes extends RouteRegister
                 'uses' => 'UsersController@store',
             ]);
 
-            $this->get('{user_id}/show', [
-                'as'   => 'show',          // auth::foundation.users.show
-                'uses' => 'UsersController@show',
-            ]);
+            $this->group([
+                'prefix' => '{user_id}'
+            ], function () {
+                $this->get('show', [
+                    'as'   => 'show',      // auth::foundation.users.show
+                    'uses' => 'UsersController@show',
+                ]);
 
-            $this->get('{user_id}/edit', [
-                'as'   => 'edit',          // auth::foundation.users.edit
-                'uses' => 'UsersController@edit',
-            ]);
+                $this->get('edit', [
+                    'as'   => 'edit',      // auth::foundation.users.edit
+                    'uses' => 'UsersController@edit',
+                ]);
 
-            $this->put('{user_id}/update', [
-                'as'   => 'update',        // auth::foundation.users.update
-                'uses' => 'UsersController@update',
-            ]);
+                $this->put('update', [
+                    'as'   => 'update',    // auth::foundation.users.update
+                    'uses' => 'UsersController@update',
+                ]);
 
-            $this->put('{user_id}/activate', [
-                'as'   => 'activate',      // auth::foundation.users.activate
-                'uses' => 'UsersController@activate',
-            ]);
+                $this->put('activate', [
+                    'as'   => 'activate',  // auth::foundation.users.activate
+                    'uses' => 'UsersController@activate',
+                ]);
 
-            $this->put('{user_id}/restore', [
-                'as'   => 'restore',       // auth::foundation.users.restore
-                'uses' => 'UsersController@restore',
-            ]);
+                $this->put('restore', [
+                    'as'   => 'restore',   // auth::foundation.users.restore
+                    'uses' => 'UsersController@restore',
+                ]);
 
-            $this->delete('{user_id}/delete', [
-                'as'   => 'delete',        // auth::foundation.users.delete
-                'uses' => 'UsersController@delete',
-            ]);
+                $this->delete('delete', [
+                    'as'   => 'delete',    // auth::foundation.users.delete
+                    'uses' => 'UsersController@delete',
+                ]);
+            });
         });
 
-        $router->bind('user_id', function($hashedId) {
+        $this->bind('user_id', function($hashedId) {
             return User::firstHashedOrFail($hashedId);
         });
     }
