@@ -20,7 +20,7 @@ class AuthServiceProvider extends PackageServiceProvider
      *
      * @var string
      */
-    protected $package      = 'auth';
+    protected $package = 'auth';
 
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
@@ -62,10 +62,14 @@ class AuthServiceProvider extends PackageServiceProvider
      */
     public function boot()
     {
-        $this->registerPublishes();
-
         $this->app->register(Providers\RouteServiceProvider::class);
         $this->app->register(Providers\ValidatorServiceProvider::class);
+
+        // Publishes
+        $this->publishConfig();
+        $this->publishViews();
+        $this->publishTranslations();
+        $this->publishSidebarItems();
     }
 
     /**
@@ -78,37 +82,5 @@ class AuthServiceProvider extends PackageServiceProvider
         return [
             //
         ];
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register publishes.
-     */
-    private function registerPublishes()
-    {
-        // Config
-        $this->publishes([
-            $this->getConfigFile() => config_path("{$this->vendor}/{$this->package}.php"),
-        ], 'config');
-
-        // Views
-        $viewsPath = $this->getBasePath() . '/resources/views';
-        $this->loadViewsFrom($viewsPath, 'auth');
-        $this->publishes([
-            $viewsPath => base_path('resources/views/vendor/auth'),
-        ], 'views');
-
-        // Translations
-        $translationsPath = $this->getBasePath() . '/resources/lang';
-        $this->loadTranslationsFrom($translationsPath, 'auth');
-        $this->publishes([
-            $translationsPath => base_path('resources/lang/vendor/auth'),
-        ], 'lang');
-
-        // Sidebar items
-        $this->publishSidebarItems();
     }
 }
