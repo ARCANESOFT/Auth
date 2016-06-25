@@ -58,11 +58,11 @@ class PackagesServiceProvider extends ServiceProvider
     private function configLaravelAuthPackage()
     {
         /** @var  \Illuminate\Contracts\Config\Repository  $config */
-        $config      = $this->app['config'];
-        $authConfigs = $config->get('arcanesoft.auth');
+        $config = $this->config();
 
-        $config->set('auth.model', \Arcanesoft\Auth\Models\User::class);
-        $config->set('laravel-auth', array_except($authConfigs, ['route', 'hasher']));
+        $config->set('auth.model',   $config->get('arcanesoft.auth.users.model', \Arcanesoft\Auth\Models\User::class));
+        $config->set('auth.table',   $config->get('arcanesoft.auth.users.table', 'users'));
+        $config->set('laravel-auth', array_except($config->get('arcanesoft.auth'), ['route', 'hasher']));
     }
 
     /**
@@ -70,8 +70,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function rebindModels()
     {
-        /** @var  \Illuminate\Contracts\Config\Repository  $config */
-        $config   = $this->app['config'];
+        $config   = $this->config();
         $bindings = [
             [
                 'abstract' => \Arcanesoft\Contracts\Auth\Models\User::class,
@@ -91,5 +90,19 @@ class PackagesServiceProvider extends ServiceProvider
         foreach ($bindings as $binding) {
             $this->bind($binding['abstract'], $binding['concrete']);
         }
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the config repository instance.
+     *
+     * @return \Illuminate\Contracts\Config\Repository
+     */
+    protected function config()
+    {
+        return $this->app['config'];
     }
 }

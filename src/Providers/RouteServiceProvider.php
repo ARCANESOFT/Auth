@@ -3,6 +3,7 @@
 use Arcanesoft\Auth\Http\Routes;
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Illuminate\Contracts\Routing\Registrar as Router;
+use Illuminate\Support\Arr;
 
 /**
  * Class     RouteServiceProvider
@@ -60,11 +61,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapPublicRoutes(Router $router)
     {
-        $attributes = [
+        $configs = $this->config()->get('arcanesoft.auth.authentication.public-routes');
+
+        if ( ! Arr::get($configs, 'enabled', false)) return;
+
+        $attributes = Arr::get($configs, 'attributes', [
             'prefix'    => 'auth',
             'as'        => 'auth::',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
-        ];
+        ]);
 
         $router->group($attributes, function (Router $router) {
             Routes\Front\AuthenticateRoutes::register($router);
