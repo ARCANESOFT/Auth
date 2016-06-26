@@ -2,6 +2,7 @@
 
 use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
+use Illuminate\Support\Arr;
 
 /**
  * Class     ReminderRoutes
@@ -22,10 +23,14 @@ class ReminderRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
+        $configs = config('arcanesoft.auth.authentication.reminder');
+
+        if ( ! Arr::get($configs, 'enabled', false)) return;
+
+        $this->group(Arr::get($configs, 'route.attributes', [
             'prefix'    => 'password',
-            'as'        => 'password.'
-        ], function () {
+            'as'        => 'password.',
+        ]), function () {
             $this->group([
                 'prefix' => 'email',
                 'as'     => 'email.',

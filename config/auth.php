@@ -22,6 +22,28 @@ return [
                 'namespace' => 'App\\Http\\Controllers\\Auth',
             ],
         ],
+
+        'register' => [
+            'enabled' => true,
+
+            'route' => [
+                'attributes' => [
+                    'prefix' => 'register',
+                    'as'     => 'register.',
+                ],
+            ],
+        ],
+
+        'reminder' => [
+            'enabled' => true,
+
+            'route' => [
+                'attributes' => [
+                    'prefix' => 'password',
+                    'as'     => 'password.',
+                ],
+            ],
+        ],
     ],
 
     /* ------------------------------------------------------------------------------------------------

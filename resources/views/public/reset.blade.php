@@ -21,7 +21,9 @@
 
             <div class="form-info">
                 {!! link_to_route('auth::login.get', 'You\'ve remembered your password? Sign in', [], ['class' => 'btn btn-info btn-block']) !!}
-                {!! link_to_route('auth::register.get', 'Don\'t have an account? Sign up', [], ['class' => 'btn btn-primary btn-block']) !!}
+                @if (config('arcanesoft.auth.authentication.register.enabled', true))
+                    {!! link_to_route('auth::register.get', 'Don\'t have an account? Sign up', [], ['class' => 'btn btn-primary btn-block']) !!}
+                @endif
             </div>
         </div>
     </div>
