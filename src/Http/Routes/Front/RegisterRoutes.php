@@ -2,6 +2,7 @@
 
 use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
+use Illuminate\Support\Arr;
 
 /**
  * Class     RegisterRoutes
@@ -22,10 +23,14 @@ class RegisterRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
+        $configs = config('arcanesoft.auth.authentication.register');
+
+        if ( ! Arr::get($configs, 'enabled', false)) return;
+
+        $this->group(Arr::get($configs, 'route.attributes', [
             'prefix' => 'register',
             'as'     => 'register.',
-        ], function () {
+        ]), function () {
             $this->get('/', [
                 'as'   => 'get',     // auth::register.get
                 'uses' => 'AuthController@getRegister',
