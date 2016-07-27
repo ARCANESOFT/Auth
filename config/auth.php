@@ -19,7 +19,7 @@ return [
             'attributes' => [
                 'prefix'    => 'auth',
                 'as'        => 'auth::',
-                'namespace' => 'App\\Http\\Controllers\\Auth',
+                'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
             ],
         ],
 
