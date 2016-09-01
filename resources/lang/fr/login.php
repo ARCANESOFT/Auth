@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'heading'  => 'Bienvenu!',
+    'heading'  => 'Bienvenue!',
     'remember' => 'Se souvenir de moi',
     'submit'   => 'Se connecter',
     'links'    => [

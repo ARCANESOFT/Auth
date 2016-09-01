@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'heading' => 'Bienvenu!',
+    'heading' => 'Bienvenue!',
     'submit'  => 'S\'inscrire',
     'links'   => [
         'login' => 'Avez-vous déjà un compte ? Connectez-vous',
