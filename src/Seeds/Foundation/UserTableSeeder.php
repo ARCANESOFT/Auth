@@ -36,8 +36,7 @@ class UserTableSeeder extends Seeder
     private function seedAdminUser()
     {
         /** @var Role $adminRole */
-        $adminRole = Role::where('slug', 'administrator')->first();
-
+        $adminRole = Role::admins()->first();
         $adminUser = new User([
             'username'   => 'admin',
             'first_name' => 'Super',

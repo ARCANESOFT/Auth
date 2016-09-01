@@ -95,6 +95,6 @@ class User extends BaseUserModel
      */
     public function isAdmin()
     {
-        return parent::isAdmin() || $this->is('administrator');
+        return parent::isAdmin() || $this->hasRoleSlug(Role::ADMINISTRATOR);
     }
 }

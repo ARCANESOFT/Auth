@@ -1,15 +1,54 @@
 <?php namespace Arcanesoft\Auth\Models;
 
 use Arcanedev\LaravelAuth\Models\Role as BaseRoleModel;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class     Role
  *
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder  admins()
+ * @method static \Illuminate\Database\Eloquent\Builder  members()
  */
 class Role extends BaseRoleModel
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Constants
+     | ------------------------------------------------------------------------------------------------
+     */
+    const ADMINISTRATOR = 'administrator';
+    const MEMBER        = 'member';
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Scopes
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Scope only admin roles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeAdmins(Builder $query)
+    {
+        return $query->where('slug', Role::ADMINISTRATOR);
+    }
+
+    /**
+     * Scope only admin roles.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeMembers(Builder $query)
+    {
+        return $query->where('slug', Role::MEMBER);
+    }
+
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------

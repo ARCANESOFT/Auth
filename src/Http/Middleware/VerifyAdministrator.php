@@ -54,9 +54,7 @@ class VerifyAdministrator
             /** @var \Arcanedev\LaravelAuth\Models\User $user */
             $user = $this->auth->user();
 
-            if ($user->isAdmin()) {
-                return $next($request);
-            }
+            if ($user->isAdmin()) return $next($request);
         }
 
         return response('Unauthorized.', 401);
