@@ -13,7 +13,7 @@
 
                         {{ Form::open(['route' => 'auth::password.email', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'POST']) }}
                             <div class="form-group{{ $errors->first('email', ' has-error') }}">
-                                {{ Form::label('email', 'E-Mail Address', ['class' => 'col-md-4 control-label']) }}
+                                {{ Form::label('email', trans('auth::users.email'), ['class' => 'col-md-4 control-label']) }}
                                 <div class="col-md-6">
                                     {{ Form::email('email', old('email'), ['class' => 'form-control', 'required']) }}
                                     @if ($errors->has('email'))

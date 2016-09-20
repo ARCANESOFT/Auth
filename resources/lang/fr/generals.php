@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'login'    => 'Se connecter',
     'profile'  => 'Profile',
-    'sign-out' => 'Déconnecter',
+    'login'    => 'Se connecter',
+    'register' => 'S\'inscrire',
+    'logout'   => 'Déconnecter',
 ];

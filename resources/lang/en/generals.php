@@ -3,5 +3,6 @@
 return [
     'profile'  => 'Profile',
     'login'    => 'Login',
-    'sign-out' => 'Sign out',
+    'register' => 'Register',
+    'logout'   => 'Logout',
 ];
