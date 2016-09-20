@@ -1,11 +1,11 @@
 <?php
 
 return [
-    'heading'  => 'Welcome Back!',
-    'remember' => 'Remember Me',
-    'submit'   => 'Sign in',
-    'links'    => [
+    'heading'     => 'Login',
+    'remember-me' => 'Remember Me',
+    'submit'      => 'Login',
+    'links'       => [
         'register' => 'Don\'t have an account ? Sign up',
-        'reset'    => 'Have you forgotten your password?',
+        'forget'   => 'Forgot Your Password?',
     ],
 ];

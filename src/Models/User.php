@@ -1,6 +1,8 @@
 <?php namespace Arcanesoft\Auth\Models;
 
 use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
+use Arcanesoft\Auth\Notifications\Users\ResetPassword as ResetPasswordNotification;
+use Illuminate\Notifications\Notifiable;
 
 /**
  * Class     User
@@ -12,6 +14,12 @@ use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
  */
 class User extends BaseUserModel
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use Notifiable;
+
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
@@ -82,6 +90,20 @@ class User extends BaseUserModel
         return self::withTrashed()
             ->where('id', $id)
             ->firstOrFail();
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Notification Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 
     /* ------------------------------------------------------------------------------------------------

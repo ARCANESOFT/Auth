@@ -1,33 +1,31 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
 use Arcanesoft\Auth\Bases\Controller;
-use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 /**
- * Class     PasswordController
+ * Class     ForgotPasswordController
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Front
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PasswordController extends Controller
+class ForgotPasswordController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    use ResetsPasswords;
+    use SendsPasswordResetEmails;
 
     /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Create a new password controller instance.
+     * Create a new controller instance.
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->middleware('guest');
     }
 
@@ -40,8 +38,8 @@ class PasswordController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getEmail()
+    public function showLinkRequestForm()
     {
-        return view('auth::public.reset');
+        return view('auth::public.passwords.email');
     }
 }

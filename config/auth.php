@@ -14,34 +14,37 @@ return [
      | ------------------------------------------------------------------------------------------------
      */
     'authentication' => [
-        'public-routes' => [
-            'enabled'    => true,
-            'attributes' => [
-                'prefix'    => 'auth',
-                'as'        => 'auth::',
-                'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
-            ],
+        'enabled' => [
+            'login-logout' => true,
+            'register'     => true,
+            'password'     => true,
         ],
 
-        'register' => [
-            'enabled' => true,
-
-            'route' => [
-                'attributes' => [
-                    'prefix' => 'register',
-                    'as'     => 'register.',
-                ],
+        'routes' => [
+            'global' => [
+                'prefix'     => 'auth',
+                'as'         => 'auth::',
+                'middleware' => 'web',
+                'namespace'  => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
             ],
-        ],
 
-        'reminder' => [
-            'enabled' => true,
+            'login' => [
+                'prefix' => 'login',
+                'as'     => 'login.',
+            ],
 
-            'route' => [
-                'attributes' => [
-                    'prefix' => 'password',
-                    'as'     => 'password.',
-                ],
+            'logout' => [
+                'prefix' => 'logout',
+            ],
+
+            'register' => [
+                'prefix' => 'register',
+                'as'     => 'register.',
+            ],
+
+            'password' => [
+                'prefix' => 'password',
+                'as'     => 'password.',
             ],
         ],
     ],
