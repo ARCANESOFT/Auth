@@ -2,7 +2,6 @@
 
 use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
-use Illuminate\Support\Arr;
 
 /**
  * Class     RegisterRoutes
@@ -23,28 +22,40 @@ class RegisterRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $configs = config('arcanesoft.auth.authentication.register');
+        if ($this->isEnabled()) {
+            $this->group($this->getRouteAttribute(), function () {
+                $this->get('/', [
+                    'as'   => 'get',     // auth::register.get
+                    'uses' => 'RegisterController@showRegistrationForm',
+                ]);
 
-        if ( ! Arr::get($configs, 'enabled', false)) return;
+                $this->post('/', [
+                    'as'   => 'post',    // auth::register.post
+                    'uses' => 'RegisterController@register',
+                ]);
 
-        $this->group(Arr::get($configs, 'route.attributes', [
+                $this->get('confirm/{code}', [
+                    'as'   => 'confirm', // auth::register.confirm
+                    'uses' => 'RegisterController@confirm',
+                ]);
+            });
+        }
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    protected function isEnabled()
+    {
+        return config('arcanesoft.auth.authentication.enabled.register', false);
+    }
+
+    protected function getRouteAttribute()
+    {
+        return array_merge([
             'prefix' => 'register',
             'as'     => 'register.',
-        ]), function () {
-            $this->get('/', [
-                'as'   => 'get',     // auth::register.get
-                'uses' => 'AuthController@getRegister',
-            ]);
-
-            $this->post('/', [
-                'as'   => 'post',    // auth::register.post
-                'uses' => 'AuthController@postRegister',
-            ]);
-
-            $this->get('confirm/{code}', [
-                'as'   => 'confirm', // auth::register.confirm
-                'uses' => 'AuthController@getConfirm',
-            ]);
-        });
+        ], config('arcanesoft.auth.authentication.routes.register', []));
     }
 }

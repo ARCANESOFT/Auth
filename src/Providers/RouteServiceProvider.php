@@ -61,20 +61,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapPublicRoutes(Router $router)
     {
-        $configs = $this->config()->get('arcanesoft.auth.authentication.public-routes');
-
-        if ( ! Arr::get($configs, 'enabled', false)) return;
-
-        $attributes = Arr::get($configs, 'attributes', [
+        $configs    = $this->config()->get('arcanesoft.auth.authentication');
+        $attributes = Arr::get($configs, 'routes.global', [
             'prefix'    => 'auth',
             'as'        => 'auth::',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
         ]);
 
         $router->group($attributes, function (Router $router) {
-            Routes\Front\AuthenticateRoutes::register($router);
+            Routes\Front\AuthenticationRoutes::register($router);
             Routes\Front\RegisterRoutes::register($router);
-            Routes\Front\ReminderRoutes::register($router);
+            Routes\Front\PasswordResetRoutes::register($router);
         });
 
         $router->group(array_merge($attributes, [
