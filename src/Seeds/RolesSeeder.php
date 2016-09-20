@@ -62,10 +62,11 @@ abstract class RolesSeeder extends Seeder
      */
     protected function syncAdminRole()
     {
-        /** @var Role $admin */
-        $admin = Role::where('slug', 'administrator')->first();
-        $ids   = Permission::all()->lists('id')->toArray();
+        /** @var \Arcanesoft\Auth\Models\Role $admin */
+        $admin = Role::admins()->first();
 
-        $admin->permissions()->sync($ids);
+        $admin->permissions()->sync(
+            Permission::all()->pluck('id')->toArray()
+        );
     }
 }
