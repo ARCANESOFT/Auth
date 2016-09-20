@@ -5,12 +5,10 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading">Reset Password</div>
+                    <div class="panel-heading">{{ trans('auth::password.heading') }}</div>
                     <div class="panel-body">
                         @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
+                            <div class="alert alert-success">{{ session('status') }}</div>
                         @endif
 
                         {{ Form::open(['route' => 'auth::password.email', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'POST']) }}
@@ -28,7 +26,7 @@
 
                             <div class="form-group">
                                 <div class="col-md-6 col-md-offset-4">
-                                    {{ Form::button('Send Password Reset Link', ['type' => 'submit', 'class' => 'btn btn-primary']) }}
+                                    {{ Form::button(trans('auth::password.submit'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
                                 </div>
                             </div>
                         {{ Form::close() }}
