@@ -21,7 +21,7 @@ class Permission extends BasePermissionModel
      */
     public function getHashedIdAttribute()
     {
-        return hasher()->encode($this->id);
+        return self::hasher()->encode($this->id);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -39,7 +39,7 @@ class Permission extends BasePermissionModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = head(hasher()->decode($hashedId));
+        $id = self::hasher()->decode($hashedId);
 
         return self::where('id', $id)->firstOrFail();
     }
@@ -66,5 +66,19 @@ class Permission extends BasePermissionModel
     public function hasGroup()
     {
         return $this->group_id !== 0;
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the hasher.
+     *
+     * @return \Arcanedev\Hasher\Contracts\HashManager
+     */
+    private static function hasher()
+    {
+        return hasher();
     }
 }
