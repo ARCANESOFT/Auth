@@ -1,10 +1,12 @@
 <?php
 
+use Arcanesoft\Auth\Models\Role;
+
 return [
     'title'       => 'Authorization',
     'name'        => 'auth',
     'icon'        => 'fa fa-fw fa-key',
-    'roles'       => ['administrator'],
+    'roles'       => [Role::ADMINISTRATOR],
     'permissions' => [],
     'children'    => [
         [
@@ -12,7 +14,7 @@ return [
             'name'        => 'auth-dashboard',
             'route'       => 'auth::foundation.dashboard',
             'icon'        => 'fa fa-fw fa-bar-chart',
-            'roles'       => ['administrator'],
+            'roles'       => [Role::ADMINISTRATOR],
             'permissions' => ['auth.dashboard.stats'],
         ],
         [
@@ -20,7 +22,7 @@ return [
             'name'        => 'auth-users',
             'route'       => 'auth::foundation.users.index',
             'icon'        => 'fa fa-fw fa-users',
-            'roles'       => ['administrator'],
+            'roles'       => [Role::ADMINISTRATOR],
             'permissions' => ['auth.users.list'],
         ],
         [
@@ -28,7 +30,7 @@ return [
             'name'        => 'auth-roles',
             'route'       => 'auth::foundation.roles.index',
             'icon'        => 'fa fa-fw fa-lock',
-            'roles'       => ['administrator'],
+            'roles'       => [Role::ADMINISTRATOR],
             'permissions' => ['auth.roles.list'],
         ],
         [
@@ -36,7 +38,7 @@ return [
             'name'        => 'auth-permissions',
             'route'       => 'auth::foundation.permissions.index',
             'icon'        => 'fa fa-fw fa-check-circle',
-            'roles'       => ['administrator'],
+            'roles'       => [Role::ADMINISTRATOR],
             'permissions' => ['auth.permissions.list'],
         ],
     ],
