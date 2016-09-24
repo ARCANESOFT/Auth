@@ -27,7 +27,7 @@ class RoleTableSeeder extends RolesSeeder
             ],
             [
                 'name'        => 'Moderator',
-                'description' => 'The moderator role.',
+                'description' => 'The system moderator role.',
                 'is_locked'   => true,
             ],
             [
