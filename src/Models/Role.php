@@ -19,6 +19,7 @@ class Role extends BaseRoleModel
      | ------------------------------------------------------------------------------------------------
      */
     const ADMINISTRATOR = 'administrator';
+    const MODERATOR     = 'moderator';
     const MEMBER        = 'member';
 
     /* ------------------------------------------------------------------------------------------------
@@ -26,7 +27,7 @@ class Role extends BaseRoleModel
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Scope only admin roles.
+     * Scope only with administrator role.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *
@@ -38,7 +39,19 @@ class Role extends BaseRoleModel
     }
 
     /**
-     * Scope only admin roles.
+     * Scope only with moderator role.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeModerator(Builder $query)
+    {
+        return $query->where('slug', Role::MODERATOR);
+    }
+
+    /**
+     * Scope only with member role.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      *

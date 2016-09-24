@@ -1,8 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models;
 
 use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
-use Arcanesoft\Auth\Notifications\Users\ResetPassword as ResetPasswordNotification;
-use Illuminate\Notifications\Notifiable;
 
 /**
  * Class     User
@@ -14,12 +12,6 @@ use Illuminate\Notifications\Notifiable;
  */
 class User extends BaseUserModel
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Traits
-     | ------------------------------------------------------------------------------------------------
-     */
-    use Notifiable;
-
     /* ------------------------------------------------------------------------------------------------
      |  Getters & Setters
      | ------------------------------------------------------------------------------------------------
@@ -93,20 +85,6 @@ class User extends BaseUserModel
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Notification Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     */
-    public function sendPasswordResetNotification($token)
-    {
-        $this->notify(new ResetPasswordNotification($token));
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Check Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -118,5 +96,25 @@ class User extends BaseUserModel
     public function isAdmin()
     {
         return parent::isAdmin() || $this->hasRoleSlug(Role::ADMINISTRATOR);
+    }
+
+    /**
+     * Check if user is a moderator.
+     *
+     * @return bool
+     */
+    public function isModerator()
+    {
+        return $this->hasRoleSlug(Role::MODERATOR);
+    }
+
+    /**
+     * Check if user is a member.
+     *
+     * @return bool
+     */
+    public function isMember()
+    {
+        return $this->hasRoleSlug(Role::MEMBER);
     }
 }
