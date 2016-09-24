@@ -4,6 +4,7 @@ use Arcanesoft\Auth\Bases\Seeder;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 /**
  * Class     RolesSeeder
@@ -47,7 +48,7 @@ abstract class RolesSeeder extends Seeder
         $now = Carbon::now();
 
         foreach ($roles as $key => $role) {
-            $roles[$key]['slug']       = str_slug($role['name']);
+            $roles[$key]['slug']       = Str::slug($role['name'], config('arcanesoft.auth.slug-separator', '.'));
             $roles[$key]['is_active']  = isset($role['is_active']) ? $role['is_active'] : true;
             $roles[$key]['is_locked']  = isset($role['is_locked']) ? $role['is_locked'] : true;
             $roles[$key]['created_at'] = $now;
@@ -62,10 +63,10 @@ abstract class RolesSeeder extends Seeder
      */
     protected function syncAdminRole()
     {
-        /** @var Role $admin */
-        $admin = Role::where('slug', 'administrator')->first();
-        $ids   = Permission::all()->lists('id')->toArray();
-
-        $admin->permissions()->sync($ids);
+        /** @var  \Arcanesoft\Auth\Models\Role  $adminRole */
+        $adminRole = Role::admin()->first();
+        $adminRole->permissions()->sync(
+            Permission::all()->lists('id')->toArray()
+        );
     }
 }

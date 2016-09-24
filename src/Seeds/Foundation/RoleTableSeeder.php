@@ -24,11 +24,17 @@ class RoleTableSeeder extends RolesSeeder
                 'name'        => 'Administrator',
                 'description' => 'The system administrator role.',
                 'is_locked'   => true,
-            ],[
+            ],
+            [
+                'name'        => 'Moderator',
+                'description' => 'The system moderator role.',
+                'is_locked'   => true,
+            ],
+            [
                 'name'        => 'Member',
                 'description' => 'The member role.',
                 'is_locked'   => true,
-            ]
+            ],
         ]);
     }
 }
