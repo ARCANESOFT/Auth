@@ -35,7 +35,7 @@ class UserTableSeeder extends Seeder
      */
     private function seedAdminUser()
     {
-        /** @var Role $adminRole */
+        /** @var  \Arcanesoft\Auth\Models\Role  $adminRole */
         $adminRole = Role::admins()->first();
         $adminUser = new User([
             'username'   => 'admin',
