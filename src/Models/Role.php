@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
- * @method static \Illuminate\Database\Eloquent\Builder  admins()
- * @method static \Illuminate\Database\Eloquent\Builder  members()
+ * @method static \Illuminate\Database\Eloquent\Builder  admin()
+ * @method static \Illuminate\Database\Eloquent\Builder  moderator()
+ * @method static \Illuminate\Database\Eloquent\Builder  member()
  */
 class Role extends BaseRoleModel
 {
@@ -33,7 +34,7 @@ class Role extends BaseRoleModel
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeAdmins(Builder $query)
+    public function scopeAdmin(Builder $query)
     {
         return $query->where('slug', Role::ADMINISTRATOR);
     }
@@ -57,7 +58,7 @@ class Role extends BaseRoleModel
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeMembers(Builder $query)
+    public function scopeMember(Builder $query)
     {
         return $query->where('slug', Role::MEMBER);
     }
@@ -73,7 +74,7 @@ class Role extends BaseRoleModel
      */
     public function getHashedIdAttribute()
     {
-        return hasher()->encode($this->id);
+        return self::hasher()->encode($this->id);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -91,7 +92,7 @@ class Role extends BaseRoleModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = head(hasher()->decode($hashedId));
+        $id = self::hasher()->decode($hashedId);
 
         return self::where('id', $id)->firstOrFail();
     }
@@ -104,5 +105,19 @@ class Role extends BaseRoleModel
     public function makeSlugName($value)
     {
         return $this->slugify($value);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the hasher.
+     *
+     * @return \Arcanedev\Hasher\Contracts\HashManager
+     */
+    protected static function hasher()
+    {
+        return hasher();
     }
 }

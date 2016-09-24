@@ -23,7 +23,7 @@ class User extends BaseUserModel
      */
     public function getHashedIdAttribute()
     {
-        return hasher()->encode($this->id);
+        return self::hasher()->encode($this->id);
     }
 
     /**
@@ -33,7 +33,7 @@ class User extends BaseUserModel
      */
     public function getFullNameAttribute()
     {
-        $fullName = trim($this->first_name . ' ' . $this->last_name);
+        $fullName = trim("{$this->first_name} {$this->last_name}");
 
         return empty($fullName) ? $this->username : $fullName;
     }
@@ -77,11 +77,9 @@ class User extends BaseUserModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = head(hasher()->decode($hashedId));
+        $id = self::hasher()->decode($hashedId);
 
-        return self::withTrashed()
-            ->where('id', $id)
-            ->firstOrFail();
+        return self::withTrashed()->where('id', $id)->firstOrFail();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -116,5 +114,19 @@ class User extends BaseUserModel
     public function isMember()
     {
         return $this->hasRoleSlug(Role::MEMBER);
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the hasher.
+     *
+     * @return \Arcanedev\Hasher\Contracts\HashManager
+     */
+    protected static function hasher()
+    {
+        return hasher();
     }
 }
