@@ -3,6 +3,7 @@
 use Arcanedev\Gravatar\GravatarServiceProvider;
 use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
 use Arcanedev\Support\ServiceProvider;
+use Illuminate\Support\Arr;
 
 /**
  * Class     PackagesServiceProvider
@@ -62,7 +63,7 @@ class PackagesServiceProvider extends ServiceProvider
 
         $config->set('auth.model',   $config->get('arcanesoft.auth.users.model', \Arcanesoft\Auth\Models\User::class));
         $config->set('auth.table',   $config->get('arcanesoft.auth.users.table', 'users'));
-        $config->set('laravel-auth', array_except($config->get('arcanesoft.auth'), ['route', 'hasher']));
+        $config->set('laravel-auth', Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher']));
     }
 
     /**

@@ -48,7 +48,7 @@ abstract class RolesSeeder extends Seeder
         $now = Carbon::now();
 
         foreach ($roles as $key => $role) {
-            $roles[$key]['slug']       = Str::slug($role['name'], config('arcanesoft.auth.slug-separator', '.'));
+            $roles[$key]['slug']       = $this->slugify($role['name']);
             $roles[$key]['is_active']  = isset($role['is_active']) ? $role['is_active'] : true;
             $roles[$key]['is_locked']  = isset($role['is_locked']) ? $role['is_locked'] : true;
             $roles[$key]['created_at'] = $now;
@@ -68,5 +68,17 @@ abstract class RolesSeeder extends Seeder
         $admin->permissions()->sync(
             Permission::all()->pluck('id')->toArray()
         );
+    }
+
+    /**
+     * Slugify the value.
+     *
+     * @param  string  $value
+     *
+     * @return string
+     */
+    protected function slugify($value)
+    {
+        return Str::slug($value, config('arcanesoft.auth.roles.slug-separator', '-'));
     }
 }
