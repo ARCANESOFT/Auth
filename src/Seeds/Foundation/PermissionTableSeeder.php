@@ -150,7 +150,7 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'name'        => 'Dashboard - View the dashboard stats',
                 'description' => 'Allow to view a auth stats.',
                 'slug'        => 'auth.dashboard.stats',
-            ]
+            ],
         ];
     }
 }
