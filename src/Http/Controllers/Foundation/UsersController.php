@@ -3,6 +3,7 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
+use Arcanesoft\Auth\Policies\UsersPolicy;
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Arcanesoft\Contracts\Auth\Models\User;
 use Log;
@@ -60,7 +61,7 @@ class UsersController extends FoundationController
      */
     public function index($trashed = false)
     {
-        $this->authorize('auth.users.list');
+        $this->authorize(UsersPolicy::PERMISSION_LIST);
 
         $users = $this->user->with('roles');
 
@@ -95,7 +96,7 @@ class UsersController extends FoundationController
      */
     public function listByRole(Role $role, $trashed = false)
     {
-        $this->authorize('auth.users.list');
+        $this->authorize(UsersPolicy::PERMISSION_LIST);
 
         $users = $role->users()->with('roles')->paginate(30);
 
@@ -115,7 +116,7 @@ class UsersController extends FoundationController
      */
     public function create(Role $role)
     {
-        $this->authorize('auth.users.create');
+        $this->authorize(UsersPolicy::PERMISSION_CREATE);
 
         $roles = $role->all();
 
@@ -136,7 +137,7 @@ class UsersController extends FoundationController
      */
     public function store(CreateUserRequest $request, User $user)
     {
-        $this->authorize('auth.users.create');
+        $this->authorize(UsersPolicy::PERMISSION_CREATE);
 
         $data = $request->only([
             'username', 'email', 'first_name', 'last_name', 'password'
@@ -162,7 +163,7 @@ class UsersController extends FoundationController
      */
     public function show(User $user)
     {
-        $this->authorize('auth.users.show');
+        $this->authorize(UsersPolicy::PERMISSION_SHOW);
 
         $user->load(['roles', 'roles.permissions']);
 
@@ -183,7 +184,7 @@ class UsersController extends FoundationController
      */
     public function edit(User $user, Role $role)
     {
-        $this->authorize('auth.users.update');
+        $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         $user->load(['roles', 'roles.permissions']);
         $roles = $role->all();
@@ -205,7 +206,7 @@ class UsersController extends FoundationController
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $this->authorize('auth.users.update');
+        $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         $inputs = ['username', 'email', 'first_name', 'last_name'];
 
@@ -235,7 +236,7 @@ class UsersController extends FoundationController
     public function activate(User $user)
     {
         self::onlyAjax();
-        $this->authorize('auth.users.update');
+        $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         try {
             if ($user->isActive()) {
@@ -277,7 +278,7 @@ class UsersController extends FoundationController
     public function restore(User $user)
     {
         self::onlyAjax();
-        $this->authorize('auth.users.update');
+        $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         try {
             $user->restore();
@@ -311,7 +312,7 @@ class UsersController extends FoundationController
     public function delete(User $user)
     {
         self::onlyAjax();
-        $this->authorize('auth.users.delete');
+        $this->authorize(UsersPolicy::PERMISSION_DELETE);
 
         try {
             if ($user->trashed()) {

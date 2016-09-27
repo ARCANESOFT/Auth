@@ -2,7 +2,6 @@
 
 use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;
 use Arcanesoft\Auth\Policies;
-use Arcanesoft\Contracts\Auth\Models\User;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 /**
@@ -39,16 +38,29 @@ class AuthorizationServiceProvider extends ServiceProvider
     {
         parent::registerPolicies($gate);
 
+        $this->registerDashboardPolicies($gate);
         $this->registerUsersPolicies($gate);
         $this->registerRolesPolicies($gate);
         $this->registerPermissionsPolicies($gate);
-        $this->registerOtherPolicies($gate);
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Policies
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register dashboard authorizations.
+     *
+     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
+     */
+    private function registerDashboardPolicies($gate)
+    {
+        $this->defineMany($gate,
+            Policies\DashboardPolicy::class,
+            Policies\DashboardPolicy::getPolicies()
+        );
+    }
+
     /**
      * Register users authorizations.
      *
@@ -86,17 +98,5 @@ class AuthorizationServiceProvider extends ServiceProvider
             Policies\PermissionsPolicy::class,
             Policies\PermissionsPolicy::getPolicies()
         );
-    }
-
-    /**
-     * Register other authorizations for auth module.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
-     */
-    private function registerOtherPolicies(GateContract $gate)
-    {
-        $gate->define('auth.dashboard.stats', function (User $user) {
-            return $user->may('auth.dashboard.stats');
-        });
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use Arcanesoft\Auth\Models\Role;
+use Arcanesoft\Auth\Policies;
 
 return [
     'title'       => 'Authorization',
@@ -15,7 +16,9 @@ return [
             'route'       => 'auth::foundation.dashboard',
             'icon'        => 'fa fa-fw fa-bar-chart',
             'roles'       => [Role::ADMINISTRATOR],
-            'permissions' => ['auth.dashboard.stats'],
+            'permissions' => [
+                Policies\DashboardPolicy::PERMISSION_STATS
+            ],
         ],
         [
             'title'       => 'Users',
@@ -23,7 +26,9 @@ return [
             'route'       => 'auth::foundation.users.index',
             'icon'        => 'fa fa-fw fa-users',
             'roles'       => [Role::ADMINISTRATOR],
-            'permissions' => ['auth.users.list'],
+            'permissions' => [
+                Policies\UsersPolicy::PERMISSION_LIST,
+            ],
         ],
         [
             'title'       => 'Roles',
@@ -31,7 +36,9 @@ return [
             'route'       => 'auth::foundation.roles.index',
             'icon'        => 'fa fa-fw fa-lock',
             'roles'       => [Role::ADMINISTRATOR],
-            'permissions' => ['auth.roles.list'],
+            'permissions' => [
+                Policies\RolesPolicy::PERMISSION_LIST,
+            ],
         ],
         [
             'title'       => 'Permissions',
@@ -39,7 +46,9 @@ return [
             'route'       => 'auth::foundation.permissions.index',
             'icon'        => 'fa fa-fw fa-check-circle',
             'roles'       => [Role::ADMINISTRATOR],
-            'permissions' => ['auth.permissions.list'],
+            'permissions' => [
+                Policies\PermissionsPolicy::PERMISSION_LIST,
+            ],
         ],
     ],
 ];

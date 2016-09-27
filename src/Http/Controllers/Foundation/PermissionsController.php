@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
+use Arcanesoft\Auth\Policies\PermissionsPolicy;
 use Arcanesoft\Contracts\Auth\Models\Permission;
 use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
 use Arcanesoft\Contracts\Auth\Models\Role;
@@ -49,7 +50,7 @@ class PermissionsController extends FoundationController
      */
     public function index()
     {
-        $this->authorize('auth.permissions.list');
+        $this->authorize(PermissionsPolicy::PERMISSION_LIST);
 
         $permissions = $this->permission->with('group', 'roles')
             ->orderBy('group_id')
@@ -64,7 +65,7 @@ class PermissionsController extends FoundationController
 
     public function group(PermissionsGroup $group)
     {
-        $this->authorize('auth.permissions.list');
+        $this->authorize(PermissionsPolicy::PERMISSION_LIST);
 
         $groupId = $group->id ? $group->id : 0;
 
@@ -84,7 +85,7 @@ class PermissionsController extends FoundationController
 
     public function show(Permission $permission)
     {
-        $this->authorize('auth.permissions.show');
+        $this->authorize(PermissionsPolicy::PERMISSION_SHOW);
 
         $permission->load(['roles', 'roles.users']);
 
@@ -98,7 +99,7 @@ class PermissionsController extends FoundationController
     public function detachRole(Permission $permission, Role $role)
     {
         self::onlyAjax();
-        $this->authorize('auth.permissions.update');
+        $this->authorize(PermissionsPolicy::PERMISSION_UPDATE);
 
         try {
             $permission->detachRole($role, false);

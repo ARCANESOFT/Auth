@@ -62,7 +62,7 @@ class ProfileController extends FoundationController
         $user->password = $request->get('password');
         $user->save();
 
-        $message = "The password was updated successfully !";
+        $message = 'The password was updated successfully !';
         Log::info($message, $user->toArray());
         $this->notifySuccess($message, 'Password Updated !');
 
