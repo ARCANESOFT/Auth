@@ -3,6 +3,7 @@
 use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
+use Arcanesoft\Auth\Policies\RolesPolicy;
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Log;
 
@@ -50,7 +51,7 @@ class RolesController extends FoundationController
      */
     public function index()
     {
-        $this->authorize('auth.roles.list');
+        $this->authorize(RolesPolicy::PERMISSION_LIST);
 
         $roles = $this->role->with('users', 'permissions')->paginate(30);
 
@@ -63,7 +64,7 @@ class RolesController extends FoundationController
 
     public function create()
     {
-        $this->authorize('auth.roles.create');
+        $this->authorize(RolesPolicy::PERMISSION_CREATE);
 
         $title = 'Create a role';
         $this->setTitle($title);
@@ -74,7 +75,7 @@ class RolesController extends FoundationController
 
     public function store(CreateRoleRequest $request)
     {
-        $this->authorize('auth.roles.create');
+        $this->authorize(RolesPolicy::PERMISSION_CREATE);
 
         $this->role->fill($request->only('name', 'slug', 'description'));
         $this->role->save();
@@ -92,7 +93,7 @@ class RolesController extends FoundationController
 
     public function show(Role $role)
     {
-        $this->authorize('auth.roles.show');
+        $this->authorize(RolesPolicy::PERMISSION_SHOW);
 
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions', 'permissions.group']);
@@ -106,7 +107,7 @@ class RolesController extends FoundationController
 
     public function edit(Role $role)
     {
-        $this->authorize('auth.roles.update');
+        $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions']);
@@ -120,7 +121,7 @@ class RolesController extends FoundationController
 
     public function update(UpdateRoleRequest $request, Role $role)
     {
-        $this->authorize('auth.roles.update');
+        $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->fill($request->only('name', 'slug', 'description'));
@@ -141,7 +142,7 @@ class RolesController extends FoundationController
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         self::onlyAjax();
-        $this->authorize('auth.roles.update');
+        $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         try {
             if ($role->isActive()) {
@@ -178,7 +179,7 @@ class RolesController extends FoundationController
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         self::onlyAjax();
-        $this->authorize('auth.roles.delete');
+        $this->authorize(RolesPolicy::PERMISSION_DELETE);
 
         try {
             $role->delete();

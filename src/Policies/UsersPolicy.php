@@ -1,4 +1,5 @@
 <?php namespace Arcanesoft\Auth\Policies;
+
 use Arcanesoft\Contracts\Auth\Models\User;
 
 /**
@@ -7,8 +8,18 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UsersPolicy
+class UsersPolicy extends Policy
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Constants
+     | ------------------------------------------------------------------------------------------------
+     */
+    const PERMISSION_LIST   = 'auth.users.list';
+    const PERMISSION_SHOW   = 'auth.users.show';
+    const PERMISSION_CREATE = 'auth.users.create';
+    const PERMISSION_UPDATE = 'auth.users.update';
+    const PERMISSION_DELETE = 'auth.users.delete';
+
     /* ------------------------------------------------------------------------------------------------
      |  Getters and Setters
      | ------------------------------------------------------------------------------------------------
@@ -21,11 +32,11 @@ class UsersPolicy
     public static function getPolicies()
     {
         return [
-            'listPolicy'   => 'auth.users.list',
-            'showPolicy'   => 'auth.users.show',
-            'createPolicy' => 'auth.users.create',
-            'updatePolicy' => 'auth.users.update',
-            'deletePolicy' => 'auth.users.delete',
+            'listPolicy'   => static::PERMISSION_LIST,
+            'showPolicy'   => static::PERMISSION_SHOW,
+            'createPolicy' => static::PERMISSION_CREATE,
+            'updatePolicy' => static::PERMISSION_UPDATE,
+            'deletePolicy' => static::PERMISSION_DELETE,
         ];
     }
 
@@ -42,7 +53,7 @@ class UsersPolicy
      */
     public function listPolicy(User $user)
     {
-        return $user->may('auth.users.list');
+        return $user->may(static::PERMISSION_LIST);
     }
 
     /**
@@ -54,7 +65,7 @@ class UsersPolicy
      */
     public function showPolicy(User $user)
     {
-        return $user->may('auth.users.show');
+        return $user->may(static::PERMISSION_SHOW);
     }
 
     /**
@@ -66,7 +77,7 @@ class UsersPolicy
      */
     public function createPolicy(User $user)
     {
-        return $user->may('auth.users.create');
+        return $user->may(static::PERMISSION_CREATE);
     }
 
     /**
@@ -78,7 +89,7 @@ class UsersPolicy
      */
     public function updatePolicy(User $user)
     {
-        return $user->may('auth.users.update');
+        return $user->may(static::PERMISSION_UPDATE);
     }
 
     /**
@@ -90,6 +101,6 @@ class UsersPolicy
      */
     public function deletePolicy(User $user)
     {
-        return $user->may('auth.users.delete');
+        return $user->may(static::PERMISSION_DELETE);
     }
 }

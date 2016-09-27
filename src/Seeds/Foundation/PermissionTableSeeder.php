@@ -1,5 +1,9 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
+use Arcanesoft\Auth\Policies\DashboardPolicy;
+use Arcanesoft\Auth\Policies\PermissionsPolicy;
+use Arcanesoft\Auth\Policies\RolesPolicy;
+use Arcanesoft\Auth\Policies\UsersPolicy;
 use Arcanesoft\Auth\Seeds\PermissionsSeeder;
 
 /**
@@ -51,27 +55,27 @@ class PermissionTableSeeder extends PermissionsSeeder
             [
                 'name'        => 'Users - List all users',
                 'description' => 'Allow to list all users.',
-                'slug'        => 'auth.users.list',
+                'slug'        => UsersPolicy::PERMISSION_LIST,
             ],
             [
                 'name'        => 'Users - View a user',
                 'description' => 'Allow to view a user\'s details.',
-                'slug'        => 'auth.users.show',
+                'slug'        => UsersPolicy::PERMISSION_SHOW,
             ],
             [
                 'name'        => 'Users - Add/Create a user',
                 'description' => 'Allow to create a new user.',
-                'slug'        => 'auth.users.create',
+                'slug'        => UsersPolicy::PERMISSION_CREATE,
             ],
             [
                 'name'        => 'Users - Edit/Update a user',
                 'description' => 'Allow to update a user.',
-                'slug'        => 'auth.users.update',
+                'slug'        => UsersPolicy::PERMISSION_UPDATE,
             ],
             [
                 'name'        => 'Users - Delete a user',
                 'description' => 'Allow to delete a user.',
-                'slug'        => 'auth.users.delete',
+                'slug'        => UsersPolicy::PERMISSION_DELETE,
             ],
         ];
     }
@@ -87,27 +91,27 @@ class PermissionTableSeeder extends PermissionsSeeder
             [
                 'name'        => 'Roles - List all roles',
                 'description' => 'Allow to list all roles.',
-                'slug'        => 'auth.roles.list',
+                'slug'        => RolesPolicy::PERMISSION_LIST,
             ],
             [
                 'name'        => 'Roles - View a role',
                 'description' => 'Allow to view the role\'s details.',
-                'slug'        => 'auth.roles.show',
+                'slug'        => RolesPolicy::PERMISSION_SHOW,
             ],
             [
                 'name'        => 'Roles - Add/Create a role',
                 'description' => 'Allow to create a new role.',
-                'slug'        => 'auth.roles.create',
+                'slug'        => RolesPolicy::PERMISSION_CREATE,
             ],
             [
                 'name'        => 'Roles - Edit/Update a role',
                 'description' => 'Allow to update a role.',
-                'slug'        => 'auth.roles.update',
+                'slug'        => RolesPolicy::PERMISSION_UPDATE,
             ],
             [
                 'name'        => 'Roles - Delete a role',
                 'description' => 'Allow to delete a role.',
-                'slug'        => 'auth.roles.delete',
+                'slug'        => RolesPolicy::PERMISSION_DELETE,
             ],
         ];
     }
@@ -123,17 +127,17 @@ class PermissionTableSeeder extends PermissionsSeeder
             [
                 'name'        => 'Permissions - List all permissions',
                 'description' => 'Allow to list all permissions.',
-                'slug'        => 'auth.permissions.list',
+                'slug'        => PermissionsPolicy::PERMISSION_LIST,
             ],
             [
                 'name'        => 'Permissions - View a permission',
                 'description' => 'Allow to view the permission\'s details.',
-                'slug'        => 'auth.permissions.show',
+                'slug'        => PermissionsPolicy::PERMISSION_SHOW,
             ],
             [
                 'name'        => 'Permissions - Update a permission',
                 'description' => 'Allow to update a permission.',
-                'slug'        => 'auth.permissions.update',
+                'slug'        => PermissionsPolicy::PERMISSION_UPDATE,
             ],
         ];
     }
@@ -149,7 +153,7 @@ class PermissionTableSeeder extends PermissionsSeeder
             [
                 'name'        => 'Dashboard - View the dashboard stats',
                 'description' => 'Allow to view a auth stats.',
-                'slug'        => 'auth.dashboard.stats',
+                'slug'        => DashboardPolicy::PERMISSION_STATS,
             ],
         ];
     }

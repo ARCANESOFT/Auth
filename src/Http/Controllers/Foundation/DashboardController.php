@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
 use Arcanesoft\Auth\Bases\FoundationController;
+use Arcanesoft\Auth\Policies\DashboardPolicy;
 
 /**
  * Class     DashboardController
@@ -32,7 +33,7 @@ class DashboardController extends FoundationController
      */
     public function index()
     {
-        $this->authorize('auth.dashboard.stats');
+        $this->authorize(DashboardPolicy::PERMISSION_STATS);
 
         $title = 'Authorization - Dashboard';
         $this->setTitle($title);
