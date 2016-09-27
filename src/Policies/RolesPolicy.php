@@ -8,8 +8,18 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RolesPolicy
+class RolesPolicy extends Policy
 {
+    /* ------------------------------------------------------------------------------------------------
+     |  Constants
+     | ------------------------------------------------------------------------------------------------
+     */
+    const PERMISSION_LIST   = 'auth.roles.list';
+    const PERMISSION_SHOW   = 'auth.roles.show';
+    const PERMISSION_CREATE = 'auth.roles.create';
+    const PERMISSION_UPDATE = 'auth.roles.update';
+    const PERMISSION_DELETE = 'auth.roles.delete';
+
     /* ------------------------------------------------------------------------------------------------
      |  Getters and Setters
      | ------------------------------------------------------------------------------------------------
@@ -22,11 +32,11 @@ class RolesPolicy
     public static function getPolicies()
     {
         return [
-            'listPolicy'   => 'auth.roles.list',
-            'showPolicy'   => 'auth.roles.show',
-            'createPolicy' => 'auth.roles.create',
-            'updatePolicy' => 'auth.roles.update',
-            'deletePolicy' => 'auth.roles.delete',
+            'listPolicy'   => static::PERMISSION_LIST,
+            'showPolicy'   => static::PERMISSION_SHOW,
+            'createPolicy' => static::PERMISSION_CREATE,
+            'updatePolicy' => static::PERMISSION_UPDATE,
+            'deletePolicy' => static::PERMISSION_DELETE,
         ];
     }
 
@@ -43,7 +53,7 @@ class RolesPolicy
      */
     public function listPolicy(User $user)
     {
-        return $user->may('auth.roles.list');
+        return $user->may(static::PERMISSION_LIST);
     }
 
     /**
@@ -55,7 +65,7 @@ class RolesPolicy
      */
     public function showPolicy(User $user)
     {
-        return $user->may('auth.roles.show');
+        return $user->may(static::PERMISSION_SHOW);
     }
 
     /**
@@ -67,7 +77,7 @@ class RolesPolicy
      */
     public function createPolicy(User $user)
     {
-        return $user->may('auth.roles.create');
+        return $user->may(static::PERMISSION_CREATE);
     }
 
     /**
@@ -79,7 +89,7 @@ class RolesPolicy
      */
     public function updatePolicy(User $user)
     {
-        return $user->may('auth.roles.update');
+        return $user->may(static::PERMISSION_UPDATE);
     }
 
     /**
@@ -91,6 +101,6 @@ class RolesPolicy
      */
     public function deletePolicy(User $user)
     {
-        return $user->may('auth.roles.delete');
+        return $user->may(static::PERMISSION_DELETE);
     }
 }
