@@ -27,7 +27,7 @@
                             <tr>
                                 <th>N° Roles</th>
                                 <td>
-                                    <span class="label label-{{ $permission->roles->count() ? 'info' : 'default'}}">
+                                    <span class="label label-{{ $permission->roles->count() ? 'info' : 'default' }}">
                                         {{ $permission->roles->count() }}
                                     </span>
                                 </td>
@@ -71,7 +71,7 @@
                                 <tr>
                                     <th>N° Permissions</th>
                                     <td>
-                                    <span class="label label-{{ $group->permissions->count() ? 'info' : 'default'}}">
+                                    <span class="label label-{{ $group->permissions->count() ? 'info' : 'default' }}">
                                         {{ $group->permissions->count() }}
                                     </span>
                                     </td>
@@ -88,7 +88,7 @@
                         </table>
                     </div>
                     <div class="box-footer">
-                        {!! link_to_route('auth::foundation.permissions.group', 'Show all permissions', [$group->hashed_id], ['class' => 'btn btn-sm btn-default btn-block']) !!}
+                        {{ link_to_route('auth::foundation.permissions.group', 'Show all permissions', [$group->hashed_id], ['class' => 'btn btn-sm btn-default btn-block']) }}
                     </div>
                 </div>
             @else
@@ -111,7 +111,7 @@
                         </table>
                     </div>
                     <div class="box-footer">
-                        {!! link_to_route('auth::foundation.permissions.group', 'Show all permissions', [hasher()->encode(0)], ['class' => 'btn btn-sm btn-default btn-block']) !!}
+                        {{ link_to_route('auth::foundation.permissions.group', 'Show all permissions', [hasher()->encode(0)], ['class' => 'btn btn-sm btn-default btn-block']) }}
                     </div>
                 </div>
             @endif
@@ -140,7 +140,7 @@
                                     </td>
                                     <td>{{ $role->description }}</td>
                                     <td class="text-center">
-                                        <span class="label label-{{ $role->users->count() ? 'info' : 'default'}}">
+                                        <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
                                             {{ $role->users->count() }}
                                         </span>
                                     </td>
@@ -176,7 +176,7 @@
         {{-- DETACH MODAL --}}
         <div id="detachRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="detachRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'DELETE', 'id' => 'detachRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'DELETE', 'id' => 'detachRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -188,13 +188,13 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
                                 <i class="fa fa-fw fa-chain-broken"></i> DETACH
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan

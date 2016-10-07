@@ -8,7 +8,7 @@
             <div class="box box-widget widget-user-2">
                 <div class="widget-user-header bg-blue">
                     <div class="widget-user-image">
-                        {!! Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) !!}
+                        {{ Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
                     </div>
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
                     <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
@@ -58,16 +58,16 @@
                             </tr>
                             <tr>
                                 <th>Created at</th>
-                                <td>{{ $user->created_at }}</td>
+                                <td><small>{{ $user->created_at }}</small></td>
                             </tr>
                             <tr>
                                 <th>Updated at</th>
-                                <td>{{ $user->updated_at }}</td>
+                                <td><small>{{ $user->updated_at }}</small></td>
                             </tr>
                             @if ($user->trashed())
                                 <tr>
                                     <th>Deleted at</th>
-                                    <td>{{ $user->deleted_at }}</td>
+                                    <td><small>{{ $user->deleted_at }}</small></td>
                                 </tr>
                             @endif
                         </tbody>
@@ -161,7 +161,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['route' => ['auth::foundation.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -191,7 +191,7 @@
                             @endif
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
 
@@ -199,7 +199,7 @@
         @if ($user->trashed())
             <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
                 <div class="modal-dialog" role="document">
-                    {!! Form::open(['route' => ['auth::foundation.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                    {{ Form::open(['route' => ['auth::foundation.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -217,7 +217,7 @@
                                 </button>
                             </div>
                         </div>
-                    {!! Form::close() !!}
+                    {{ Form::close() }}
                 </div>
             </div>
         @endif
@@ -227,7 +227,7 @@
         {{-- DELETE MODAL --}}
         <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['route' => ['auth::foundation.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -245,7 +245,7 @@
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan

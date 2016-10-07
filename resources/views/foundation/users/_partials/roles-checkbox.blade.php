@@ -23,7 +23,7 @@
                     @foreach ($roles as $role)
                         <tr>
                             <td>
-                                {!! Form::checkbox('roles[]', $role->id, in_array($role->id, $old)) !!}
+                                {{ Form::checkbox('roles[]', $role->id, in_array($role->id, $old)) }}
                             </td>
                             <td>
                                 {{ $role->name }}

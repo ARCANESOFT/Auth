@@ -53,13 +53,13 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isActive() ? 'success' : 'default'}}">
-                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban'}}"></i>
+                                <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
+                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
                                 </span>
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success'}}">
-                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock'}}"></i>
+                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
+                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
                                 </span>
                             </td>
                             <td class="text-right">
@@ -82,7 +82,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -94,7 +94,7 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
                                 <i class="fa fa-fw fa-power-off"></i> Activate
                             </button>
@@ -103,7 +103,7 @@
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
@@ -112,7 +112,7 @@
         {{-- DELETE MODAL --}}
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -124,13 +124,13 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
                                 <i class="fa fa-fw fa-trash-o"></i> DELETE
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
