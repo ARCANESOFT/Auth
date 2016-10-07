@@ -43,12 +43,9 @@ class RolesComposer extends ViewComposer
      */
     public function composeFilters(View $view)
     {
-        $filters   = [];
-
-        $filters['all'] = link_to_route('auth::foundation.users.index', 'All');
-
+        $filters = [];
         $roles   = $this->cacheResults('auth::roles.filters', function () {
-            return $this->role->has('permissions')->get();
+            return $this->role->has('users')->get();
         });
 
         foreach ($roles as $role) {
