@@ -32,7 +32,7 @@ class ProfileRoutes extends RouteRegister
             ]);
 
             $this->group([
-                'prefix' => '{user_id}/password',
+                'prefix' => '{auth_user}/password',
                 'as'     => 'password.',
             ], function () {
                 $this->put('/', [

@@ -23,6 +23,10 @@ class UsersRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
+        $this->bind('auth_user', function($hashedId) {
+            return User::firstHashedOrFail($hashedId);
+        });
+
         $this->group([
             'prefix'    => 'users',
             'as'        => 'users.',
@@ -37,7 +41,7 @@ class UsersRoutes extends RouteRegister
                 'uses' => 'UsersController@trashList',
             ]);
 
-            $this->get('roles-filter/{role_id}', [
+            $this->get('roles-filter/{auth_role}', [
                 'as'   => 'roles-filter.index',  // auth::foundation.users.roles-filter.index
                 'uses' => 'UsersController@listByRole',
             ]);
@@ -52,9 +56,7 @@ class UsersRoutes extends RouteRegister
                 'uses' => 'UsersController@store',
             ]);
 
-            $this->group([
-                'prefix' => '{user_id}'
-            ], function () {
+            $this->group(['prefix' => '{auth_user}'], function () {
                 $this->get('show', [
                     'as'   => 'show',      // auth::foundation.users.show
                     'uses' => 'UsersController@show',
@@ -85,10 +87,6 @@ class UsersRoutes extends RouteRegister
                     'uses' => 'UsersController@delete',
                 ]);
             });
-        });
-
-        $this->bind('user_id', function($hashedId) {
-            return User::firstHashedOrFail($hashedId);
         });
     }
 }

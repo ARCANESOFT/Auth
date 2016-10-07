@@ -1,33 +1,13 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Roles;
 
-use Arcanesoft\Auth\Bases\FormRequest;
-use Arcanesoft\Auth\Models\Permission;
-use Arcanesoft\Auth\Models\Role;
-
 /**
  * Class     CreateRoleRequest
  *
  * @package  Arcanesoft\Auth\Http\Requests\Backend\Roles
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class CreateRoleRequest extends FormRequest
+class CreateRoleRequest extends RoleFormRequest
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Role validation rules.
-     *
-     * @var array
-     */
-    protected $rules = [
-        'name'        => 'required|min:3',
-        'slug'        => 'required|min:3|unique:roles,slug',
-        'description' => 'required|min:10',
-        'permissions' => 'required|array',
-    ];
-
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
@@ -49,23 +29,8 @@ class CreateRoleRequest extends FormRequest
      */
     public function rules()
     {
-        $rules                 = $this->rules;
-        $rules['permissions'] .= '|in:' . Permission::getIds()->implode(',');
-
-        return $rules;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function all()
-    {
-        $value = empty($this->get('slug'))
-            ? $this->get('name')
-            : $this->get('slug');
-
-        return array_merge(parent::all(), [
-            'slug' => (new Role)->makeSlugName($value)
+        return array_merge(parent::rules(), [
+            'slug' => 'required|min:3|unique:roles,slug',
         ]);
     }
 }

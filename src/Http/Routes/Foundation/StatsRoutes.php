@@ -22,9 +22,7 @@ class StatsRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
-            'prefix'    => 'stats',
-        ], function () {
+        $this->group(['prefix' => 'stats'], function () {
             $this->get('/', [
                 'as'   => 'dashboard', // auth::foundation.dashboard
                 'uses' => 'DashboardController@index',

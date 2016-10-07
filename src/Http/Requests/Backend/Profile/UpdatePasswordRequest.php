@@ -15,17 +15,8 @@ class UpdatePasswordRequest extends FormRequest
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * The Validation rules.
+     * The authenticated user.
      *
-     * @var array
-     */
-    protected $rules = [
-        'old_password'          => 'required|min:8|different:password|user_password',
-        'password'              => 'required|min:8|different:old_password|confirmed',
-        'password_confirmation' => 'required|min:8',
-    ];
-
-    /**
      * @var \Arcanesoft\Contracts\Auth\Models\User $user
      */
     protected $user;
@@ -42,7 +33,7 @@ class UpdatePasswordRequest extends FormRequest
     public function authorize()
     {
         /** @var \Arcanesoft\Contracts\Auth\Models\User $user */
-        $user = $this->route('user_id');
+        $user = $this->route('auth_user');
 
         return $user->id === auth()->user()->id;
     }
@@ -54,7 +45,10 @@ class UpdatePasswordRequest extends FormRequest
      */
     public function rules()
     {
-        return $this->rules;
+        return [
+            'old_password'          => 'required|min:8|different:password|user_password',
+            'password'              => 'required|min:8|different:old_password|confirmed',
+        ];
     }
 
     /**
