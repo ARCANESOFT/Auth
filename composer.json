@@ -18,7 +18,7 @@
     "require": {
         "php":                    ">=5.6",
         "arcanedev/gravatar":     "~1.0",
-        "arcanedev/laravel-auth": "~0.14",
+        "arcanedev/laravel-auth": "~0.15",
         "arcanesoft/core":        "~1.0"
     },
     "require-dev": {

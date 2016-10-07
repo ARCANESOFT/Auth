@@ -45,16 +45,16 @@
                             <tr>
                                 <th>Status</th>
                                 <td>
-                                    <span class="label label-{{ $role->isActive() ? 'success' : 'default'}}">
-                                        <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban'}}"></i>
+                                    <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
+                                        <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
                                     </span>
                                 </td>
                             </tr>
                             <tr>
                                 <th>Locked</th>
                                 <td>
-                                    <span class="label label-{{ $role->isLocked() ? 'danger' : 'success'}}">
-                                        <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock'}}"></i>
+                                    <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
+                                        <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
                                     </span>
                                 </td>
                             </tr>
@@ -149,7 +149,7 @@
                                     @foreach ($role->users as $user)
                                         <tr>
                                             <td class="text-center">
-                                                {!! Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) !!}
+                                                {{ Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
                                             </td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->full_name }}</td>
@@ -248,7 +248,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -266,7 +266,7 @@
                             @endif
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             @if ($role->isActive())
                                 <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
@@ -278,7 +278,7 @@
                             @endif
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
@@ -287,7 +287,7 @@
         {{-- DELETE MODAL --}}
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -299,13 +299,13 @@
                             <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
                                 <i class="fa fa-fw fa-trash-o"></i> DELETE
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan

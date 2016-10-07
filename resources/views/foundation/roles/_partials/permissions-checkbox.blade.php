@@ -23,10 +23,10 @@
                 @foreach ($permissions as $permission)
                     <tr>
                         <td>
-                            {!! Form::checkbox('permissions[]', $permission->id, in_array($permission->id, $old), ['data-permission-group' => $permission->group_id]) !!}
+                            {{ Form::checkbox('permissions[]', $permission->id, in_array($permission->id, $old), ['data-permission-group' => $permission->group_id]) }}
                         </td>
                         <td>
-                            <span class="label label-{{$permission->hasGroup() ? 'primary' : 'default'}} ">
+                            <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }} ">
                                 {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
                             </span>
                         </td>

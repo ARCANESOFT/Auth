@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Auth\Observers;
+<?php namespace Arcanesoft\Auth\Models\Observers;
 
 use Arcanedev\LaravelAuth\Observers\PermissionsGroupObserver as BaseObserver;
 

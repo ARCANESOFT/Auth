@@ -31,6 +31,7 @@
                             Roles <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
+                            <li>{{ link_to_route('auth::foundation.users.index', 'All') }}</li>
                             @foreach($rolesFilters as $filterLink)
                                 <li>{!! $filterLink !!}</li>
                             @endforeach
@@ -54,7 +55,7 @@
                             <th>Email</th>
                             <th>Roles</th>
                             <th class="text-center" style="width: 80px;">Status</th>
-                            <th class="text-right" style="width: 130px;">Actions</th>
+                            <th class="text-right" style="width: 160px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -62,7 +63,7 @@
                             @foreach($users as $user)
                                 <tr>
                                     <td class="text-center">
-                                        {!! Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) !!}
+                                        {{ Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
                                     </td>
                                     <td>{{ $user->username }}</td>
                                     <td>{{ $user->full_name }}</td>
@@ -112,7 +113,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -124,7 +125,7 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
                                 <i class="fa fa-fw fa-power-off"></i> Activate
                             </button>
@@ -133,7 +134,7 @@
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
 
@@ -141,25 +142,25 @@
         @if ($trashed)
             <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
                 <div class="modal-dialog" role="document">
-                    {!! Form::open(['method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                    {{ Form::open(['method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p></p>
+                            </div>
+                            <div class="modal-footer">
+                                {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                                <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
+                                    <i class="fa fa-fw fa-reply"></i> RESTORE
+                                </button>
+                            </div>
                         </div>
-                        <div class="modal-body">
-                            <p></p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-reply"></i> RESTORE
-                            </button>
-                        </div>
-                    </div>
-                    {!! Form::close() !!}
+                    {{ Form::close() }}
                 </div>
             </div>
         @endif
@@ -169,7 +170,7 @@
         {{-- DELETE MODAL --}}
         <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -181,13 +182,13 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
                                 <i class="fa fa-fw fa-trash-o"></i> DELETE
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
@@ -231,7 +232,8 @@
             activateUserForm.submit(function (event) {
                 event.preventDefault();
                 var submitBtn = $(this).find('button[type="submit"]');
-                    submitBtn.button('loading');
+
+                submitBtn.button('loading');
 
                 $.ajax({
                     url:      $(this).attr('action'),
@@ -261,58 +263,58 @@
         </script>
 
         @if ($trashed)
-        {{-- RESTORE SCRIPT --}}
-        <script>
-            var restoreUserModal = $('div#restoreUserModal'),
-                restoreUserForm  = $('form#restoreUserForm'),
-                restoreUserUrl   = "{{ route('auth::foundation.users.restore', [':id']) }}";
+            {{-- RESTORE SCRIPT --}}
+            <script>
+                var restoreUserModal = $('div#restoreUserModal'),
+                    restoreUserForm  = $('form#restoreUserForm'),
+                    restoreUserUrl   = "{{ route('auth::foundation.users.restore', [':id']) }}";
 
-            $('a[href="#restoreUserModal"]').click(function (event) {
-                event.preventDefault();
-                var modalMessage = 'Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>:username</strong> ?';
+                $('a[href="#restoreUserModal"]').click(function (event) {
+                    event.preventDefault();
+                    var modalMessage = 'Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>:username</strong> ?';
 
-                restoreUserForm.attr('action', restoreUserUrl.replace(':id', $(this).data('user-id')));
-                restoreUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
+                    restoreUserForm.attr('action', restoreUserUrl.replace(':id', $(this).data('user-id')));
+                    restoreUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
 
-                restoreUserModal.modal('show');
-            });
-
-            restoreUserModal.on('hidden.bs.modal', function () {
-                restoreUserForm.removeAttr('action');
-                $(this).find('.modal-body p').html('');
-            });
-
-            restoreUserForm.submit(function (event) {
-                event.preventDefault();
-                var submitBtn = $(this).find('button[type="submit"]');
-                    submitBtn.button('loading');
-
-                $.ajax({
-                    url:      $(this).attr('action'),
-                    type:     $(this).attr('method'),
-                    dataType: 'json',
-                    data:     $(this).serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            restoreUserModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        submitBtn.button('reset');
-                    }
+                    restoreUserModal.modal('show');
                 });
 
-                return false;
-            });
-        </script>
+                restoreUserModal.on('hidden.bs.modal', function () {
+                    restoreUserForm.removeAttr('action');
+                    $(this).find('.modal-body p').html('');
+                });
+
+                restoreUserForm.submit(function (event) {
+                    event.preventDefault();
+                    var submitBtn = $(this).find('button[type="submit"]');
+                    submitBtn.button('loading');
+
+                    $.ajax({
+                        url:      $(this).attr('action'),
+                        type:     $(this).attr('method'),
+                        dataType: 'json',
+                        data:     $(this).serialize(),
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                restoreUserModal.modal('hide');
+                                location.reload();
+                            }
+                            else {
+                                alert('ERROR ! Check the console !');
+                                console.error(data.message);
+                                submitBtn.button('reset');
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('AJAX ERROR ! Check the console !');
+                            console.error(xhr);
+                            submitBtn.button('reset');
+                        }
+                    });
+
+                    return false;
+                });
+            </script>
         @endif
     @endcan
 
