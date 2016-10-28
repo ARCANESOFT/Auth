@@ -13,8 +13,6 @@ use Log;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @todo: Adding the authorization checks
  */
 class UsersController extends FoundationController
 {

@@ -36,7 +36,7 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     public function boot(GateContract $gate)
     {
-        parent::registerPolicies($gate);
+        parent::registerPolicies();
 
         $this->registerDashboardPolicies($gate);
         $this->registerUsersPolicies($gate);

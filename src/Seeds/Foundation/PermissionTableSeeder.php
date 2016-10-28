@@ -31,10 +31,10 @@ class PermissionTableSeeder extends PermissionsSeeder
                     'description' => 'Auth permissions group',
                 ],
                 'permissions' => array_merge(
+                    $this->getDashboardSeeds(),
                     $this->getUsersSeeds(),
                     $this->getRolesSeeds(),
-                    $this->getPermissionsSeeds(),
-                    $this->getOtherSeeds()
+                    $this->getPermissionsSeeds()
                 ),
             ],
         ]);
@@ -44,6 +44,22 @@ class PermissionTableSeeder extends PermissionsSeeder
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Get the other permissions seeds for auth module.
+     *
+     * @return array
+     */
+    private function getDashboardSeeds()
+    {
+        return [
+            [
+                'name'        => 'Dashboard - View the dashboard stats',
+                'description' => 'Allow to view a auth stats.',
+                'slug'        => DashboardPolicy::PERMISSION_STATS,
+            ],
+        ];
+    }
+
     /**
      * Get user's permissions seeds.
      *
@@ -138,22 +154,6 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'name'        => 'Permissions - Update a permission',
                 'description' => 'Allow to update a permission.',
                 'slug'        => PermissionsPolicy::PERMISSION_UPDATE,
-            ],
-        ];
-    }
-
-    /**
-     * Get the other permissions seeds for auth module.
-     *
-     * @return array
-     */
-    private function getOtherSeeds()
-    {
-        return [
-            [
-                'name'        => 'Dashboard - View the dashboard stats',
-                'description' => 'Allow to view a auth stats.',
-                'slug'        => DashboardPolicy::PERMISSION_STATS,
             ],
         ];
     }
