@@ -6,7 +6,7 @@
  * @package  Arcanesoft\Auth\Http\Requests\Backend\Users
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class CreateUserRequest extends UserRequest
+class CreateUserRequest extends UserFormRequest
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -29,14 +29,10 @@ class CreateUserRequest extends UserRequest
      */
     public function rules()
     {
-        return [
-            'username'              => 'required|min:3|unique:users,username',
-            'email'                 => 'required|email|unique:users,email',
-            'first_name'            => 'required|min:2',
-            'last_name'             => 'required|min:2',
-            'password'              => 'required|min:8|confirmed',
-            'password_confirmation' => 'required|min:8',
-            'roles'                 => $this->getRolesRule(),
-        ];
+        return array_merge(parent::rules(), [
+            'username' => 'required|min:3|unique:users,username',
+            'email'    => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+        ]);
     }
 }

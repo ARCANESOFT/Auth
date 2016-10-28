@@ -22,19 +22,14 @@ class ProfileRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
-            'prefix'    => 'profile',
-            'as'        => 'profile.',
-        ], function () {
+        $this->group(['prefix' => 'profile', 'as' => 'profile.'], function () {
             $this->get('/', [
                 'as'   => 'index',           // auth::foundation.profile.index
                 'uses' => 'ProfileController@index',
             ]);
 
-            $this->group([
-                'prefix' => '{user_id}/password',
-                'as'     => 'password.',
-            ], function () {
+            // TODO: Remove the user id ??
+            $this->group(['prefix' => '{auth_user}/password', 'as' => 'password.'], function () {
                 $this->put('/', [
                     'as'   => 'update', // auth::foundation.profile.password.update
                     'uses' => 'ProfileController@updatePassword',

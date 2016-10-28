@@ -23,10 +23,11 @@ class RolesRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
-            'prefix'    => 'roles',
-            'as'        => 'roles.',
-        ], function () {
+        $this->bind('auth_role', function($hashedId) {
+            return Role::firstHashedOrFail($hashedId);
+        });
+
+        $this->group(['prefix' => 'roles', 'as' => 'roles.'], function () {
             $this->get('/', [
                 'as'   => 'index',         // auth::foundation.roles.index
                 'uses' => 'RolesController@index',
@@ -42,9 +43,7 @@ class RolesRoutes extends RouteRegister
                 'uses' => 'RolesController@store',
             ]);
 
-            $this->group([
-                'prefix' => '{role_id}'
-            ], function () {
+            $this->group(['prefix' => '{auth_role}'], function () {
                 $this->get('show', [
                     'as'   => 'show',      // auth::foundation.roles.show
                     'uses' => 'RolesController@show',
@@ -70,10 +69,6 @@ class RolesRoutes extends RouteRegister
                     'uses' => 'RolesController@delete',
                 ]);
             });
-        });
-
-        $this->bind('role_id', function($hashedId) {
-            return Role::firstHashedOrFail($hashedId);
         });
     }
 }

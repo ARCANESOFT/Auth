@@ -6,7 +6,7 @@
  * @package  Arcanesoft\Auth\Http\Requests\Backend\Users
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UpdateUserRequest extends UserRequest
+class UpdateUserRequest extends UserFormRequest
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -30,16 +30,13 @@ class UpdateUserRequest extends UserRequest
     public function rules()
     {
         /** @var \Arcanesoft\Contracts\Auth\Models\User  $user */
-        $user = $this->route('user_id');
+        $user = $this->route('auth_user');
 
-        return [
+        return array_merge(parent::rules(), [
             'username'              => "required|min:3|unique:users,username,{$user->id}",
             'email'                 => "required|email|unique:users,email,{$user->id}",
-            'first_name'            => 'required|min:2',
-            'last_name'             => 'required|min:2',
             'password'              => 'required_with:password_confirmation|min:8|confirmed',
-            'password_confirmation' => 'required_with:password|min:8',
-            'roles'                 => $this->getRolesRule(),
-        ];
+            'password_confirmation' => 'required_with:password',
+        ]);
     }
 }

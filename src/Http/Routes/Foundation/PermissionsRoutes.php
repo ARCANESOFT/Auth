@@ -24,45 +24,36 @@ class PermissionsRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
-            'prefix'    => 'permissions',
-            'as'        => 'permissions.',
-        ], function () {
+        $this->bind('auth_permission', function($hashedId) {
+            return Permission::firstHashedOrFail($hashedId);
+        });
+
+        $this->bind('auth_permissions_group', function($hashedId) {
+            return PermissionsGroup::firstHashedOrFail($hashedId);
+        });
+
+        $this->group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
             $this->get('/', [
                 'as'   => 'index',         // auth::foundation.permissions.index
                 'uses' => 'PermissionsController@index',
             ]);
 
-            $this->get('group/{perms_group_id}', [
+            $this->get('group/{auth_permissions_group}', [
                 'as'   => 'group',         // auth::foundation.permissions.group
                 'uses' => 'PermissionsController@group',
             ]);
 
-            $this->group([
-                'prefix' => '{permission_id}'
-            ], function () {
+            $this->group(['prefix' => '{auth_permission}'], function () {
                 $this->get('show', [
                     'as'   => 'show',      // auth::foundation.permissions.show
                     'uses' => 'PermissionsController@show',
                 ]);
 
-                $this->delete('roles/{role_id}/detach', [
+                $this->delete('roles/{auth_role}/detach', [
                     'as'   => 'roles.detach',  // auth::foundation.permissions.roles.detach
                     'uses' => 'PermissionsController@detachRole',
                 ]);
             });
-        });
-
-        $this->bind('permission_id', function($hashedId) {
-            return Permission::firstHashedOrFail($hashedId);
-        });
-
-        $this->bind('perms_group_id', function($hashedId) {
-            if (head(hasher()->decode($hashedId)) === 0) {
-                return null;
-            }
-
-            return PermissionsGroup::firstHashedOrFail($hashedId);
         });
     }
 }
