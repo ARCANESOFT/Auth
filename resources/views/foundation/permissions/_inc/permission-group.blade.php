@@ -9,7 +9,7 @@
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
-                <table class="table table-condensed">
+                <table class="table table-condensed no-margin">
                     <tbody>
                         <tr>
                             <th>Name :</th>
@@ -53,14 +53,14 @@
             <h3 class="box-title">Permissions Group</h3>
         </div>
         <div class="box-body no-padding">
-            <table class="table">
+            <table class="table table-condensed no-margin">
                 <tbody>
                     <tr>
-                        <th>Name</th>
+                        <th>Name :</th>
                         <td><span class="label label-default">Custom</span></td>
                     </tr>
                     <tr>
-                        <th>Description</th>
+                        <th>Description :</th>
                         <td>This permission isn't belonging to any group of permissions.</td>
                     </tr>
                 </tbody>

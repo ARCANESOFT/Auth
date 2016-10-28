@@ -5,13 +5,14 @@
 @section('content')
     <div class="row">
         <div class="col-md-4">
+            {{-- ROLE DETAILS --}}
             <div class="box box-warning">
                 <div class="box-header">
                     <h3 class="box-title">Role details</h3>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed no-margin">
                             <tbody>
                                 <tr>
                                     <th>Name :</th>
@@ -73,8 +74,8 @@
                 </div>
                 <div class="box-footer text-right">
                     @if ($role->isLocked())
-                        @can('auth.roles.update')
-                            <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
+                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
+                            <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled">
                                 <i class="fa fa-fw fa-pencil"></i> Update
                             </a>
 
@@ -89,29 +90,29 @@
                             @endif
                         @endcan
 
-                        @can('auth.roles.delete')
-                            <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled">
+                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
+                            <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </a>
                         @endcan
                     @else
-                        @can('auth.roles.update')
+                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
                             <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i> Update
                             </a>
                             @if ($role->isActive())
-                                <button class="btn btn-xs btn-inverse" data-toggle="modal" data-target="#activateRoleModal">
+                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-xs btn-inverse">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </button>
                             @else
-                                <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#activateRoleModal">
+                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-xs btn-success">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </button>
                             @endif
                         @endcan
 
-                        @can('auth.roles.delete')
-                            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteRoleModal">
+                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
+                            <button data-target="#deleteRoleModal" data-toggle="modal" class="btn btn-xs btn-danger">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </button>
                         @endcan
@@ -133,7 +134,7 @@
                     {{-- USERS --}}
                     <div id="users" class="tab-pane active">
                         <div class="table-responsive">
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensed table-hover no-margin">
                                 <thead>
                                     <tr>
                                         <th style="width: 40px;"></th>
@@ -183,7 +184,7 @@
                                     @else
                                         <tr>
                                             <td colspan="6" class="text-center">
-                                                <span class="label label-default">No user has this role.</span>
+                                                <span class="label label-default">This role has no users.</span>
                                             </td>
                                         </tr>
                                     @endif
@@ -195,7 +196,7 @@
                     {{-- PERMISSIONS --}}
                     <div id="permissions" class="tab-pane no-padding">
                         <div class="table-responsive">
-                            <table class="table table-condensed table-hover">
+                            <table class="table table-condensed table-hover no-margin">
                                 <thead>
                                     <tr>
                                         <th>Group</th>
@@ -220,7 +221,7 @@
                                             <td>{{ $permission->name }}</td>
                                             <td>{{ $permission->description }}</td>
                                             <td class="text-right">
-                                                @can('auth.permissions.show')
+                                                @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
                                                     <a href="{{ route('auth::foundation.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                                         <i class="fa fa-fw fa-search"></i>
                                                     </a>
@@ -231,7 +232,7 @@
                                     @else
                                         <tr>
                                             <td colspan="5" class="text-center">
-                                                <span class="label label-default">No permission belongs to this role.</span>
+                                                <span class="label label-default">This role has no permissions.</span>
                                             </td>
                                         </tr>
                                     @endif
@@ -247,66 +248,66 @@
 
 @section('scripts')
     {{-- ACTIVATE MODAL --}}
-    @can('auth.roles.update')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
                 {{ Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="activateRoleModalLabel">
-                            {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
-                        </h4>
-                    </div>
-                    <div class="modal-body">
-                        @if ($role->isActive())
-                            <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                        @else
-                            <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                        @endif
-                    </div>
-                    <div class="modal-footer">
-                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                        @if ($role->isActive())
-                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-power-off"></i> Disable
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
                             </button>
-                        @else
-                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-power-off"></i> Activate
-                            </button>
-                        @endif
+                            <h4 class="modal-title" id="activateRoleModalLabel">
+                                {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
+                            </h4>
+                        </div>
+                        <div class="modal-body">
+                            @if ($role->isActive())
+                                <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                            @else
+                                <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                            @endif
+                        </div>
+                        <div class="modal-footer">
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                            @if ($role->isActive())
+                                <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
+                                    <i class="fa fa-fw fa-power-off"></i> Disable
+                                </button>
+                            @else
+                                <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
+                                    <i class="fa fa-fw fa-power-off"></i> Activate
+                                </button>
+                            @endif
+                        </div>
                     </div>
-                </div>
                 {{ Form::close() }}
             </div>
         </div>
     @endcan
 
     {{-- DELETE MODAL --}}
-    @can('auth.roles.delete')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
                 {{ Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-trash-o"></i> DELETE
+                            </button>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> DELETE
-                        </button>
-                    </div>
-                </div>
                 {{ Form::close() }}
             </div>
         </div>
@@ -314,8 +315,8 @@
 @endsection
 
 @section('scripts')
-    @can('auth.roles.update')
-        {{-- ACTIVATE SCRIPT --}}
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
+        {{-- ACTIVATE MODAL --}}
         <script>
             var $activateRoleModal = $('div#activateRoleModal'),
                 $activateRoleForm  = $('form#activateRoleForm');
@@ -353,8 +354,8 @@
         </script>
     @endcan
 
-    @can('auth.roles.delete')
-        {{-- DELETE SCRIPT --}}
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
+        {{-- DELETE MODAL --}}
         <script>
             var $deleteRoleModal = $('div#deleteRoleModal'),
                 $deleteRoleForm  = $('form#deleteRoleForm');

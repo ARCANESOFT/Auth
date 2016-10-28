@@ -11,7 +11,7 @@
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed no-margin">
                             <tbody>
                                 <tr>
                                     <th>Name :</th>
@@ -57,7 +57,7 @@
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
                                     <th>Name</th>
@@ -79,19 +79,19 @@
                                         </span>
                                     </td>
                                     <td class="text-right">
-                                        @can('auth.roles.show')
+                                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
                                             <a href="{{ route('auth::foundation.roles.show', [$role->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
                                                 <i class="fa fa-fw fa-search"></i>
                                             </a>
                                         @endcan
 
-                                        @can('auth.roles.update')
+                                        @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_UPDATE)
                                             @if ($role->isLocked())
-                                                <a href="javascript:void(0);" class="btn btn-xs btn-default" data-toggle="tooltip" data-original-title="Detach" disabled="disabled">
+                                                <a href="javascript:void(0);" data-toggle="tooltip" data-original-title="Detach" disabled="disabled" class="btn btn-xs btn-danger">
                                                     <i class="fa fa-fw fa-chain-broken"></i>
                                                 </a>
                                             @else
-                                                <a href="#detachRoleModal" class="btn btn-xs btn-danger" data-toggle="tooltip" data-original-title="Detach" data-role-id="{{ $role->hashed_id }}" data-role-name="{{ $role->name }}">
+                                                <a href="#detachRoleModal" data-role-name="{{ $role->name }}" data-role-id="{{ $role->hashed_id }}" data-toggle="tooltip" data-original-title="Detach" class="btn btn-xs btn-danger">
                                                     <i class="fa fa-fw fa-chain-broken"></i>
                                                 </a>
                                             @endif
@@ -139,7 +139,7 @@
 
 @section('scripts')
     {{-- DETACH ROLE MODAL --}}
-    @can('auth.roles.update')
+    @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_UPDATE)
         <script>
             var $detachRoleModal = $('div#detachRoleModal'),
                 $detachRoleForm  = $('form#detachRoleForm'),

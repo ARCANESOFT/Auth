@@ -60,15 +60,12 @@ class PermissionsGroupsComposer extends ViewComposer
     {
         $filters = collect();
 
-        // All Permission group
-        //----------------------------------
-        $filters->put('all', link_to_route('auth::foundation.permissions.index', 'All'));
-
         // Permission groups
         //----------------------------------
         $groups = $this->cacheResults('permissions-groups.filters', function () {
             return $this->permissionsGroup->has('permissions')->get();
         });
+
         foreach ($groups as $group) {
             /** @var  PermissionsGroup  $group */
             $filters->put($group->slug, link_to_route('auth::foundation.permissions.group', $group->name, [

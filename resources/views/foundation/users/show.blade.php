@@ -5,6 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col-sm-5">
+            {{-- USER DETAILS --}}
             <div class="box box-widget widget-user-2">
                 <div class="widget-user-header bg-blue">
                     <div class="widget-user-image">
@@ -13,9 +14,9 @@
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
                     <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
                 </div>
-                <div class="box-body">
+                <div class="box-body no-padding">
                     <div class="table-responsive">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
                                     <th>Username :</th>
@@ -93,18 +94,18 @@
                             @endif
                         @else
                             @if ($user->isActive())
-                                <button class="btn btn-xs btn-inverse" data-toggle="modal" data-target="#activateUserModal">
+                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-xs btn-inverse">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </button>
                             @else
-                                <button class="btn btn-xs btn-success" data-toggle="modal" data-target="#activateUserModal">
+                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-xs btn-success">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </button>
                             @endif
                         @endif
 
                         @if ($user->trashed())
-                            <button class="btn btn-xs btn-primary" data-toggle="modal" data-target="#restoreUserModal">
+                            <button data-target="#restoreUserModal" data-toggle="modal" class="btn btn-xs btn-primary">
                                 <i class="fa fa-fw fa-reply"></i> Restore
                             </button>
                         @endif
@@ -116,7 +117,7 @@
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </a>
                         @else
-                            <button class="btn btn-xs btn-danger" data-toggle="modal" data-target="#deleteUserModal">
+                            <button data-target="#deleteUserModal" data-toggle="modal" class="btn btn-xs btn-danger">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </button>
                         @endif
@@ -125,13 +126,14 @@
             </div>
         </div>
         <div class="col-sm-7">
+            {{-- ROLES --}}
             <div class="box box-warning">
                 <div class="box-header with-border">
                     <h3 class="box-title">Roles</h3>
                 </div>
-                <div class="box-body">
+                <div class="box-body no-padding">
                     <div class="table-responsive">
-                        <table class="table table-condensed">
+                        <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
                                     <th>Name</th>
