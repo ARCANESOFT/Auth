@@ -8,7 +8,7 @@
             <div class="box box-widget widget-user-2">
                 <div class="widget-user-header bg-blue">
                     <div class="widget-user-image">
-                        {!! Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) !!}
+                        {{ Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
                     </div>
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
                     <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
@@ -17,15 +17,15 @@
                     <table class="table table-condensed">
                         <tbody>
                             <tr>
-                                <th>Username</th>
+                                <th>Username :</th>
                                 <td>{{ $user->username }}</td>
                             </tr>
                             <tr>
-                                <th>Email</th>
+                                <th>Email :</th>
                                 <td>{{ $user->email }}</td>
                             </tr>
                             <tr>
-                                <th>Status</th>
+                                <th>Status :</th>
                                 <td>
                                     @if ($user->isAdmin())
                                         <span class="label label-warning" style="margin-right: 5px;">
@@ -41,11 +41,11 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th>Created at</th>
+                                <th>Created at :</th>
                                 <td><small>{{ $user->created_at }}</small></td>
                             </tr>
                             <tr>
-                                <th>Updated at</th>
+                                <th>Updated at :</th>
                                 <td><small>{{ $user->updated_at }}</small></td>
                             </tr>
                         </tbody>
@@ -64,15 +64,18 @@
                     </li>
                 </ul>
                 <div class="tab-content">
+                    {{-- SETTINGS --}}
                     <div id="settings" class="tab-pane active">
-                        {{-- Settings --}}
+                        {{-- EMPTY --}}
                     </div>
+
+                    {{-- PASSWORD --}}
                     <div id="password" class="tab-pane">
-                        {!! Form::open(['route' => ['auth::foundation.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-horizontal form-loading']) !!}
+                        {{ Form::open(['route' => ['auth::foundation.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-horizontal form-loading']) }}
                             <div class="form-group {{ $errors->has('old_password') ? 'has-error' : '' }}">
-                                {!! Form::label('old_password', 'Old password :', ['class' => 'col-sm-4 control-label']) !!}
+                                {{ Form::label('old_password', 'Old password :', ['class' => 'col-sm-4 control-label']) }}
                                 <div class="col-sm-8">
-                                    {!! Form::password('old_password', ['class' => 'form-control']) !!}
+                                    {{ Form::password('old_password', ['class' => 'form-control']) }}
                                     @if ($errors->has('old_password'))
                                         <span class="text-red">{!! $errors->first('old_password') !!}</span>
                                     @endif
@@ -80,9 +83,9 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-                                {!! Form::label('password', 'New password :', ['class' => 'col-sm-4 control-label']) !!}
+                                {{ Form::label('password', 'New password :', ['class' => 'col-sm-4 control-label']) }}
                                 <div class="col-sm-8">
-                                    {!! Form::password('password', ['class' => 'form-control']) !!}
+                                    {{ Form::password('password', ['class' => 'form-control']) }}
                                     @if ($errors->has('password'))
                                         <span class="text-red">{!! $errors->first('password') !!}</span>
                                     @endif
@@ -90,9 +93,9 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
-                                {!! Form::label('password_confirmation', 'Password Confirmation :', ['class' => 'col-sm-4 control-label']) !!}
+                                {{ Form::label('password_confirmation', 'Password Confirmation :', ['class' => 'col-sm-4 control-label']) }}
                                 <div class="col-sm-8">
-                                    {!! Form::password('password_confirmation', ['class' => 'form-control']) !!}
+                                    {{ Form::password('password_confirmation', ['class' => 'form-control']) }}
                                     @if ($errors->has('password_confirmation'))
                                         <span class="text-red">{!! $errors->first('password_confirmation') !!}</span>
                                     @endif
@@ -101,10 +104,10 @@
 
                             <div class="form-group text-right">
                                 <div class="col-xs-12">
-                                    {!! Form::button('Update password', ['type' => 'submit', 'class' => 'btn btn-sm btn-warning']) !!}
+                                    {{ Form::button('Update password', ['type' => 'submit', 'class' => 'btn btn-sm btn-warning']) }}
                                 </div>
                             </div>
-                        {!! Form::close() !!}
+                        {{ Form::close() }}
                     </div>
                 </div>
             </div>

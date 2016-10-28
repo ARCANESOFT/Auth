@@ -21,21 +21,22 @@
             </div>
         </div>
         <div class="box-body no-padding">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Slug</th>
-                        <th>Description</th>
-                        <th class="text-center">N° Users</th>
-                        <th class="text-center">N° Permissions</th>
-                        <th class="text-center" style="width: 60px;">Status</th>
-                        <th class="text-center" style="width: 60px;">Locked</th>
-                        <th class="text-right" style="width: 135px;">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($roles as $role)
+            <div class="table-responsive">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Slug</th>
+                            <th>Description</th>
+                            <th class="text-center">N° Users</th>
+                            <th class="text-center">N° Permissions</th>
+                            <th class="text-center" style="width: 60px;">Status</th>
+                            <th class="text-center" style="width: 60px;">Locked</th>
+                            <th class="text-right" style="width: 135px;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($roles as $role)
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>
@@ -53,22 +54,23 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isActive() ? 'success' : 'default'}}">
-                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban'}}"></i>
+                                <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
+                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
                                 </span>
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success'}}">
-                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock'}}"></i>
+                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
+                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
                                 </span>
                             </td>
                             <td class="text-right">
                                 @include('auth::foundation.roles._partials.table-actions')
                             </td>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         @if ($roles->hasPages())
@@ -77,12 +79,14 @@
             </div>
         @endif
     </div>
+@endsection
 
+@section('modals')
+    {{-- ACTIVATE MODAL --}}
     @can('auth.roles.update')
-        {{-- ACTIVATE MODAL --}}
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -94,7 +98,7 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
                                 <i class="fa fa-fw fa-power-off"></i> Activate
                             </button>
@@ -103,16 +107,16 @@
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
 
+    {{-- DELETE MODAL --}}
     @can('auth.roles.delete')
-        {{-- DELETE MODAL --}}
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
+                {{ Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -124,13 +128,13 @@
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
+                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
                             <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
                                 <i class="fa fa-fw fa-trash-o"></i> DELETE
                             </button>
                         </div>
                     </div>
-                {!! Form::close() !!}
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
@@ -140,62 +144,62 @@
     @can('auth.roles.update')
         {{-- ACTIVATE SCRIPT --}}
         <script>
-            var activateRoleModal = $('div#activateRoleModal'),
-                activateRoleForm  = $('form#activateRoleForm'),
+            var $activateRoleModal = $('div#activateRoleModal'),
+                $activateRoleForm  = $('form#activateRoleForm'),
                 activateRoleUrl   = "{{ route('auth::foundation.roles.activate', [':id']) }}";
 
-            $('a[href="#activateRoleModal"]').click(function (event) {
+            $('a[href="#activateRoleModal"]').on('click', function (event) {
                 event.preventDefault();
                 var enabled      = $(this).data('role-status') === 'enabled',
                     modalMessage = 'Are you sure you want to ' + (enabled ? '<span class="label label-inverse">disable</span>' : '<span class="label label-success">activate</span>') + ' this role : <strong>:name</strong> ?';
 
-                activateRoleForm.attr('action', activateRoleUrl.replace(':id', $(this).data('role-id')));
-                activateRoleModal.find('.modal-title').text((enabled ? 'Disable' : 'Activate') + ' Role');
-                activateRoleModal.find('.modal-body p').html(modalMessage.replace(':name', $(this).data('role-name')));
+                $activateRoleForm.attr('action', activateRoleUrl.replace(':id', $(this).data('role-id')));
+                $activateRoleModal.find('.modal-title').text((enabled ? 'Disable' : 'Activate') + ' Role');
+                $activateRoleModal.find('.modal-body p').html(modalMessage.replace(':name', $(this).data('role-name')));
                 if (enabled) {
-                    activateRoleForm.find('button#activateBtn').hide();
-                    activateRoleForm.find('button#disableBtn').show();
+                    $activateRoleForm.find('button#activateBtn').hide();
+                    $activateRoleForm.find('button#disableBtn').show();
                 }
                 else {
-                    activateRoleForm.find('button#activateBtn').show();
-                    activateRoleForm.find('button#disableBtn').hide();
+                    $activateRoleForm.find('button#activateBtn').show();
+                    $activateRoleForm.find('button#disableBtn').hide();
                 }
-                activateRoleModal.modal('show');
+                $activateRoleModal.modal('show');
             });
 
-            activateRoleModal.on('hidden.bs.modal', function () {
-                activateRoleForm.removeAttr('action');
-                activateRoleModal.find('.modal-title').text('');
+            $activateRoleModal.on('hidden.bs.modal', function () {
+                $activateRoleForm.attr('action', activateRoleUrl);
+                $activateRoleModal.find('.modal-title').text('');
                 $(this).find('.modal-body p').html('');
 
-                activateRoleForm.find('button[type="submit"]').hide();
+                $activateRoleForm.find('button[type="submit"]').hide();
             });
 
-            activateRoleForm.submit(function (event) {
+            $activateRoleForm.submit(function (event) {
                 event.preventDefault();
-                var submitBtn = $(this).find('button[type="submit"]');
-                    submitBtn.button('loading');
+                var $submitBtn = $activateRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
 
                 $.ajax({
-                    url:      $(this).attr('action'),
-                    type:     $(this).attr('method'),
+                    url:      $activateRoleForm.attr('action'),
+                    type:     $activateRoleForm.attr('method'),
                     dataType: 'json',
-                    data:     $(this).serialize(),
+                    data:     $activateRoleForm.serialize(),
                     success: function(data) {
                         if (data.status === 'success') {
-                            activateRoleModal.modal('hide');
+                            $activateRoleModal.modal('hide');
                             location.reload();
                         }
                         else {
                             alert('ERROR ! Check the console !');
                             console.error(data.message);
-                            submitBtn.button('reset');
+                            $submitBtn.button('reset');
                         }
                     },
                     error: function(xhr) {
                         alert('AJAX ERROR ! Check the console !');
                         console.error(xhr);
-                        submitBtn.button('reset');
+                        $submitBtn.button('reset');
                     }
                 });
 
@@ -207,50 +211,50 @@
     @can('auth.roles.delete')
         {{-- DELETE SCRIPT --}}
         <script>
-            var deleteRoleModal = $('div#deleteRoleModal'),
-                deleteRoleForm  = $('form#deleteRoleForm'),
+            var $deleteRoleModal = $('div#deleteRoleModal'),
+                $deleteRoleForm  = $('form#deleteRoleForm'),
                 deleteRoleUrl   = "{{ route('auth::foundation.roles.delete', [':id']) }}";
 
-            $('a[href="#deleteRoleModal"]').click(function (event) {
+            $('a[href="#deleteRoleModal"]').on('click', function (event) {
                 event.preventDefault();
                 var modalMessage = 'Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>:role</strong> ?';
 
-                deleteRoleForm.attr('action', deleteRoleUrl.replace(':id', $(this).data('role-id')));
-                deleteRoleModal.find('.modal-body p').html(modalMessage.replace(':role', $(this).data('role-name')));
+                $deleteRoleForm.attr('action', deleteRoleUrl.replace(':id', $(this).data('role-id')));
+                $deleteRoleModal.find('.modal-body p').html(modalMessage.replace(':role', $(this).data('role-name')));
 
-                deleteRoleModal.modal('show');
+                $deleteRoleModal.modal('show');
             });
 
-            deleteRoleModal.on('hidden.bs.modal', function () {
-                deleteRoleForm.removeAttr('action');
+            $deleteRoleModal.on('hidden.bs.modal', function () {
+                $deleteRoleForm.attr('action', deleteRoleUrl);
                 $(this).find('.modal-body p').html('');
             });
 
-            deleteRoleForm.submit(function (event) {
+            $deleteRoleForm.submit(function (event) {
                 event.preventDefault();
-                var submitBtn = $(this).find('button[type="submit"]');
-                submitBtn.button('loading');
+                var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
 
                 $.ajax({
-                    url:      $(this).attr('action'),
-                    type:     $(this).attr('method'),
+                    url:      $deleteRoleForm.attr('action'),
+                    type:     $deleteRoleForm.attr('method'),
                     dataType: 'json',
-                    data:     $(this).serialize(),
+                    data:     $deleteRoleForm.serialize(),
                     success: function(data) {
                         if (data.status === 'success') {
-                            deleteRoleModal.modal('hide');
+                            $deleteRoleModal.modal('hide');
                             location.reload();
                         }
                         else {
                             alert('ERROR ! Check the console !');
                             console.error(data.message);
-                            submitBtn.button('reset');
+                            $submitBtn.button('reset');
                         }
                     },
                     error: function(xhr) {
                         alert('AJAX ERROR ! Check the console !');
                         console.error(xhr);
-                        submitBtn.button('reset');
+                        $submitBtn.button('reset');
                     }
                 });
 

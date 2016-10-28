@@ -1,10 +1,10 @@
-@can('auth.users.show')
+@can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
     <a href="{{ route('auth::foundation.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
         <i class="fa fa-fw fa-search"></i>
     </a>
 @endcan
 
-@can('auth.users.update')
+@can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
     <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
         <i class="fa fa-fw fa-pencil"></i>
     </a>
@@ -38,7 +38,7 @@
     @endif
 @endcan
 
-@can('auth.users.delete')
+@can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
     @if ($user->isAdmin())
         <a href="javascript:void(0);" class="btn btn-xs btn-default" disabled="disabled" data-toggle="tooltip" data-original-title="Delete">
             <i class="fa fa-fw fa-trash-o"></i>

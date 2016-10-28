@@ -10,68 +10,66 @@
                     <h3 class="box-title">Role details</h3>
                 </div>
                 <div class="box-body no-padding">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Name</th>
-                                <td>{{ $role->name }}</td>
-                            </tr>
-                            <tr>
-                                <th>Slug</th>
-                                <td>
-                                    <span class="label label-primary">{{ $role->slug }}</span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Description</th>
-                                <td>{{ $role->description }}</td>
-                            </tr>
-                            <tr>
-                                <th>N° Users</th>
-                                <td>
-                                    <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
-                                        {{ $role->users->count() }} Users
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>N° Permissions</th>
-                                <td>
-                                    <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
-                                        {{ $role->permissions->count() }} Permissions
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Status</th>
-                                <td>
-                                    <span class="label label-{{ $role->isActive() ? 'success' : 'default'}}">
-                                        <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban'}}"></i>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Locked</th>
-                                <td>
-                                    <span class="label label-{{ $role->isLocked() ? 'danger' : 'success'}}">
-                                        <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock'}}"></i>
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Created at</th>
-                                <td>
-                                    <small>{{ $role->created_at }}</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Updated at</th>
-                                <td>
-                                    <small>{{ $role->updated_at }}</small>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <tbody>
+                                <tr>
+                                    <th>Name :</th>
+                                    <td>{{ $role->name }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Slug :</th>
+                                    <td>
+                                        <span class="label label-primary">{{ $role->slug }}</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Description :</th>
+                                    <td>{{ $role->description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>N° Users :</th>
+                                    <td>
+                                        <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
+                                            {{ $role->users->count() }} Users
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>N° Permissions :</th>
+                                    <td>
+                                        <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
+                                            {{ $role->permissions->count() }} Permissions
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Status :</th>
+                                    <td>
+                                        <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
+                                            <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Locked :</th>
+                                    <td>
+                                        <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
+                                            <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Created at :</th>
+                                    <td><small>{{ $role->created_at }}</small></td>
+                                </tr>
+                                <tr>
+                                    <th>Updated at :</th>
+                                    <td><small>{{ $role->updated_at }}</small></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
                 <div class="box-footer text-right">
                     @if ($role->isLocked())
@@ -132,24 +130,26 @@
                     </li>
                 </ul>
                 <div class="tab-content no-padding">
+                    {{-- USERS --}}
                     <div id="users" class="tab-pane active">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px;"></th>
-                                    <th>Username</th>
-                                    <th>Full name</th>
-                                    <th>Email</th>
-                                    <th class="text-center" style="width: 80px;">Status</th>
-                                    <th class="text-right" style="width: 120px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($role->users->count())
-                                    @foreach ($role->users as $user)
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 40px;"></th>
+                                        <th>Username</th>
+                                        <th>Full name</th>
+                                        <th>Email</th>
+                                        <th class="text-center" style="width: 80px;">Status</th>
+                                        <th class="text-right" style="width: 120px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($role->users->count())
+                                        @foreach ($role->users as $user)
                                         <tr>
                                             <td class="text-center">
-                                                {!! Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) !!}
+                                                {{ Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
                                             </td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->full_name }}</td>
@@ -157,17 +157,13 @@
                                             <td class="text-center">
                                                 @if ($user->isAdmin())
                                                     <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
-                                                        <i class="fa fa-fw fa-star"></i>
-                                                    </span>
+                                                    <i class="fa fa-fw fa-star"></i>
+                                                </span>
                                                 @endif
                                                 @if ($user->isActive())
-                                                    <span class="label label-success">
-                                                        <i class="fa fa-check"></i>
-                                                    </span>
+                                                    <span class="label label-success"><i class="fa fa-check"></i></span>
                                                 @else
-                                                    <span class="label label-default">
-                                                        <i class="fa fa-ban"></i>
-                                                    </span>
+                                                    <span class="label label-default"><i class="fa fa-ban"></i></span>
                                                 @endif
                                             </td>
                                             <td class="text-right">
@@ -183,32 +179,35 @@
                                                 @endcan
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="6" class="text-center">
-                                            <span class="label label-default">No user has this role.</span>
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                <span class="label label-default">No user has this role.</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
 
+                    {{-- PERMISSIONS --}}
                     <div id="permissions" class="tab-pane no-padding">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Group</th>
-                                    <th>Slug</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th class="text-right" style="width: 80px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($role->permissions->count())
-                                    @foreach ($role->permissions->sortByDesc('group_id') as $permission)
+                        <div class="table-responsive">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Group</th>
+                                        <th>Slug</th>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th class="text-right" style="width: 80px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($role->permissions->count())
+                                        @foreach ($role->permissions->sortByDesc('group_id') as $permission)
                                         <tr>
                                             <td>
                                                 <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }}">
@@ -228,84 +227,87 @@
                                                 @endcan
                                             </td>
                                         </tr>
-                                    @endforeach
-                                @else
-                                    <tr>
-                                        <td colspan="5" class="text-center">
-                                            <span class="label label-default">No permission belongs to this role.</span>
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                        @endforeach
+                                    @else
+                                        <tr>
+                                            <td colspan="5" class="text-center">
+                                                <span class="label label-default">No permission belongs to this role.</span>
+                                            </td>
+                                        </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+@endsection
 
+@section('scripts')
+    {{-- ACTIVATE MODAL --}}
     @can('auth.roles.update')
-        {{-- ACTIVATE MODAL --}}
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="activateRoleModalLabel">
-                                {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-                            @if ($role->isActive())
-                                <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                            @else
-                                <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                            @if ($role->isActive())
-                                <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </button>
-                            @else
-                                <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </button>
-                            @endif
-                        </div>
+                {{ Form::open(['route' => ['auth::foundation.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="activateRoleModalLabel">
+                            {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
+                        </h4>
                     </div>
-                {!! Form::close() !!}
+                    <div class="modal-body">
+                        @if ($role->isActive())
+                            <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                        @else
+                            <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                        @if ($role->isActive())
+                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </button>
+                        @else
+                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </button>
+                        @endif
+                    </div>
+                </div>
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
 
+    {{-- DELETE MODAL --}}
     @can('auth.roles.delete')
-        {{-- DELETE MODAL --}}
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
-                {!! Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) !!}
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-sm btn-default pull-left" data-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-trash-o"></i> DELETE
-                            </button>
-                        </div>
+                {{ Form::open(['route' => ['auth::foundation.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
                     </div>
-                {!! Form::close() !!}
+                    <div class="modal-body">
+                        <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                    </div>
+                    <div class="modal-footer">
+                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
+                            <i class="fa fa-fw fa-trash-o"></i> DELETE
+                        </button>
+                    </div>
+                </div>
+                {{ Form::close() }}
             </div>
         </div>
     @endcan
@@ -315,34 +317,34 @@
     @can('auth.roles.update')
         {{-- ACTIVATE SCRIPT --}}
         <script>
-            var activateRoleModal = $('div#activateRoleModal'),
-                activateRoleForm  = $('form#activateRoleForm');
+            var $activateRoleModal = $('div#activateRoleModal'),
+                $activateRoleForm  = $('form#activateRoleForm');
 
-            activateRoleForm.submit(function (event) {
+            $activateRoleForm.submit(function (event) {
                 event.preventDefault();
-                var submitBtn = $(this).find('button[type="submit"]');
-                    submitBtn.button('loading');
+                var $submitBtn = $activateRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
 
                 $.ajax({
-                    url:      $(this).attr('action'),
-                    type:     $(this).attr('method'),
+                    url:      $activateRoleForm.attr('action'),
+                    type:     $activateRoleForm.attr('method'),
                     dataType: 'json',
-                    data:     $(this).serialize(),
+                    data:     $activateRoleForm.serialize(),
                     success: function(data) {
                         if (data.status === 'success') {
-                            activateRoleModal.modal('hide');
+                            $activateRoleModal.modal('hide');
                             location.reload();
                         }
                         else {
                             alert('ERROR ! Check the console !');
                             console.error(data.message);
-                            submitBtn.button('reset');
+                            $submitBtn.button('reset');
                         }
                     },
                     error: function(xhr) {
                         alert('AJAX ERROR ! Check the console !');
                         console.error(xhr);
-                        submitBtn.button('reset');
+                        $submitBtn.button('reset');
                     }
                 });
 
@@ -354,34 +356,34 @@
     @can('auth.roles.delete')
         {{-- DELETE SCRIPT --}}
         <script>
-            var deleteRoleModal = $('div#deleteRoleModal'),
-                deleteRoleForm  = $('form#deleteRoleForm');
+            var $deleteRoleModal = $('div#deleteRoleModal'),
+                $deleteRoleForm  = $('form#deleteRoleForm');
 
-            deleteRoleForm.submit(function (event) {
+            $deleteRoleForm.submit(function (event) {
                 event.preventDefault();
-                var submitBtn = $(this).find('button[type="submit"]');
-                    submitBtn.button('loading');
+                var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
 
                 $.ajax({
-                    url:      $(this).attr('action'),
-                    type:     $(this).attr('method'),
+                    url:      $deleteRoleForm.attr('action'),
+                    type:     $deleteRoleForm.attr('method'),
                     dataType: 'json',
-                    data:     $(this).serialize(),
+                    data:     $deleteRoleForm.serialize(),
                     success: function(data) {
                         if (data.status === 'success') {
-                            deleteRoleModal.modal('hide');
+                            $deleteRoleModal.modal('hide');
                             location.replace("{{ route('auth::foundation.roles.index') }}");
                         }
                         else {
                             alert('ERROR ! Check the console !');
                             console.error(data.message);
-                            submitBtn.button('reset');
+                            $submitBtn.button('reset');
                         }
                     },
                     error: function(xhr) {
                         alert('AJAX ERROR ! Check the console !');
                         console.error(xhr);
-                        submitBtn.button('reset');
+                        $submitBtn.button('reset');
                     }
                 });
 
