@@ -46,7 +46,7 @@ class PermissionsComposer extends ViewComposer
      */
     public function composeRolePermissions(View $view)
     {
-        $permissions = $this->cacheResults('auth-permissions-form', function () {
+        $permissions = $this->cacheResults('auth.permissions.form', function () {
             return $this->permissions
                 ->with('group')
                 ->orderBy('group_id', 'desc')

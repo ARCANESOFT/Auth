@@ -72,8 +72,8 @@ abstract class UserFormRequest extends FormRequest
      */
     protected function getRolesRule()
     {
-        $rolesIds = Cache::remember('auth.roles.ids', 5, function () {
-            return app(RoleContract::class)->lists('id');
+        $rolesIds = Cache::remember('auth.roles.ids', 1, function () {
+            return app(RoleContract::class)->pluck('id');
         });
 
         return 'required|array|min:1|in:' . $rolesIds->implode(',');

@@ -51,7 +51,7 @@ class Permission extends BasePermissionModel
      */
     public static function getIds()
     {
-        return self::orderBy('id')->lists('id');
+        return self::orderBy('id')->pluck('id');
     }
 
     /* ------------------------------------------------------------------------------------------------

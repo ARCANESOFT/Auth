@@ -1,8 +1,8 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
 use Arcanesoft\Auth\Bases\ViewComposer;
-use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
 use Arcanesoft\Contracts\Auth\Models\Permission;
+use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
 use Illuminate\Contracts\View\View;
 
 /**
@@ -58,32 +58,32 @@ class PermissionsGroupsComposer extends ViewComposer
      */
     public function composeFilters(View $view)
     {
-        $filters        = [];
+        $filters = collect();
 
         // All Permission group
         //----------------------------------
-        $filters['all'] = link_to_route('auth::foundation.permissions.index', 'All');
+        $filters->put('all', link_to_route('auth::foundation.permissions.index', 'All'));
 
         // Permission groups
         //----------------------------------
-        $groups      = $this->cacheResults('permissions-groups.filters', function () {
+        $groups = $this->cacheResults('permissions-groups.filters', function () {
             return $this->permissionsGroup->has('permissions')->get();
         });
         foreach ($groups as $group) {
             /** @var  PermissionsGroup  $group */
-            $filters[$group->slug] = link_to_route('auth::foundation.permissions.group', $group->name, [
+            $filters->put($group->slug, link_to_route('auth::foundation.permissions.group', $group->name, [
                 $group->hashed_id
-            ]);
+            ]));
         }
 
         // Custom Permission group
         //----------------------------------
         if ($this->permission->where('group_id', 0)->count()) {
-            $filters['custom'] = link_to_route('auth::foundation.permissions.group', 'Custom', [
+            $filters->put('custom', link_to_route('auth::foundation.permissions.group', 'Custom', [
                 hasher()->encode(0)
-            ]);
+            ]));
         }
 
-        $view->with('groupFilters', $filters);
+        $view->with('groupFilters', $filters->toArray());
     }
 }

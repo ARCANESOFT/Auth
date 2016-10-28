@@ -69,7 +69,7 @@ class DashboardComposer extends ViewComposer
 
     protected function composeUsersTotal()
     {
-        $count = $this->cacheResults('auth-users-count', function() {
+        $count = $this->cacheResults('auth.users.count', function() {
             return $this->users->count();
         });
 
@@ -78,7 +78,7 @@ class DashboardComposer extends ViewComposer
 
     protected function composeRolesTotal()
     {
-        $count = $this->cacheResults('auth-roles-count', function() {
+        $count = $this->cacheResults('auth.roles.count', function() {
             return $this->roles->count();
         });
 
@@ -87,7 +87,7 @@ class DashboardComposer extends ViewComposer
 
     protected function composePermissionsTotal()
     {
-        $count = $this->cacheResults('auth-permissions-count', function() {
+        $count = $this->cacheResults('auth.permissions.count', function() {
             return $this->permissions->count();
         });
 
