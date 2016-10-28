@@ -1,14 +1,12 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Roles;
 
-use Arcanesoft\Auth\Bases\FormRequest;
-
 /**
  * Class     CreateRoleRequest
  *
  * @package  Arcanesoft\Auth\Http\Requests\Backend\Roles
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class CreateRoleRequest extends FormRequest
+class CreateRoleRequest extends RoleFormRequest
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
