@@ -24,6 +24,12 @@ class Role extends BaseRoleModel
     const MEMBER        = 'member';
 
     /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use Presenters\RolePresenter;
+
+    /* ------------------------------------------------------------------------------------------------
      |  Scopes
      | ------------------------------------------------------------------------------------------------
      */
@@ -64,20 +70,6 @@ class Role extends BaseRoleModel
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the role hash id.
-     *
-     * @return string
-     */
-    public function getHashedIdAttribute()
-    {
-        return self::hasher()->encode($this->id);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Function
      | ------------------------------------------------------------------------------------------------
      */
@@ -92,12 +84,12 @@ class Role extends BaseRoleModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = self::hasher()->decode($hashedId);
-
-        return self::where('id', $id)->firstOrFail();
+        return self::withHashedId($hashedId)->firstOrFail();
     }
 
     /**
+     * Make the slug.
+     *
      * @param  string  $value
      *
      * @return string
@@ -105,19 +97,5 @@ class Role extends BaseRoleModel
     public function makeSlugName($value)
     {
         return $this->slugify($value);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the hasher.
-     *
-     * @return \Arcanedev\Hasher\Contracts\HashManager
-     */
-    protected static function hasher()
-    {
-        return hasher();
     }
 }

@@ -7,60 +7,14 @@ use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
  *
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @property  string  gravatar
  */
 class User extends BaseUserModel
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
+     |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Get the user hash id.
-     *
-     * @return string
-     */
-    public function getHashedIdAttribute()
-    {
-        return self::hasher()->encode($this->id);
-    }
-
-    /**
-     * Get the full name attribute or use the username if empty.
-     *
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        $fullName = trim("{$this->first_name} {$this->last_name}");
-
-        return empty($fullName) ? $this->username : $fullName;
-    }
-
-    /**
-     * Get the gravatar attribute.
-     *
-     * @return string
-     */
-    public function getGravatarAttribute()
-    {
-        return gravatar()
-            ->setDefaultImage('mm')->setSize(160)
-            ->src($this->email);
-    }
-
-    /**
-     * Get the since date attribute (translated).
-     *
-     * @return string
-     */
-    public function getSinceDateAttribute()
-    {
-        return trans('auth::users.since', [
-            'date' => $this->created_at->toFormattedDateString()
-        ]);
-    }
+    use Presenters\UserPresenter;
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Function
@@ -77,9 +31,7 @@ class User extends BaseUserModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = self::hasher()->decode($hashedId);
-
-        return self::withTrashed()->where('id', $id)->firstOrFail();
+        return self::withTrashed()->withHashedId($hashedId)->firstOrFail();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -114,19 +66,5 @@ class User extends BaseUserModel
     public function isMember()
     {
         return $this->hasRoleSlug(Role::MEMBER);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the hasher.
-     *
-     * @return \Arcanedev\Hasher\Contracts\HashManager
-     */
-    protected static function hasher()
-    {
-        return hasher();
     }
 }

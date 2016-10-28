@@ -11,18 +11,10 @@ use Arcanedev\LaravelAuth\Models\Permission as BasePermissionModel;
 class Permission extends BasePermissionModel
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
+     |  Traits
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Get the role hash id.
-     *
-     * @return string
-     */
-    public function getHashedIdAttribute()
-    {
-        return self::hasher()->encode($this->id);
-    }
+    use Presenters\PermissionPresenter;
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Function
@@ -39,9 +31,7 @@ class Permission extends BasePermissionModel
      */
     public static function firstHashedOrFail($hashedId)
     {
-        $id = self::hasher()->decode($hashedId);
-
-        return self::where('id', $id)->firstOrFail();
+        return self::withHashedId($hashedId)->firstOrFail();
     }
 
     /**
@@ -66,19 +56,5 @@ class Permission extends BasePermissionModel
     public function hasGroup()
     {
         return $this->group_id !== 0;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the hasher.
-     *
-     * @return \Arcanedev\Hasher\Contracts\HashManager
-     */
-    protected static function hasher()
-    {
-        return hasher();
     }
 }
