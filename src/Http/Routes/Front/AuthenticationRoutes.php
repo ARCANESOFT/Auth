@@ -55,7 +55,7 @@ class AuthenticationRoutes extends RouteRegister
         ], config('arcanesoft.auth.authentication.routes.logout', []));
 
         $this->group($attributes, function () {
-            $this->post('/', [
+            $this->get('/', [
                 'as'   => 'logout', // auth::logout
                 'uses' => 'LoginController@logout',
             ]);
