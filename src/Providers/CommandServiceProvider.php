@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
-use Arcanedev\Support\Providers\CommandServiceProvider as ServiceProvider;
+use Arcanedev\Support\ServiceProvider;
+use Arcanesoft\Auth\Console;
 
 /**
  * Class     CommandServiceProvider
@@ -11,6 +12,20 @@ use Arcanedev\Support\Providers\CommandServiceProvider as ServiceProvider;
 class CommandServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Console commands.
+     *
+     * @var array
+     */
+    protected $commands = [
+        Console\PublishCommand::class,
+        Console\SetupCommand::class,
+    ];
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -19,9 +34,6 @@ class CommandServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->registerPublishCommand();
-        $this->registerSetupCommand();
-
         $this->commands($this->commands);
     }
 
@@ -32,39 +44,6 @@ class CommandServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return [
-            'arcanesoft.auth.commands.publish',
-            'arcanesoft.auth.commands.setup',
-        ];
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Command Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register the publish command.
-     */
-    private function registerPublishCommand()
-    {
-        $this->app->singleton(
-            'arcanesoft.auth.commands.publish',
-            \Arcanesoft\Auth\Console\PublishCommand::class
-        );
-
-        $this->commands[] = \Arcanesoft\Auth\Console\PublishCommand::class;
-    }
-
-    /**
-     * Register the setup command.
-     */
-    private function registerSetupCommand()
-    {
-        $this->app->singleton(
-            'arcanesoft.auth.commands.setup',
-            \Arcanesoft\Auth\Console\SetupCommand::class
-        );
-
-        $this->commands[] = \Arcanesoft\Auth\Console\SetupCommand::class;
+        return $this->commands;
     }
 }

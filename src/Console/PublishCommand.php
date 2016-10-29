@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Console;
 
-use Arcanedev\Support\Bases\Command;
+use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
+use Arcanesoft\Auth\AuthServiceProvider;
 
 /**
  * Class     PublishCommand
@@ -37,13 +38,18 @@ class PublishCommand extends Command
      */
     public function handle()
     {
-        $this->call('vendor:publish', [
-            '--provider' => \Arcanedev\LaravelAuth\LaravelAuthServiceProvider::class,
-            '--tag'      => ['migrations', 'factories'],
-        ]);
+        $vendors = [
+            [
+                '--provider' => LaravelAuthServiceProvider::class,
+                '--tag'      => ['migrations', 'factories'],
+            ],
+            [
+                '--provider' => AuthServiceProvider::class,
+            ],
+        ];
 
-        $this->call('vendor:publish', [
-            '--provider' => \Arcanesoft\Auth\AuthServiceProvider::class,
-        ]);
+        foreach ($vendors as $vendor) {
+            $this->call('vendor:publish', $vendor);
+        }
     }
 }

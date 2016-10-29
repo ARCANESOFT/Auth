@@ -1,7 +1,5 @@
 <?php namespace Arcanesoft\Auth\Console;
 
-use Arcanedev\Support\Bases\Command;
-
 /**
  * Class     SetupCommand
  *
