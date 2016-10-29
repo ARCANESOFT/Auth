@@ -3,7 +3,7 @@
 @section('content')
     <div class="container">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-4 col-md-offset-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">{{ trans('auth::password.heading') }}</div>
                     <div class="panel-body">
@@ -11,23 +11,21 @@
                             <div class="alert alert-success">{{ session('status') }}</div>
                         @endif
 
-                        {{ Form::open(['route' => 'auth::password.email', 'class' => 'form-horizontal', 'role' => 'form', 'method' => 'POST']) }}
-                            <div class="form-group{{ $errors->first('email', ' has-error') }}">
-                                {{ Form::label('email', trans('auth::users.email'), ['class' => 'col-md-4 control-label']) }}
-                                <div class="col-md-6">
-                                    {{ Form::email('email', old('email'), ['class' => 'form-control', 'required']) }}
-                                    @if ($errors->has('email'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('email') }}</strong>
-                                        </span>
-                                    @endif
+                        {{ Form::open(['route' => 'auth::password.email', 'role' => 'form', 'method' => 'POST']) }}
+                            <div class="form-group {{ $errors->first('email', 'has-error') }}">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-fw fa-at"></i></span>
+                                    {{ Form::email('email', old('email'), ['class' => 'form-control', 'required', 'autofocus', 'placeholder' => trans('auth::users.email')]) }}
                                 </div>
+                                @if ($errors->has('email'))
+                                    <span class="help-block">
+                                        <strong>{{ $errors->first('email') }}</strong>
+                                    </span>
+                                @endif
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-6 col-md-offset-4">
-                                    {{ Form::button(trans('auth::password.submit'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
-                                </div>
+                                {{ Form::button(trans('auth::password.submit'), ['type' => 'submit', 'class' => 'btn btn-block btn-primary']) }}
                             </div>
                         {{ Form::close() }}
                     </div>
