@@ -6,7 +6,7 @@
     <div class="box box-success">
         <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
-                Total of permissions : {{ $permissions->total() }}
+                Total : {{ $permissions->total() }}
             </span>
             @if ($permissions->hasPages())
                 <span class="label label-info">

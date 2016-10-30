@@ -106,6 +106,7 @@ class RouteServiceProvider extends ServiceProvider
             Routes\Foundation\UsersRoutes::register($router);
             Routes\Foundation\RolesRoutes::register($router);
             Routes\Foundation\PermissionsRoutes::register($router);
+            Routes\Foundation\PasswordResetsRoutes::register($router);
         });
 
         $router->group(array_merge(

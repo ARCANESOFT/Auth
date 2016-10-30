@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
 use Arcanesoft\Auth\Policies\UsersPolicy;
@@ -14,7 +13,7 @@ use Log;
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UsersController extends FoundationController
+class UsersController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties

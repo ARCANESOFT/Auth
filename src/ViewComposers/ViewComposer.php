@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Auth\Bases;
+<?php namespace Arcanesoft\Auth\ViewComposers;
 
 use Closure;
 use Illuminate\Support\Facades\Cache;

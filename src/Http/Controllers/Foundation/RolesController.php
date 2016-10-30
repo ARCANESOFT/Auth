@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Roles\UpdateRoleRequest;
 use Arcanesoft\Auth\Policies\RolesPolicy;
@@ -13,7 +12,7 @@ use Log;
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RolesController extends FoundationController
+class RolesController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties

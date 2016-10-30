@@ -1,6 +1,9 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Bases\Controller;
+use Arcanedev\Support\Bases\Controller;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 /**
  * Class     ApiController
@@ -10,5 +13,9 @@ use Arcanesoft\Auth\Bases\Controller;
  */
 class ApiController extends Controller
 {
-
+    /* ------------------------------------------------------------------------------------------------
+     |  Traits
+     | ------------------------------------------------------------------------------------------------
+     */
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }

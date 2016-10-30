@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
 use Arcanesoft\Auth\Policies\DashboardPolicy;
+use Arcanesoft\Auth\Policies\PasswordResetsPolicy;
 use Arcanesoft\Auth\Policies\PermissionsPolicy;
 use Arcanesoft\Auth\Policies\RolesPolicy;
 use Arcanesoft\Auth\Policies\UsersPolicy;
@@ -34,7 +35,8 @@ class PermissionTableSeeder extends PermissionsSeeder
                     $this->getDashboardSeeds(),
                     $this->getUsersSeeds(),
                     $this->getRolesSeeds(),
-                    $this->getPermissionsSeeds()
+                    $this->getPermissionsSeeds(),
+                    $this->getPasswordResetsSeeds()
                 ),
             ],
         ]);
@@ -154,6 +156,27 @@ class PermissionTableSeeder extends PermissionsSeeder
                 'name'        => 'Permissions - Update a permission',
                 'description' => 'Allow to update a permission.',
                 'slug'        => PermissionsPolicy::PERMISSION_UPDATE,
+            ],
+        ];
+    }
+
+    /**
+     * Get password resets' permissions seeds.
+     *
+     * @return array
+     */
+    private function getPasswordResetsSeeds()
+    {
+        return [
+            [
+                'name'        => 'Password Resets - List all permissions',
+                'description' => 'Allow to list all password resets.',
+                'slug'        => PasswordResetsPolicy::PERMISSION_LIST,
+            ],
+            [
+                'name'        => 'Password Resets - Delete password resets',
+                'description' => 'Allow to delete password resets.',
+                'slug'        => PasswordResetsPolicy::PERMISSION_UPDATE,
             ],
         ];
     }

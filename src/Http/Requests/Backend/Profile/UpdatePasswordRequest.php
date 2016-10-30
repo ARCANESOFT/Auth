@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Profile;
 
-use Arcanesoft\Auth\Bases\FormRequest;
+use Arcanesoft\Auth\Http\Requests\FormRequest;
 
 /**
  * Class     UpdatePasswordRequest

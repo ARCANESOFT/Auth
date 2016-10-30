@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Policies\PermissionsPolicy;
 use Arcanesoft\Contracts\Auth\Models\Permission;
 use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
@@ -13,7 +12,7 @@ use Log;
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionsController extends FoundationController
+class PermissionsController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Properties

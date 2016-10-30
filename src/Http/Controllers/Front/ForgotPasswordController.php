@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Bases\Controller;
 use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
 
 /**
@@ -27,6 +26,8 @@ class ForgotPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        parent::__construct();
     }
 
     /* ------------------------------------------------------------------------------------------------

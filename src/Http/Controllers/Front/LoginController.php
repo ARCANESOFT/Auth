@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Bases\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 /**
@@ -38,6 +37,8 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+
+        parent::__construct();
     }
 
     /* ------------------------------------------------------------------------------------------------

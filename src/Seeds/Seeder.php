@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Auth\Bases;
+<?php namespace Arcanesoft\Auth\Seeds;
 
 use Arcanedev\Support\Bases\Seeder as BaseSeeder;
 
@@ -8,7 +8,7 @@ use Arcanedev\Support\Bases\Seeder as BaseSeeder;
  * @package  Arcanesoft\Auth\Bases
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Seeder extends BaseSeeder
+abstract class Seeder extends BaseSeeder
 {
     //
 }

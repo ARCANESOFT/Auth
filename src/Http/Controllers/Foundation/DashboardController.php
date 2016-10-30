@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Bases\FoundationController;
 use Arcanesoft\Auth\Policies\DashboardPolicy;
 
 /**
@@ -11,7 +10,7 @@ use Arcanesoft\Auth\Policies\DashboardPolicy;
  *
  * @todo: Adding the authorization checks
  */
-class DashboardController extends FoundationController
+class DashboardController extends Controller
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constructor

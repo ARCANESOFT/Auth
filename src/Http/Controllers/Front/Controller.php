@@ -1,4 +1,4 @@
-<?php namespace Arcanesoft\Auth\Bases;
+<?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
 use Arcanedev\Support\Bases\Controller as BaseController;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -8,10 +8,10 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 /**
  * Class     Controller
  *
- * @package  Arcanesoft\Auth\Bases
+ * @package  Arcanesoft\Auth\Http\Controllers\Front
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Controller extends BaseController
+abstract class Controller extends BaseController
 {
     /* ------------------------------------------------------------------------------------------------
      |  Traits

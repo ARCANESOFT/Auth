@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
-use Arcanesoft\Auth\Bases\ViewComposer;
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Cache;

@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Bases\Controller;
 use Illuminate\Contracts\Auth\Guard;
 
 /**

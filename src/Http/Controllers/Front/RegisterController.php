@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Bases\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Validator;
@@ -40,6 +39,8 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        parent::__construct();
     }
 
     /* ------------------------------------------------------------------------------------------------

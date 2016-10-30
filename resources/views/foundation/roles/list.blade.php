@@ -6,7 +6,7 @@
     <div class="box box-warning">
         <div class="box-header">
             <span class="label label-info" style="margin-right: 5px;">
-                Total of roles : {{ $roles->total() }}
+                Total : {{ $roles->total() }}
             </span>
             @if ($roles->hasPages())
                 <span class="label label-info">

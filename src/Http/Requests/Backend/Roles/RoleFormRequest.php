@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Roles;
 
-use Arcanesoft\Auth\Bases\FormRequest;
+use Arcanesoft\Auth\Http\Requests\FormRequest;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 

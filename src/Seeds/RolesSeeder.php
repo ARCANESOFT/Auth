@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Seeds;
 
-use Arcanesoft\Auth\Bases\Seeder;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Carbon\Carbon;

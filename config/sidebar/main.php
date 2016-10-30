@@ -50,5 +50,15 @@ return [
                 Policies\PermissionsPolicy::PERMISSION_LIST,
             ],
         ],
+        [
+            'title'       => 'Password Resets',
+            'name'        => 'auth-password-resets',
+            'route'       => 'auth::foundation.password-resets.index',
+            'icon'        => 'fa fa-fw fa-refresh',
+            'roles'       => [Role::ADMINISTRATOR],
+            'permissions' => [
+                Policies\PasswordResetsPolicy::PERMISSION_LIST,
+            ],
+        ],
     ],
 ];

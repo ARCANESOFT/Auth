@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
-use Arcanesoft\Auth\Bases\ViewComposer;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;

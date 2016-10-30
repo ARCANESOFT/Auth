@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Bases\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
@@ -28,6 +27,8 @@ class ResetPasswordController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+
+        parent::__construct();
     }
 
     /* ------------------------------------------------------------------------------------------------

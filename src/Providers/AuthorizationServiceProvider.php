@@ -42,6 +42,7 @@ class AuthorizationServiceProvider extends ServiceProvider
         $this->registerUsersPolicies($gate);
         $this->registerRolesPolicies($gate);
         $this->registerPermissionsPolicies($gate);
+        $this->registerPasswordResetsPolicies($gate);
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -97,6 +98,19 @@ class AuthorizationServiceProvider extends ServiceProvider
         $this->defineMany($gate,
             Policies\PermissionsPolicy::class,
             Policies\PermissionsPolicy::getPolicies()
+        );
+    }
+
+    /**
+     * Register password resets authorizations.
+     *
+     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
+     */
+    private function registerPasswordResetsPolicies(GateContract $gate)
+    {
+        $this->defineMany($gate,
+            Policies\PasswordResetsPolicy::class,
+            Policies\PasswordResetsPolicy::getPolicies()
         );
     }
 }

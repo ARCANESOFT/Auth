@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Requests\Backend\Users;
 
-use Arcanesoft\Auth\Bases\FormRequest;
+use Arcanesoft\Auth\Http\Requests\FormRequest;
 use Arcanesoft\Contracts\Auth\Models\Role as RoleContract;
 use Cache;
 use Illuminate\Support\Str;

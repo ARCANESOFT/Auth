@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
-use Arcanesoft\Auth\Bases\ViewComposer;
 use Arcanesoft\Contracts\Auth\Models\Permission;
 use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
 use Illuminate\Contracts\View\View;
@@ -67,7 +66,7 @@ class PermissionsGroupsComposer extends ViewComposer
         });
 
         foreach ($groups as $group) {
-            /** @var  PermissionsGroup  $group */
+            /** @var  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup  $group */
             $filters->put($group->slug, link_to_route('auth::foundation.permissions.group', $group->name, [
                 $group->hashed_id
             ]));

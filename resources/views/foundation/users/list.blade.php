@@ -6,7 +6,7 @@
     <div class="box box-primary">
         <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
-                Total of users : {{ $users->total() }}
+                Total : {{ $users->total() }}
             </span>
 
             @if ($users->hasPages())
