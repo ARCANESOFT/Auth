@@ -46,7 +46,6 @@ class CommandServiceProviderTest extends TestCase
         $expectations = [
             \Illuminate\Support\ServiceProvider::class,
             \Arcanedev\Support\ServiceProvider::class,
-            \Arcanedev\Support\Providers\CommandServiceProvider::class,
             \Arcanesoft\Auth\Providers\CommandServiceProvider::class,
         ];
 
@@ -59,8 +58,8 @@ class CommandServiceProviderTest extends TestCase
     public function it_can_provides()
     {
         $expected = [
-            'arcanesoft.auth.commands.publish',
-            'arcanesoft.auth.commands.setup',
+            \Arcanesoft\Auth\Console\PublishCommand::class,
+            \Arcanesoft\Auth\Console\SetupCommand::class,
         ];
 
         $this->assertEquals($expected, $this->provider->provides());
