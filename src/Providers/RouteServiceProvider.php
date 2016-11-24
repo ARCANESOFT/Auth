@@ -72,6 +72,7 @@ class RouteServiceProvider extends ServiceProvider
             Routes\Front\AuthenticationRoutes::register($router);
             Routes\Front\RegisterRoutes::register($router);
             Routes\Front\PasswordResetRoutes::register($router);
+            Routes\Front\ImpersonateRoutes::register($router);
         });
 
         $router->group(array_merge($attributes, [

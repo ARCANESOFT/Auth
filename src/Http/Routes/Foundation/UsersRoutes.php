@@ -54,7 +54,7 @@ class UsersRoutes extends RouteRegister
             ]);
 
             $this->group(['prefix' => '{auth_user}'], function () {
-                $this->get('show', [
+                $this->get('/', [
                     'as'   => 'show',      // auth::foundation.users.show
                     'uses' => 'UsersController@show',
                 ]);
@@ -82,6 +82,11 @@ class UsersRoutes extends RouteRegister
                 $this->delete('delete', [
                     'as'   => 'delete',    // auth::foundation.users.delete
                     'uses' => 'UsersController@delete',
+                ]);
+
+                $this->get('impersonate', [
+                    'as'   => 'impersonate',      // auth::foundation.users.impersonate
+                    'uses' => 'UsersController@impersonate',
                 ]);
             });
         });

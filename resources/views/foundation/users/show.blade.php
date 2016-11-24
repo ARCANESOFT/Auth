@@ -77,6 +77,12 @@
                     </div>
                 </div>
                 <div class="box-footer text-right">
+                    @if ($user->isMember())
+                        <a href="{{ route('auth::foundation.users.impersonate', [$user->hashed_id]) }}" class="btn btn-sm btn-default">
+                            <i class="fa fa-fw fa-user-secret"></i> Impersonate
+                        </a>
+                    @endif
+
                     @can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
                         <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-sm btn-warning">
                             <i class="fa fa-fw fa-pencil"></i> Edit

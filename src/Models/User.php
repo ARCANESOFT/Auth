@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Models;
 
 use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
+use Arcanesoft\Auth\Helpers\UserImpersonator;
 
 /**
  * Class     User
@@ -92,5 +93,15 @@ class User extends BaseUserModel
     public function hasPasswordReset()
     {
         return ! is_null($this->passwordReset);
+    }
+
+    /**
+     * Check if the impersonating is ongoing.
+     *
+     * @return bool
+     */
+    public function isImpersonating()
+    {
+        return UserImpersonator::isImpersonating();
     }
 }

@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
+use Arcanesoft\Auth\Helpers\UserImpersonator;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
 use Arcanesoft\Auth\Policies\UsersPolicy;
@@ -337,5 +338,23 @@ class UsersController extends Controller
         }
 
         return response()->json($ajax);
+    }
+
+    /**
+     * Impersonate a user.
+     *
+     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function impersonate(User $user)
+    {
+        if (UserImpersonator::start($user)) {
+            return redirect()->to('/');
+        }
+
+        $this->notifyDanger('Impersonate disabled for this user.', 'Impersonation failed');
+
+        return redirect()->back();
     }
 }
