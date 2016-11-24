@@ -44,7 +44,7 @@ class RolesRoutes extends RouteRegister
             ]);
 
             $this->group(['prefix' => '{auth_role}'], function () {
-                $this->get('show', [
+                $this->get('/', [
                     'as'   => 'show',      // auth::foundation.roles.show
                     'uses' => 'RolesController@show',
                 ]);

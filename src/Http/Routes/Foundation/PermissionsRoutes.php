@@ -44,7 +44,7 @@ class PermissionsRoutes extends RouteRegister
             ]);
 
             $this->group(['prefix' => '{auth_permission}'], function () {
-                $this->get('show', [
+                $this->get('/', [
                     'as'   => 'show',      // auth::foundation.permissions.show
                     'uses' => 'PermissionsController@show',
                 ]);
