@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @include('auth::foundation.users._partials.roles-checkbox', ['old' => old('roles', collect())])
+                @include('auth::foundation.users._partials.roles-checkbox', ['old' => old('roles', [])])
             </div>
         </div>
     {{ Form::close() }}

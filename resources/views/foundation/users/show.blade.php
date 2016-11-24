@@ -78,34 +78,34 @@
                 </div>
                 <div class="box-footer text-right">
                     @can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
-                        <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning">
+                        <a href="{{ route('auth::foundation.users.edit', [$user->hashed_id]) }}" class="btn btn-sm btn-warning">
                             <i class="fa fa-fw fa-pencil"></i> Edit
                         </a>
 
                         @if ($user->isAdmin())
                             @if ($user->isActive())
-                                <a href="javascript:void(0);" class="btn btn-xs btn-inverse" disabled="disabled">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-inverse" disabled="disabled">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </a>
                             @else
-                                <a href="javascript:void(0);" class="btn btn-xs btn-success" disabled="disabled">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-success" disabled="disabled">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </a>
                             @endif
                         @else
                             @if ($user->isActive())
-                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-xs btn-inverse">
+                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-sm btn-inverse">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </button>
                             @else
-                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-xs btn-success">
+                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-sm btn-success">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </button>
                             @endif
                         @endif
 
                         @if ($user->trashed())
-                            <button data-target="#restoreUserModal" data-toggle="modal" class="btn btn-xs btn-primary">
+                            <button data-target="#restoreUserModal" data-toggle="modal" class="btn btn-sm btn-primary">
                                 <i class="fa fa-fw fa-reply"></i> Restore
                             </button>
                         @endif
@@ -113,11 +113,11 @@
 
                     @can(\Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
                         @if ($user->isAdmin())
-                            <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" disabled="disabled">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </a>
                         @else
-                            <button data-target="#deleteUserModal" data-toggle="modal" class="btn btn-xs btn-danger">
+                            <button data-target="#deleteUserModal" data-toggle="modal" class="btn btn-sm btn-danger">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </button>
                         @endif

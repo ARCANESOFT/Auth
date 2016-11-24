@@ -77,7 +77,9 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @include('auth::foundation.users._partials.roles-checkbox', ['old' => old('roles', $user->roles->pluck('id', 'id'))])
+                @include('auth::foundation.users._partials.roles-checkbox', [
+                    'old' => old('roles', $user->roles->pluck('id')->toArray())
+                ])
             </div>
         </div>
     {{ Form::close() }}

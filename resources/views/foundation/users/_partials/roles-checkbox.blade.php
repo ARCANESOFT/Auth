@@ -10,7 +10,7 @@
     </div>
     <div class="box-body no-padding">
         <div class="table-responsive">
-            <table class="table table-condensed">
+            <table class="table table-condensed no-margin">
                 <thead>
                     <tr>
                         <th>#</th>
@@ -23,7 +23,7 @@
                     @if ($roles->count())
                         @foreach ($roles as $role)
                         <tr>
-                            <td>{{ Form::checkbox('roles[]', $role->id, $old->has($role->id)) }}</td>
+                            <td>{{ Form::checkbox('roles[]', $role->id, in_array($role->id, $old)) }}</td>
                             <td>{{ $role->name }}</td>
                             <td><span class="label label-primary">{{ $role->name }}</span></td>
                             <td>{{ $role->description }}</td>
