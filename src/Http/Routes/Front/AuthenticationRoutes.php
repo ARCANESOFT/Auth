@@ -28,6 +28,9 @@ class AuthenticationRoutes extends RouteRegister
         }
     }
 
+    /**
+     * Map the login routes.
+     */
     protected function mapLoginRoutes()
     {
         $attributes = array_merge([
@@ -36,18 +39,17 @@ class AuthenticationRoutes extends RouteRegister
         ], config('arcanesoft.auth.authentication.routes.login', []));
 
         $this->group($attributes, function () {
-            $this->get('/',  [
-                'as'   => 'get',  // auth::login.get
-                'uses' => 'LoginController@showLoginForm',
-            ]);
+            $this->get('/', 'LoginController@showLoginForm')
+                 ->name('get'); // auth::login.get
 
-            $this->post('/', [
-                'as'   => 'post', // auth::login.post
-                'uses' => 'LoginController@login',
-            ]);
+            $this->post('/', 'LoginController@login')
+                 ->name('post'); // auth::login.post
         });
     }
 
+    /**
+     * Map the logout routes
+     */
     protected function mapLogoutRoute()
     {
         $attributes = array_merge([
@@ -55,16 +57,19 @@ class AuthenticationRoutes extends RouteRegister
         ], config('arcanesoft.auth.authentication.routes.logout', []));
 
         $this->group($attributes, function () {
-            $this->get('/', [
-                'as'   => 'logout', // auth::logout
-                'uses' => 'LoginController@logout',
-            ]);
+            $this->get('/', 'LoginController@logout')
+                 ->name('logout'); // auth::logout
         });
     }
 
     /* ------------------------------------------------------------------------------------------------
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Check if enabled.
+     *
+     * @return bool
      */
     protected function isEnabled()
     {

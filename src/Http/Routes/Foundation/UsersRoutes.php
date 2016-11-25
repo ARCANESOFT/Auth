@@ -28,66 +28,42 @@ class UsersRoutes extends RouteRegister
         });
 
         $this->group(['prefix' => 'users', 'as' => 'users.'], function () {
-            $this->get('/', [
-                'as'   => 'index',         // auth::foundation.users.index
-                'uses' => 'UsersController@index',
-            ]);
+            $this->get('/', 'UsersController@index')
+                 ->name('index'); // auth::foundation.users.index
 
-            $this->get('trash', [
-                'as'   => 'trash',         // auth::foundation.users.trash
-                'uses' => 'UsersController@trashList',
-            ]);
+            $this->get('trash', 'UsersController@trashList')
+                 ->name('trash'); // auth::foundation.users.trash
 
-            $this->get('roles-filter/{auth_role}', [
-                'as'   => 'roles-filter.index',  // auth::foundation.users.roles-filter.index
-                'uses' => 'UsersController@listByRole',
-            ]);
+            $this->get('roles-filter/{auth_role}', 'UsersController@listByRole')
+                 ->name('roles-filter.index'); // auth::foundation.users.roles-filter.index
 
-            $this->get('create', [
-                'as'   => 'create',        // auth::foundation.users.create
-                'uses' => 'UsersController@create',
-            ]);
+            $this->get('create', 'UsersController@create')
+                 ->name('create'); // auth::foundation.users.create
 
-            $this->post('store', [
-                'as'   => 'store',         // auth::foundation.users.store
-                'uses' => 'UsersController@store',
-            ]);
+            $this->post('store', 'UsersController@store')
+                 ->name('store'); // auth::foundation.users.store
 
             $this->group(['prefix' => '{auth_user}'], function () {
-                $this->get('/', [
-                    'as'   => 'show',      // auth::foundation.users.show
-                    'uses' => 'UsersController@show',
-                ]);
+                $this->get('/', 'UsersController@show')
+                     ->name('show'); // auth::foundation.users.show
 
-                $this->get('edit', [
-                    'as'   => 'edit',      // auth::foundation.users.edit
-                    'uses' => 'UsersController@edit',
-                ]);
+                $this->get('edit', 'UsersController@edit')
+                     ->name('edit'); // auth::foundation.users.edit
 
-                $this->put('update', [
-                    'as'   => 'update',    // auth::foundation.users.update
-                    'uses' => 'UsersController@update',
-                ]);
+                $this->put('update', 'UsersController@update')
+                     ->name('update'); // auth::foundation.users.update
 
-                $this->put('activate', [
-                    'as'   => 'activate',  // auth::foundation.users.activate
-                    'uses' => 'UsersController@activate',
-                ]);
+                $this->put('activate', 'UsersController@activate')
+                     ->name('activate'); // auth::foundation.users.activate
 
-                $this->put('restore', [
-                    'as'   => 'restore',   // auth::foundation.users.restore
-                    'uses' => 'UsersController@restore',
-                ]);
+                $this->put('restore', 'UsersController@restore')
+                     ->name('restore'); // auth::foundation.users.restore
 
-                $this->delete('delete', [
-                    'as'   => 'delete',    // auth::foundation.users.delete
-                    'uses' => 'UsersController@delete',
-                ]);
+                $this->delete('delete', 'UsersController@delete')
+                     ->name('delete'); // auth::foundation.users.delete
 
-                $this->get('impersonate', [
-                    'as'   => 'impersonate',      // auth::foundation.users.impersonate
-                    'uses' => 'UsersController@impersonate',
-                ]);
+                $this->get('impersonate', 'UsersController@impersonate')
+                     ->name('impersonate'); // auth::foundation.users.impersonate
             });
         });
     }

@@ -28,46 +28,30 @@ class RolesRoutes extends RouteRegister
         });
 
         $this->group(['prefix' => 'roles', 'as' => 'roles.'], function () {
-            $this->get('/', [
-                'as'   => 'index',         // auth::foundation.roles.index
-                'uses' => 'RolesController@index',
-            ]);
+            $this->get('/', 'RolesController@index')
+                 ->name('index'); // auth::foundation.roles.index
 
-            $this->get('create', [
-                'as'   => 'create',        // auth::foundation.roles.create
-                'uses' => 'RolesController@create',
-            ]);
+            $this->get('create', 'RolesController@create')
+                 ->name('create'); // auth::foundation.roles.create
 
-            $this->post('store', [
-                'as'   => 'store',         // auth::foundation.roles.store
-                'uses' => 'RolesController@store',
-            ]);
+            $this->post('store', 'RolesController@store')
+                 ->name('store'); // auth::foundation.roles.store
 
             $this->group(['prefix' => '{auth_role}'], function () {
-                $this->get('/', [
-                    'as'   => 'show',      // auth::foundation.roles.show
-                    'uses' => 'RolesController@show',
-                ]);
+                $this->get('/', 'RolesController@show')
+                     ->name('show'); // auth::foundation.roles.show
 
-                $this->get('edit', [
-                    'as'   => 'edit',      // auth::foundation.roles.edit
-                    'uses' => 'RolesController@edit',
-                ]);
+                $this->get('edit', 'RolesController@edit')
+                     ->name('edit'); // auth::foundation.roles.edit
 
-                $this->put('update', [
-                    'as'   => 'update',    // auth::foundation.roles.update
-                    'uses' => 'RolesController@update',
-                ]);
+                $this->put('update', 'RolesController@update')
+                     ->name('update'); // auth::foundation.roles.update
 
-                $this->put('activate', [
-                    'as'   => 'activate',  // auth::foundation.roles.activate
-                    'uses' => 'RolesController@activate',
-                ]);
+                $this->put('activate', 'RolesController@activate')
+                     ->name('activate'); // auth::foundation.roles.activate
 
-                $this->delete('delete', [
-                    'as'   => 'delete',    // auth::foundation.roles.delete
-                    'uses' => 'RolesController@delete',
-                ]);
+                $this->delete('delete', 'RolesController@delete')
+                     ->name('delete'); // auth::foundation.roles.delete
             });
         });
     }

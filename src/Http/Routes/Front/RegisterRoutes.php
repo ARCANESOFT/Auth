@@ -23,21 +23,15 @@ class RegisterRoutes extends RouteRegister
     public function map(Registrar $router)
     {
         if ($this->isEnabled()) {
-            $this->group($this->getRouteAttribute(), function () {
-                $this->get('/', [
-                    'as'   => 'get',     // auth::register.get
-                    'uses' => 'RegisterController@showRegistrationForm',
-                ]);
+            $this->group($this->getRouteAttributes(), function () {
+                $this->get('/', 'RegisterController@showRegistrationForm')
+                     ->name('get'); // auth::register.get
 
-                $this->post('/', [
-                    'as'   => 'post',    // auth::register.post
-                    'uses' => 'RegisterController@register',
-                ]);
+                $this->post('/', 'RegisterController@register')
+                     ->name('post'); // auth::register.post
 
-                $this->get('confirm/{code}', [
-                    'as'   => 'confirm', // auth::register.confirm
-                    'uses' => 'RegisterController@confirm',
-                ]);
+                $this->get('confirm/{code}', 'RegisterController@confirm')
+                     ->name('confirm'); // auth::register.confirm
             });
         }
     }
@@ -46,12 +40,22 @@ class RegisterRoutes extends RouteRegister
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Check if enabled.
+     *
+     * @return bool
+     */
     protected function isEnabled()
     {
         return config('arcanesoft.auth.authentication.enabled.register', false);
     }
 
-    protected function getRouteAttribute()
+    /**
+     * Get the route attributes.
+     *
+     * @return array
+     */
+    protected function getRouteAttributes()
     {
         return array_merge([
             'prefix' => 'register',

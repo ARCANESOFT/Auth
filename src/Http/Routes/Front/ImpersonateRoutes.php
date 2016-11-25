@@ -26,10 +26,8 @@ class ImpersonateRoutes extends RouteRegister
             'prefix' => 'users/impersonate',
             'as'     => 'users.impersonate.',
         ], function () {
-            $this->get('stop', [
-                'as'   => 'stop', // auth::users.impersonate.stop
-                'uses' => 'ImpersonateController@stop',
-            ]);
+            $this->get('stop', 'ImpersonateController@stop')
+                 ->name('stop'); // auth::users.impersonate.stop
         });
     }
 }

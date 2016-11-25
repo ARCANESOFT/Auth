@@ -33,26 +33,18 @@ class PermissionsRoutes extends RouteRegister
         });
 
         $this->group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
-            $this->get('/', [
-                'as'   => 'index',         // auth::foundation.permissions.index
-                'uses' => 'PermissionsController@index',
-            ]);
+            $this->get('/', 'PermissionsController@index')
+                 ->name('index'); // auth::foundation.permissions.index
 
-            $this->get('group/{auth_permissions_group}', [
-                'as'   => 'group',         // auth::foundation.permissions.group
-                'uses' => 'PermissionsController@group',
-            ]);
+            $this->get('group/{auth_permissions_group}', 'PermissionsController@group')
+                 ->name('group'); // auth::foundation.permissions.group
 
             $this->group(['prefix' => '{auth_permission}'], function () {
-                $this->get('/', [
-                    'as'   => 'show',      // auth::foundation.permissions.show
-                    'uses' => 'PermissionsController@show',
-                ]);
+                $this->get('/', 'PermissionsController@show')
+                     ->name('show'); // auth::foundation.permissions.show
 
-                $this->delete('roles/{auth_role}/detach', [
-                    'as'   => 'roles.detach',  // auth::foundation.permissions.roles.detach
-                    'uses' => 'PermissionsController@detachRole',
-                ]);
+                $this->delete('roles/{auth_role}/detach', 'PermissionsController@detachRole')
+                     ->name('roles.detach'); // auth::foundation.permissions.roles.detach
             });
         });
     }

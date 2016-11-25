@@ -23,20 +23,14 @@ class PasswordResetsRoutes extends RouteRegister
     public function map(Registrar $router)
     {
         $this->group(['prefix' => 'password-resets', 'as' => 'password-resets.'], function () {
-            $this->get('/', [
-                'as'   => 'index',
-                'uses' => 'PasswordResetsController@index',
-            ]);
+            $this->get('/', 'PasswordResetsController@index')
+                 ->name('index');
 
-            $this->delete('clear', [
-                'as'   => 'clear',
-                'uses' => 'PasswordResetsController@clear',
-            ]);
+            $this->delete('clear', 'PasswordResetsController@clear')
+                 ->name('clear');
 
-            $this->delete('delete', [
-                'as'   => 'delete',
-                'uses' => 'PasswordResetsController@delete',
-            ]);
+            $this->delete('delete', 'PasswordResetsController@delete')
+                 ->name('delete');
         });
     }
 }
