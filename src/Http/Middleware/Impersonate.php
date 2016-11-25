@@ -1,5 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Middleware;
 
+use Arcanesoft\Auth\Helpers\UserImpersonator;
+use Auth;
 use Closure;
 
 /**
@@ -25,10 +27,10 @@ class Impersonate
     public function handle($request, Closure $next)
     {
         $session = $request->session();
+        $key     = config('arcanesoft.auth.impersonation.key', 'impersonate');
 
-        if ($session->has('impersonate')) {
-            \Auth::onceUsingId($session->get('impersonate'));
-        }
+        if (UserImpersonator::isEnabled() && $session->has($key))
+            Auth::onceUsingId($session->get($key));
 
         return $next($request);
     }

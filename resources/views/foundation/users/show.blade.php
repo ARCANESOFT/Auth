@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="box-footer text-right">
-                    @if ($user->isMember())
+                    @if (\Arcanesoft\Auth\Helpers\UserImpersonator::isEnabled() && $user->isMember())
                         <a href="{{ route('auth::foundation.users.impersonate', [$user->hashed_id]) }}" class="btn btn-sm btn-default">
                             <i class="fa fa-fw fa-user-secret"></i> Impersonate
                         </a>

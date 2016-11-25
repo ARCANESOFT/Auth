@@ -15,6 +15,8 @@ class UserImpersonator
      | ------------------------------------------------------------------------------------------------
      */
     /**
+     * Start the user impersonation.
+     *
      * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
      *
      * @return bool
@@ -28,13 +30,31 @@ class UserImpersonator
         return true;
     }
 
+    /**
+     * Stop the user impersonation.
+     */
     public static function stop()
     {
         session()->forget('impersonate');
     }
 
+    /**
+     * Check if the impersonation is ongoing.
+     *
+     * @return bool
+     */
     public static function isImpersonating()
     {
         return session()->has('impersonate');
+    }
+
+    /**
+     * Check if the impersonation is enabled.
+     *
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        return config('arcanesoft.auth.impersonation.enabled');
     }
 }

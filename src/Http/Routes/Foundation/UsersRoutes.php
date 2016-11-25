@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Foundation;
 
 use Arcanedev\Support\Bases\RouteRegister;
+use Arcanesoft\Auth\Helpers\UserImpersonator;
 use Arcanesoft\Auth\Models\User;
 use Illuminate\Contracts\Routing\Registrar;
 
@@ -62,8 +63,10 @@ class UsersRoutes extends RouteRegister
                 $this->delete('delete', 'UsersController@delete')
                      ->name('delete'); // auth::foundation.users.delete
 
-                $this->get('impersonate', 'UsersController@impersonate')
-                     ->name('impersonate'); // auth::foundation.users.impersonate
+                if (UserImpersonator::isEnabled()) {
+                    $this->get('impersonate', 'UsersController@impersonate')
+                        ->name('impersonate'); // auth::foundation.users.impersonate
+                }
             });
         });
     }

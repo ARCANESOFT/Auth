@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Front;
 
 use Arcanedev\Support\Bases\RouteRegister;
+use Arcanesoft\Auth\Helpers\UserImpersonator;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
@@ -22,12 +23,14 @@ class ImpersonateRoutes extends RouteRegister
      */
     public function map(Registrar $router)
     {
-        $this->group([
-            'prefix' => 'users/impersonate',
-            'as'     => 'users.impersonate.',
-        ], function () {
-            $this->get('stop', 'ImpersonateController@stop')
-                 ->name('stop'); // auth::users.impersonate.stop
-        });
+        if (UserImpersonator::isEnabled()) {
+            $this->group([
+                'prefix' => 'users/impersonate',
+                'as'     => 'users.impersonate.',
+            ], function () {
+                $this->get('stop', 'ImpersonateController@stop')
+                    ->name('stop'); // auth::users.impersonate.stop
+            });
+        }
     }
 }
