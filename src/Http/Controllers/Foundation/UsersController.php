@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Foundation;
 
-use Arcanesoft\Auth\Helpers\UserImpersonator;
+use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Backend\Users\UpdateUserRequest;
 use Arcanesoft\Auth\Policies\UsersPolicy;

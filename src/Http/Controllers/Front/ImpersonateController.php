@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Front;
 
-use Arcanesoft\Auth\Helpers\UserImpersonator;
+use Arcanedev\LaravelAuth\Services\UserImpersonator;
 
 /**
  * Class     ImpersonateController

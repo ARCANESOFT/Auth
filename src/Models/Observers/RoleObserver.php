@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models\Observers;
 
-use Arcanedev\LaravelAuth\Observers\RoleObserver as BaseObserver;
+use Arcanedev\LaravelAuth\Models\Observers\RoleObserver as BaseObserver;
 
 /**
  * Class     RoleObserver
