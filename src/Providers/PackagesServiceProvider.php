@@ -54,7 +54,7 @@ class PackagesServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Config the laravel auth package.
+     * Config the laravel auth package (override).
      */
     private function configLaravelAuthPackage()
     {

@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Front;
 
+use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanedev\Support\Bases\RouteRegister;
-use Arcanesoft\Auth\Helpers\UserImpersonator;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
