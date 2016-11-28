@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models\Observers;
 
-use Arcanedev\LaravelAuth\Observers\PermissionsGroupObserver as BaseObserver;
+use Arcanedev\LaravelAuth\Models\Observers\PermissionsGroupObserver as BaseObserver;
 
 /**
  * Class     PermissionsGroupObserver

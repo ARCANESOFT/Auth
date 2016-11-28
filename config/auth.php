@@ -61,28 +61,28 @@ return [
     'users'              => [
         'table'          => 'users',
         'model'          => Arcanesoft\Auth\Models\User::class,
-        'observer'       => \Arcanesoft\Auth\Models\Observers\UserObserver::class,
+        'observer'       => Arcanesoft\Auth\Models\Observers\UserObserver::class,
         'slug-separator' => '.',
     ],
 
     'roles'              => [
         'table'          => 'roles',
         'model'          => Arcanesoft\Auth\Models\Role::class,
-        'observer'       => \Arcanesoft\Auth\Models\Observers\RoleObserver::class,
+        'observer'       => Arcanesoft\Auth\Models\Observers\RoleObserver::class,
         'slug-separator' => '-',
     ],
 
     'permissions-groups' => [
         'table'          => 'permissions_groups',
         'model'          => Arcanesoft\Auth\Models\PermissionsGroup::class,
-        'observer'       => \Arcanesoft\Auth\Models\Observers\PermissionsGroupObserver::class,
+        'observer'       => Arcanesoft\Auth\Models\Observers\PermissionsGroupObserver::class,
         'slug-separator' => '-',
     ],
 
     'permissions'        => [
         'table'          => 'permissions',
         'model'          => Arcanesoft\Auth\Models\Permission::class,
-        'observer'       => \Arcanesoft\Auth\Models\Observers\PermissionObserver::class,
+        'observer'       => Arcanesoft\Auth\Models\Observers\PermissionObserver::class,
         'slug-separator' => '.',
     ],
 
@@ -93,6 +93,15 @@ return [
     'user-confirmation'  => [
         'enabled'   => true,
         'length'    => 30,
+    ],
+
+    /* ------------------------------------------------------------------------------------------------
+     |  User Impersonation
+     | ------------------------------------------------------------------------------------------------
+     */
+    'impersonation' => [
+        'enabled' => false,
+        'key'     => 'impersonate',
     ],
 
     /* ------------------------------------------------------------------------------------------------
