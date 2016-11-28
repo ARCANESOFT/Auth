@@ -1,5 +1,7 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
+use Arcanedev\LaravelAuth\Services\SocialAuthenticator;
+use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanesoft\Auth\Http\Routes;
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Illuminate\Contracts\Routing\Registrar as Router;
@@ -72,7 +74,12 @@ class RouteServiceProvider extends ServiceProvider
             Routes\Front\AuthenticationRoutes::register($router);
             Routes\Front\RegisterRoutes::register($router);
             Routes\Front\PasswordResetRoutes::register($router);
-            Routes\Front\ImpersonateRoutes::register($router);
+
+            if (UserImpersonator::isEnabled())
+                Routes\Front\ImpersonateRoutes::register($router);
+
+            if (SocialAuthenticator::isEnabled())
+                Routes\Front\SocialiteRoutes::register($router);
         });
 
         $router->group(array_merge($attributes, [

@@ -4,12 +4,12 @@ use Arcanedev\Support\Bases\RouteRegister;
 use Illuminate\Contracts\Routing\Registrar;
 
 /**
- * Class     ImpersonateRoutes
+ * Class     SocialiteRoutes
  *
  * @package  Arcanesoft\Auth\Http\Routes\Front
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ImpersonateRoutes extends RouteRegister
+class SocialiteRoutes extends RouteRegister
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -23,11 +23,14 @@ class ImpersonateRoutes extends RouteRegister
     public function map(Registrar $router)
     {
         $this->group([
-            'prefix' => 'users/impersonate',
-            'as'     => 'users.impersonate.',
+            'prefix' => 'social/{social_provider}',
+            'as'     => 'social.',
         ], function () {
-            $this->get('stop', 'ImpersonateController@stop')
-                ->name('stop'); // auth::users.impersonate.stop
+            $this->get('/', 'SocialAuthController@redirectToProvider')
+                ->name('redirect'); // auth::social.redirect
+
+            $this->get('/', 'SocialAuthController@handleCallback')
+                ->name('handle'); // auth::social.handle
         });
     }
 }

@@ -8,7 +8,6 @@
                     <div class="panel-heading">{{ trans('auth::login.heading') }}</div>
                     <div class="panel-body">
                         {{ Form::open(['route' => 'auth::login.post', 'role' => 'form', 'method' => 'POST']) }}
-
                             <div class="form-group {{ $errors->first('email', 'has-error') }}">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-fw fa-at"></i></span>
@@ -20,7 +19,6 @@
                                     </span>
                                 @endif
                             </div>
-
                             <div class="form-group {{ $errors->first('password', 'has-error') }}">
                                 <div class="input-group">
                                     <span class="input-group-addon"><i class="fa fa-fw fa-key"></i></span>
@@ -32,7 +30,6 @@
                                     </span>
                                 @endif
                             </div>
-
                             <div class="form-group">
                                 <div class="checkbox">
                                     <label>
@@ -40,13 +37,15 @@
                                     </label>
                                 </div>
                             </div>
-
-                            <div class="form-group">
+                            <div>
                                 {{ Form::button(trans('auth::login.submit'), ['type' => 'submit', 'class' => 'btn btn-primary']) }}
                                 {{ link_to_route('auth::password.get', trans('auth::login.links.forget'), [], ['class' => 'btn btn-link']) }}
                             </div>
                         {{ Form::close() }}
                     </div>
+                    @if (Arcanedev\LaravelAuth\Services\SocialAuthenticator::isEnabled())
+                        @include('auth::public._includes.social-networks-links')
+                    @endif
                 </div>
             </div>
         </div>
