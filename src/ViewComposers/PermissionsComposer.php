@@ -12,29 +12,6 @@ use Illuminate\Contracts\View\View;
 class PermissionsComposer extends ViewComposer
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * @var \Arcanesoft\Auth\Models\Permission
-     */
-    protected $permissions;
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Constructor
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * PermissionsComposer constructor.
-     *
-     * @param Permission $permissions
-     */
-    public function __construct(Permission $permissions)
-    {
-        $this->permissions = $permissions;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -45,11 +22,8 @@ class PermissionsComposer extends ViewComposer
      */
     public function composeRolePermissions(View $view)
     {
-        $permissions = $this->cacheResults('auth.permissions.form', function () {
-            return $this->permissions
-                ->with('group')
-                ->orderBy('group_id', 'desc')
-                ->get();
+        $permissions = $this->cacheResults('permissions.form', function () {
+            return Permission::with(['group'])->orderBy('group_id', 'desc')->get();
         });
 
         $view->with('permissions', $permissions);

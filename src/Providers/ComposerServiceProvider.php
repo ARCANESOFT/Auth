@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
 use Arcanedev\Support\ServiceProvider;
+use \Arcanesoft\Auth\ViewComposers\Dashboard;
 
 /**
  * Class     ComposerServiceProvider
@@ -19,11 +20,47 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->registerDashboardComposers();
+        $this->registerOtherComposers();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function register()
+    {
+        //
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    private function registerDashboardComposers()
+    {
         view()->composer(
-            'auth::foundation.dashboard',
-            'Arcanesoft\Auth\ViewComposers\DashboardComposer@compose'
+            Dashboard\UsersCountComposer::VIEW,
+            Dashboard\UsersCountComposer::class
         );
 
+        view()->composer(
+            Dashboard\RolesCountComposer::VIEW,
+            Dashboard\RolesCountComposer::class
+        );
+
+        view()->composer(
+            Dashboard\PermissionsCountComposer::VIEW,
+            Dashboard\PermissionsCountComposer::class
+        );
+
+        view()->composer(
+            Dashboard\LatestThirtyDaysCreatedUsersComposer::VIEW,
+            Dashboard\LatestThirtyDaysCreatedUsersComposer::class
+        );
+    }
+
+    private function registerOtherComposers()
+    {
         view()->composer(
             'auth::foundation.roles._partials.permissions-checkbox',
             'Arcanesoft\Auth\ViewComposers\PermissionsComposer@composeRolePermissions'
@@ -38,13 +75,5 @@ class ComposerServiceProvider extends ServiceProvider
             'auth::foundation.permissions.list',
             'Arcanesoft\Auth\ViewComposers\PermissionsGroupsComposer@composeFilters'
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function register()
-    {
-        //
     }
 }

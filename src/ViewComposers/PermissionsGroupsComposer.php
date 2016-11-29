@@ -13,40 +13,6 @@ use Illuminate\Contracts\View\View;
 class PermissionsGroupsComposer extends ViewComposer
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The permissions group model.
-     *
-     * @var  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup
-     */
-    protected $permissionsGroup;
-
-    /**
-     * The permission model.
-     *
-     * @var  \Arcanesoft\Contracts\Auth\Models\Permission
-     */
-    protected $permission;
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Constructor
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * PermissionsGroupsComposer constructor.
-     *
-     * @param  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup  $permissionsGroup
-     * @param  \Arcanesoft\Contracts\Auth\Models\Permission        $permission
-     */
-    public function __construct(PermissionsGroup $permissionsGroup, Permission $permission)
-    {
-        $this->permissionsGroup = $permissionsGroup;
-        $this->permission       = $permission;
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -62,11 +28,11 @@ class PermissionsGroupsComposer extends ViewComposer
         // Permission groups
         //----------------------------------
         $groups = $this->cacheResults('permissions-groups.filters', function () {
-            return $this->permissionsGroup->has('permissions')->get();
+            return PermissionsGroup::has('permissions')->get();
         });
 
         foreach ($groups as $group) {
-            /** @var  \Arcanesoft\Contracts\Auth\Models\PermissionsGroup  $group */
+            /** @var  \Arcanesoft\Auth\Models\PermissionsGroup  $group */
             $filters->put($group->slug, link_to_route('auth::foundation.permissions.group', $group->name, [
                 $group->hashed_id
             ]));
@@ -74,12 +40,12 @@ class PermissionsGroupsComposer extends ViewComposer
 
         // Custom Permission group
         //----------------------------------
-        if ($this->permission->where('group_id', 0)->count()) {
+        if (Permission::where('group_id', 0)->count()) {
             $filters->put('custom', link_to_route('auth::foundation.permissions.group', 'Custom', [
                 hasher()->encode(0)
             ]));
         }
 
-        $view->with('groupFilters', $filters->toArray());
+        $view->with('groupFilters', $filters->toArray()); // TODO: return a collection instead of simple array
     }
 }
