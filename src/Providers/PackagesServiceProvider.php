@@ -2,6 +2,7 @@
 
 use Arcanedev\Gravatar\GravatarServiceProvider;
 use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
+use Arcanedev\LaravelAuth\Services\SocialAuthenticator;
 use Arcanedev\Support\ServiceProvider;
 use Illuminate\Support\Arr;
 
@@ -47,6 +48,7 @@ class PackagesServiceProvider extends ServiceProvider
 
         $this->configLaravelAuthPackage();
         $this->rebindModels();
+        $this->registerDependencies();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -61,9 +63,14 @@ class PackagesServiceProvider extends ServiceProvider
         /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config = $this->config();
 
+        // TODO: Check the auth config starting with laravel 5.2
         $config->set('auth.model',   $config->get('arcanesoft.auth.users.model', \Arcanesoft\Auth\Models\User::class));
         $config->set('auth.table',   $config->get('arcanesoft.auth.users.table', 'users'));
         $config->set('laravel-auth', Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher']));
+
+        if (SocialAuthenticator::isEnabled()) {
+            $this->app->register(\Laravel\Socialite\SocialiteServiceProvider::class);
+        }
     }
 
     /**
@@ -91,6 +98,14 @@ class PackagesServiceProvider extends ServiceProvider
         foreach ($bindings as $binding) {
             $this->bind($binding['abstract'], $binding['concrete']);
         }
+    }
+
+    /**
+     * Register the package dependencies.
+     */
+    private function registerDependencies()
+    {
+        //
     }
 
     /* ------------------------------------------------------------------------------------------------
