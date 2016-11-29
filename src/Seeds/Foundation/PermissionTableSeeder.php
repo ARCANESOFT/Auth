@@ -176,7 +176,7 @@ class PermissionTableSeeder extends PermissionsSeeder
             [
                 'name'        => 'Password Resets - Delete password resets',
                 'description' => 'Allow to delete password resets.',
-                'slug'        => PasswordResetsPolicy::PERMISSION_UPDATE,
+                'slug'        => PasswordResetsPolicy::PERMISSION_DELETE,
             ],
         ];
     }

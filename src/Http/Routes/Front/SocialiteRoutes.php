@@ -27,10 +27,10 @@ class SocialiteRoutes extends RouteRegister
             'as'     => 'social.',
         ], function () {
             $this->get('/', 'SocialAuthController@redirectToProvider')
-                ->name('redirect'); // auth::social.redirect
+                 ->name('redirect'); // auth::social.redirect
 
-            $this->get('/', 'SocialAuthController@handleCallback')
-                ->name('handle'); // auth::social.handle
+            $this->get('callback', 'SocialAuthController@handleCallback')
+                 ->name('callback'); // auth::social.callback
         });
     }
 }

@@ -36,8 +36,6 @@ class ProfileController extends Controller
     {
         parent::__construct();
 
-        $this->user = auth()->user();
-
         $this->setCurrentPage('auth-profile');
     }
 
@@ -47,13 +45,12 @@ class ProfileController extends Controller
      */
     public function index()
     {
-        $this->setData('user', $this->user);
+        $user = $this->getAuthenticatedUser();
 
-        $title = 'Profile - ' . $this->user->full_name;
-        $this->setTitle($title);
+        $this->setTitle($title = 'Profile - ' . $user->full_name);
         $this->addBreadcrumbRoute($title, 'auth::foundation.profile.index');
 
-        return $this->view('foundation.profile.index');
+        return $this->view('foundation.profile.index', compact('user'));
     }
 
     public function updatePassword(UpdatePasswordRequest $request, User $user)
@@ -66,5 +63,19 @@ class ProfileController extends Controller
         $this->notifySuccess($message, 'Password Updated !');
 
         return redirect()->route('auth::foundation.profile.index');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the authenticated user.
+     *
+     * @return \Arcanesoft\Contracts\Auth\Models\User
+     */
+    private function getAuthenticatedUser()
+    {
+        return auth()->user();
     }
 }

@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="box box-warning">
-        <div class="box-header">
+        <div class="box-header with-boder">
             <span class="label label-info" style="margin-right: 5px;">
                 Total : {{ $roles->total() }}
             </span>
@@ -22,14 +22,14 @@
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
-                <table class="table table-condensed table-hover">
+                <table class="table table-condensed table-hover no-margin">
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Slug</th>
                             <th>Description</th>
-                            <th class="text-center">N° Users</th>
-                            <th class="text-center">N° Permissions</th>
+                            <th class="text-center">Users</th>
+                            <th class="text-center">Permissions</th>
                             <th class="text-center" style="width: 60px;">Status</th>
                             <th class="text-center" style="width: 60px;">Locked</th>
                             <th class="text-right" style="width: 135px;">Actions</th>

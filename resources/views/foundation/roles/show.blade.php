@@ -29,18 +29,18 @@
                                     <td>{{ $role->description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>N° Users :</th>
+                                    <th>Users :</th>
                                     <td>
                                         <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
-                                            {{ $role->users->count() }} Users
+                                            {{ $role->users->count() }}
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>N° Permissions :</th>
+                                    <th>Permissions :</th>
                                     <td>
                                         <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
-                                            {{ $role->permissions->count() }} Permissions
+                                            {{ $role->permissions->count() }}
                                         </span>
                                     </td>
                                 </tr>
@@ -75,44 +75,44 @@
                 <div class="box-footer text-right">
                     @if ($role->isLocked())
                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-                            <a href="javascript:void(0);" class="btn btn-xs btn-warning" disabled="disabled">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-warning" disabled="disabled">
                                 <i class="fa fa-fw fa-pencil"></i> Update
                             </a>
 
                             @if ($role->isActive())
-                                <a href="javascript:void(0);" class="btn btn-xs btn-inverse" disabled="disabled">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-inverse" disabled="disabled">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </a>
                             @else
-                                <a href="javascript:void(0);" class="btn btn-xs btn-success" disabled="disabled">
+                                <a href="javascript:void(0);" class="btn btn-sm btn-success" disabled="disabled">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </a>
                             @endif
                         @endcan
 
                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-                            <a href="javascript:void(0);" class="btn btn-xs btn-danger" disabled="disabled">
+                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" disabled="disabled">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </a>
                         @endcan
                     @else
                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-                            <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-xs btn-warning">
+                            <a href="{{ route('auth::foundation.roles.edit', [$role->hashed_id]) }}" class="btn btn-sm btn-warning">
                                 <i class="fa fa-fw fa-pencil"></i> Update
                             </a>
                             @if ($role->isActive())
-                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-xs btn-inverse">
+                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-sm btn-inverse">
                                     <i class="fa fa-fw fa-power-off"></i> Disable
                                 </button>
                             @else
-                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-xs btn-success">
+                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-sm btn-success">
                                     <i class="fa fa-fw fa-power-off"></i> Activate
                                 </button>
                             @endif
                         @endcan
 
                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-                            <button data-target="#deleteRoleModal" data-toggle="modal" class="btn btn-xs btn-danger">
+                            <button data-target="#deleteRoleModal" data-toggle="modal" class="btn btn-sm btn-danger">
                                 <i class="fa fa-fw fa-trash-o"></i> Delete
                             </button>
                         @endcan
