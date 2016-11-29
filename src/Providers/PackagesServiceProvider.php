@@ -62,10 +62,6 @@ class PackagesServiceProvider extends ServiceProvider
     {
         /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config = $this->config();
-
-        // TODO: Check the auth config starting with laravel 5.2
-        $config->set('auth.model',   $config->get('arcanesoft.auth.users.model', \Arcanesoft\Auth\Models\User::class));
-        $config->set('auth.table',   $config->get('arcanesoft.auth.users.table', 'users'));
         $config->set('laravel-auth', Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher']));
 
         if (SocialAuthenticator::isEnabled()) {
