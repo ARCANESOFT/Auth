@@ -1,9 +1,14 @@
 <?php namespace Arcanesoft\Auth\ViewComposers\Dashboard;
 
-use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\ViewComposers\ViewComposer;
 use Illuminate\Contracts\View\View;
 
+/**
+ * Class     PermissionsCountComposer
+ *
+ * @package  Arcanesoft\Auth\ViewComposers\Dashboard
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
 class PermissionsCountComposer extends ViewComposer
 {
     /* ------------------------------------------------------------------------------------------------

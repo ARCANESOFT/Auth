@@ -37,6 +37,10 @@
                                     <td>{{ $user->email }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Last activity :</th>
+                                    <td><small>{{ $user->formatted_last_activity }}</small></td>
+                                </tr>
+                                <tr>
                                     <th>Status :</th>
                                     <td>
                                         @if ($user->isAdmin())

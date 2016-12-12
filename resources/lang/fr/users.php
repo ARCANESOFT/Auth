@@ -16,5 +16,6 @@ return [
      |  Messages
      | ------------------------------------------------------------------------------------------------
      */
-    'since'   => 'Membre depuis :date',
+    'since'       => 'Membre depuis :date',
+    'no-activity' => 'Aucune activité en ce moment',
 ];

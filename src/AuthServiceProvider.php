@@ -47,14 +47,7 @@ class AuthServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
         $this->registerSidebarItems();
-        $this->app->register(CoreServiceProvider::class);
-        $this->app->register(Providers\PackagesServiceProvider::class);
-        $this->app->register(Providers\AuthorizationServiceProvider::class);
-        $this->app->register(Providers\ComposerServiceProvider::class);
-
-        if ($this->app->runningInConsole()) {
-            $this->app->register(Providers\CommandServiceProvider::class);
-        }
+        $this->registerProviders();
     }
 
     /**
@@ -82,5 +75,24 @@ class AuthServiceProvider extends PackageServiceProvider
         return [
             //
         ];
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Register the providers.
+     */
+    private function registerProviders()
+    {
+        $this->app->register(CoreServiceProvider::class);
+        $this->app->register(Providers\EventServiceProvider::class);
+        $this->app->register(Providers\PackagesServiceProvider::class);
+        $this->app->register(Providers\AuthorizationServiceProvider::class);
+        $this->app->register(Providers\ComposerServiceProvider::class);
+
+        if ($this->app->runningInConsole())
+            $this->app->register(Providers\CommandServiceProvider::class);
     }
 }
