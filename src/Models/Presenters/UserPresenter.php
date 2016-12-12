@@ -6,8 +6,12 @@
  * @package  Arcanesoft\Auth\Models\Observers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
+ * @property  string          full_name
+ * @property  string          since_date
  * @property  string          gravatar
- * @property  string          hashed_id
+ * @property  string          formatted_last_activity
+ *
+ * @property  \Carbon\Carbon  last_activity
  * @property  \Carbon\Carbon  created_at
  */
 trait UserPresenter
@@ -23,7 +27,7 @@ trait UserPresenter
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get the full name attribute or use the username if empty.
+     * Get the `full_name` attribute or use the username if empty.
      *
      * @return string
      */
@@ -35,7 +39,7 @@ trait UserPresenter
     }
 
     /**
-     * Get the since date attribute (translated).
+     * Get the `since_date` attribute (translated).
      *
      * @return string
      */
@@ -47,7 +51,7 @@ trait UserPresenter
     }
 
     /**
-     * Get the gravatar attribute.
+     * Get the `gravatar` attribute.
      *
      * @return string
      */
@@ -56,5 +60,17 @@ trait UserPresenter
         return gravatar()
             ->setDefaultImage('mm')->setSize(160)
             ->src($this->email);
+    }
+
+    /**
+     * Get the `formatted_last_activity` attribute.
+     *
+     * @return string
+     */
+    public function getFormattedLastActivityAttribute()
+    {
+        return is_null($this->last_activity)
+            ? trans('auth::users.no-activity')
+            : $this->last_activity->diffForHumans();
     }
 }

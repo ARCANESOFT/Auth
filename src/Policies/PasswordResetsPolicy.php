@@ -1,5 +1,7 @@
 <?php namespace Arcanesoft\Auth\Policies;
 
+use Arcanesoft\Contracts\Auth\Models\User;
+
 /**
  * Class     PasswordResetsPolicy
  *

@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\ViewComposers\Dashboard;
 
-use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\ViewComposers\ViewComposer;
 use Illuminate\Contracts\View\View;
 

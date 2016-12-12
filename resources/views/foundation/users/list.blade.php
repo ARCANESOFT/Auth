@@ -54,6 +54,7 @@
                             <th>Full name</th>
                             <th>Email</th>
                             <th>Roles</th>
+                            <th class="text-center">Last activity</th>
                             <th class="text-center" style="width: 80px;">Status</th>
                             <th class="text-right" style="width: 160px;">Actions</th>
                         </tr>
@@ -72,6 +73,9 @@
                                     @foreach($user->roles as $role)
                                     <span class="label label-primary" style="margin-right: 5px;">{{  $role->name }}</span>
                                     @endforeach
+                                </td>
+                                <td class="text-center">
+                                    <small>{{ $user->formatted_last_activity }}</small>
                                 </td>
                                 <td class="text-center">
                                     @if ($user->isAdmin())

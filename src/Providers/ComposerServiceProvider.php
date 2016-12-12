@@ -36,6 +36,9 @@ class ComposerServiceProvider extends ServiceProvider
      |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Register all the dashboard view composers.
+     */
     private function registerDashboardComposers()
     {
         view()->composer(
@@ -56,6 +59,11 @@ class ComposerServiceProvider extends ServiceProvider
         view()->composer(
             Dashboard\LatestThirtyDaysCreatedUsersComposer::VIEW,
             Dashboard\LatestThirtyDaysCreatedUsersComposer::class
+        );
+
+        view()->composer(
+            Dashboard\OnlineUsersCountComposer::VIEW,
+            Dashboard\OnlineUsersCountComposer::class
         );
     }
 
