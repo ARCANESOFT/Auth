@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\ViewComposers\Dashboard;
 
+use Arcanesoft\Auth\Models\User;
 use Arcanesoft\Auth\ViewComposers\ViewComposer;
 use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
@@ -29,15 +30,26 @@ class OnlineUsersCountComposer extends ViewComposer
      */
     public function compose(View $view)
     {
+        $view->with('onlineUsersCount', $this->getOnlineUsers()->count());
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the online users.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    private function getOnlineUsers()
+    {
         $date = Carbon::now()->subMinutes(
             config('arcanesoft.auth.track-activity.minutes', 5)
         );
 
-        $users = $this->getCachedUsers()->filter(function ($user) use ($date) {
-            /** @var  \Arcanesoft\Auth\Models\User  $user */
+        return $this->getCachedUsers()->filter(function (User $user) use ($date) {
             return ! is_null($user->last_activity) && $user->last_activity->gte($date);
         });
-
-        $view->with('onlineUsersCount', $users->count());
     }
 }
