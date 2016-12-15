@@ -2,7 +2,7 @@
 
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 
 /**
  * Class     RolesComposer
@@ -30,7 +30,7 @@ class RolesComposer extends ViewComposer
     /**
      * RolesComposer constructor.
      *
-     * @param Role $role
+     * @param  \Arcanesoft\Contracts\Auth\Models\Role  $role
      */
     public function __construct(Role $role)
     {
@@ -41,20 +41,25 @@ class RolesComposer extends ViewComposer
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * Compose the view.
+     *
+     * @param  \Illuminate\Contracts\View\View  $view
+     */
     public function composeFilters(View $view)
     {
-        $filters = collect();
-        $roles   = Cache::remember('cache::auth.roles.filters', 1, function () {
+        $filters = new Collection;
+        $roles   = $this->cacheResults('roles.filters', function () {
             return $this->role->has('users')->get();
         });
 
         foreach ($roles as $role) {
-            /** @var  \Arcanesoft\Contracts\Auth\Models\Role  $role */
+            /** @var  \Arcanesoft\Auth\Models\Role  $role */
             $filters->put($role->slug, link_to_route('auth::foundation.users.roles-filter.index', $role->name, [
                 $role->hashed_id
             ]));
         }
 
-        $view->with('rolesFilters', $filters->toArray());
+        $view->with('rolesFilters', $filters);
     }
 }

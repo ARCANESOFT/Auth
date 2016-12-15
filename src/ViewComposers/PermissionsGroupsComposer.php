@@ -1,8 +1,9 @@
 <?php namespace Arcanesoft\Auth\ViewComposers;
 
-use Arcanesoft\Contracts\Auth\Models\Permission;
-use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
+use Arcanesoft\Auth\Models\Permission;
+use Arcanesoft\Auth\Models\PermissionsGroup;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 
 /**
  * Class     PermissionsGroupsComposer
@@ -23,7 +24,7 @@ class PermissionsGroupsComposer extends ViewComposer
      */
     public function composeFilters(View $view)
     {
-        $filters = collect();
+        $filters = new Collection;
 
         // Permission groups
         //----------------------------------
@@ -46,6 +47,6 @@ class PermissionsGroupsComposer extends ViewComposer
             ]));
         }
 
-        $view->with('groupFilters', $filters->toArray()); // TODO: return a collection instead of simple array
+        $view->with('groupFilters', $filters); // TODO: return a collection instead of simple array
     }
 }
