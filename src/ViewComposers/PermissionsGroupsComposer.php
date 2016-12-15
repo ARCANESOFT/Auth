@@ -47,6 +47,6 @@ class PermissionsGroupsComposer extends ViewComposer
             ]));
         }
 
-        $view->with('groupFilters', $filters); // TODO: return a collection instead of simple array
+        $view->with('groupFilters', $filters);
     }
 }
