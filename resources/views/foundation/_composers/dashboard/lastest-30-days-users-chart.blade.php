@@ -16,12 +16,12 @@
                     labels: {!! $latestUsersByThirtyDays->keys() !!},
                     datasets: [
                         {
-                            label: "Registered users",
+                            label: 'Registered users',
                             data: {!! $latestUsersByThirtyDays->values() !!},
                             fill: true,
                             lineTension: 0.1,
-                            backgroundColor: "#0073B7",
-                            borderColor: "#0073B7",
+                            backgroundColor: 'rgba(0, 115, 183, 0.1)',
+                            borderColor: '#0073B7',
                             borderCapStyle: 'butt',
                             borderDash: [],
                             borderDashOffset: 0.0,
