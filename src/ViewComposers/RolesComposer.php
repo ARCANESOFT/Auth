@@ -55,7 +55,7 @@ class RolesComposer extends ViewComposer
 
         foreach ($roles as $role) {
             /** @var  \Arcanesoft\Auth\Models\Role  $role */
-            $filters->put($role->slug, link_to_route('auth::foundation.users.roles-filter.index', $role->name, [
+            $filters->put($role->slug, link_to_route('admin::auth.users.roles-filter.index', $role->name, [
                 $role->hashed_id
             ]));
         }

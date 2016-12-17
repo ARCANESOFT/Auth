@@ -34,17 +34,13 @@ class PermissionsGroupsComposer extends ViewComposer
 
         foreach ($groups as $group) {
             /** @var  \Arcanesoft\Auth\Models\PermissionsGroup  $group */
-            $filters->put($group->slug, link_to_route('auth::foundation.permissions.group', $group->name, [
-                $group->hashed_id
-            ]));
+            $filters->put($group->slug, link_to_route('admin::auth.permissions.group', $group->name, [$group->hashed_id]));
         }
 
         // Custom Permission group
         //----------------------------------
         if (Permission::where('group_id', 0)->count()) {
-            $filters->put('custom', link_to_route('auth::foundation.permissions.group', 'Custom', [
-                hasher()->encode(0)
-            ]));
+            $filters->put('custom', link_to_route('admin::auth.permissions.group', 'Custom', [hasher()->encode(0)]));
         }
 
         $view->with('groupFilters', $filters);

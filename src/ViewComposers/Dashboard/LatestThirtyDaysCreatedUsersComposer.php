@@ -20,7 +20,7 @@ class LatestThirtyDaysCreatedUsersComposer extends ViewComposer
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
-    const VIEW = 'auth::foundation._composers.dashboard.lastest-30-days-users-chart';
+    const VIEW = 'auth::admin._composers.dashboard.lastest-30-days-users-chart';
 
     /* ------------------------------------------------------------------------------------------------
      |  Properties

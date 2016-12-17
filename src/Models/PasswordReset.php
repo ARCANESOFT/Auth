@@ -20,17 +20,42 @@ class PasswordReset extends Model
      |  Properties
      | ------------------------------------------------------------------------------------------------
      */
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table   = 'password_resets';
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden  = ['token'];
 
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
     protected $dates   = [self::CREATED_AT];
 
     /* ------------------------------------------------------------------------------------------------
      |  Relationships
      | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * The user relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()
     {
@@ -62,10 +87,8 @@ class PasswordReset extends Model
      */
     public function isExpired()
     {
-        $expiredAt = Carbon::now()->subMinutes(
-            config('auth.passwords.users.expire', 60)
+        return $this->created_at->lt(
+            Carbon::now()->subMinutes(config('auth.passwords.users.expire', 60))
         );
-
-        return $this->created_at->lt($expiredAt);
     }
 }

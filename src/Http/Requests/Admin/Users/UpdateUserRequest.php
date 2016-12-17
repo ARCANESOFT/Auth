@@ -1,0 +1,42 @@
+<?php namespace Arcanesoft\Auth\Http\Requests\Admin\Users;
+
+/**
+ * Class     UpdateUserRequest
+ *
+ * @package  Arcanesoft\Auth\Http\Requests\Admin\Users
+ * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ */
+class UpdateUserRequest extends UserFormRequest
+{
+    /* ------------------------------------------------------------------------------------------------
+     |  Main Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        /** @var \Arcanesoft\Contracts\Auth\Models\User  $user */
+        $user = $this->route('auth_user');
+
+        return array_merge(parent::rules(), [
+            'username'              => "required|min:3|unique:users,username,{$user->id}",
+            'email'                 => "required|email|unique:users,email,{$user->id}",
+            'password'              => 'required_with:password_confirmation|min:8|confirmed',
+            'password_confirmation' => 'required_with:password',
+        ]);
+    }
+}

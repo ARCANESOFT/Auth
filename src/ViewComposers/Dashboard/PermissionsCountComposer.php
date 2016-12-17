@@ -15,7 +15,7 @@ class PermissionsCountComposer extends ViewComposer
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
-    const VIEW = 'auth::foundation._composers.dashboard.permissions-count-box';
+    const VIEW = 'auth::admin._composers.dashboard.permissions-count-box';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

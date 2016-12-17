@@ -28,9 +28,7 @@ class UserValidator
     {
         unset($attribute, $parameters, $validator);
 
-        if (auth()->guest()) {
-            return false;
-        }
+        if (auth()->guest()) return false;
 
         return Hash::check($value, auth()->user()->password);
     }

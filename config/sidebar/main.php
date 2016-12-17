@@ -13,7 +13,7 @@ return [
         [
             'title'       => 'Statistics',
             'name'        => 'auth-dashboard',
-            'route'       => 'auth::foundation.dashboard',
+            'route'       => 'admin::auth.dashboard',
             'icon'        => 'fa fa-fw fa-bar-chart',
             'roles'       => [Role::ADMINISTRATOR],
             'permissions' => [
@@ -23,7 +23,7 @@ return [
         [
             'title'       => 'Users',
             'name'        => 'auth-users',
-            'route'       => 'auth::foundation.users.index',
+            'route'       => 'admin::auth.users.index',
             'icon'        => 'fa fa-fw fa-users',
             'roles'       => [Role::ADMINISTRATOR],
             'permissions' => [
@@ -33,7 +33,7 @@ return [
         [
             'title'       => 'Roles',
             'name'        => 'auth-roles',
-            'route'       => 'auth::foundation.roles.index',
+            'route'       => 'admin::auth.roles.index',
             'icon'        => 'fa fa-fw fa-lock',
             'roles'       => [Role::ADMINISTRATOR],
             'permissions' => [
@@ -43,7 +43,7 @@ return [
         [
             'title'       => 'Permissions',
             'name'        => 'auth-permissions',
-            'route'       => 'auth::foundation.permissions.index',
+            'route'       => 'admin::auth.permissions.index',
             'icon'        => 'fa fa-fw fa-check-circle',
             'roles'       => [Role::ADMINISTRATOR],
             'permissions' => [
@@ -53,7 +53,7 @@ return [
         [
             'title'       => 'Password Resets',
             'name'        => 'auth-password-resets',
-            'route'       => 'auth::foundation.password-resets.index',
+            'route'       => 'admin::auth.password-resets.index',
             'icon'        => 'fa fa-fw fa-refresh',
             'roles'       => [Role::ADMINISTRATOR],
             'permissions' => [

@@ -34,9 +34,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return string
      */
-    public function getFoundationAuthPrefix()
+    public function getAdminAuthPrefix()
     {
-        $prefix = array_get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
+        $prefix = Arr::get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
 
         return "$prefix/" . config('arcanesoft.auth.route.prefix', 'authorization');
     }
@@ -53,7 +53,7 @@ class RouteServiceProvider extends ServiceProvider
     public function map(Router $router)
     {
         $this->mapPublicRoutes($router);
-        $this->mapFoundationRoutes($router);
+        $this->mapAdminRoutes($router);
     }
 
     /**
@@ -95,33 +95,33 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    private function mapFoundationRoutes(Router $router)
+    private function mapAdminRoutes(Router $router)
     {
         $attributes = array_merge($this->getFoundationRouteGroup(), [
-            'as'        => 'auth::foundation.',
-            'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Foundation',
+            'as'        => 'admin::auth.',
+            'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Admin',
         ]);
 
         $router->group($attributes, function (Router $router) {
-            Routes\Foundation\ProfileRoutes::register($router);
+            Routes\Admin\ProfileRoutes::register($router);
         });
 
         $router->group(array_merge(
             $attributes,
-            ['prefix' => $this->getFoundationAuthPrefix()]
+            ['prefix' => $this->getAdminAuthPrefix()]
         ), function (Router $router) {
-            Routes\Foundation\StatsRoutes::register($router);
-            Routes\Foundation\UsersRoutes::register($router);
-            Routes\Foundation\RolesRoutes::register($router);
-            Routes\Foundation\PermissionsRoutes::register($router);
-            Routes\Foundation\PasswordResetsRoutes::register($router);
+            Routes\Admin\StatsRoutes::register($router);
+            Routes\Admin\UsersRoutes::register($router);
+            Routes\Admin\RolesRoutes::register($router);
+            Routes\Admin\PermissionsRoutes::register($router);
+            Routes\Admin\PasswordResetsRoutes::register($router);
         });
 
         $router->group(array_merge(
             $attributes,
-            ['prefix' => $this->getFoundationAuthPrefix()]
+            ['prefix' => $this->getAdminAuthPrefix()]
         ), function (Router $router) {
-            Routes\Foundation\ApiRoutes::register($router);
+            Routes\Admin\ApiRoutes::register($router);
         });
     }
 }

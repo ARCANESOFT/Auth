@@ -5,7 +5,7 @@ use Arcanedev\Support\Bases\FormRequest as BaseFormRequest;
 /**
  * Class     FormRequest
  *
- * @package  Arcanesoft\Auth\Bases
+ * @package  Arcanesoft\Auth\Http\Requests
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
 abstract class FormRequest extends BaseFormRequest

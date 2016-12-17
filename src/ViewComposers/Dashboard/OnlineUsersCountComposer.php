@@ -17,7 +17,7 @@ class OnlineUsersCountComposer extends ViewComposer
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
-    const VIEW = 'auth::foundation._composers.dashboard.online-users-count-box';
+    const VIEW = 'auth::admin._composers.dashboard.online-users-count-box';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions

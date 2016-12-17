@@ -15,7 +15,7 @@ class RolesCountComposer extends ViewComposer
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
-    const VIEW = 'auth::foundation._composers.dashboard.roles-count-box';
+    const VIEW = 'auth::admin._composers.dashboard.roles-count-box';
 
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
