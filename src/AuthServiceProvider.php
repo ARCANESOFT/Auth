@@ -47,7 +47,14 @@ class AuthServiceProvider extends PackageServiceProvider
     {
         $this->registerConfig();
         $this->registerSidebarItems();
-        $this->registerProviders();
+        $this->registerProviders([
+            CoreServiceProvider::class,
+            Providers\EventServiceProvider::class,
+            Providers\PackagesServiceProvider::class,
+            Providers\AuthorizationServiceProvider::class,
+            Providers\ComposerServiceProvider::class,
+        ]);
+        $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
     }
 
     /**
@@ -55,8 +62,10 @@ class AuthServiceProvider extends PackageServiceProvider
      */
     public function boot()
     {
-        $this->app->register(Providers\RouteServiceProvider::class);
-        $this->app->register(Providers\ValidatorServiceProvider::class);
+        $this->registerProviders([
+            Providers\RouteServiceProvider::class,
+            Providers\ValidatorServiceProvider::class,
+        ]);
 
         // Publishes
         $this->publishConfig();
@@ -75,24 +84,5 @@ class AuthServiceProvider extends PackageServiceProvider
         return [
             //
         ];
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register the providers.
-     */
-    private function registerProviders()
-    {
-        $this->app->register(CoreServiceProvider::class);
-        $this->app->register(Providers\EventServiceProvider::class);
-        $this->app->register(Providers\PackagesServiceProvider::class);
-        $this->app->register(Providers\AuthorizationServiceProvider::class);
-        $this->app->register(Providers\ComposerServiceProvider::class);
-
-        if ($this->app->runningInConsole())
-            $this->app->register(Providers\CommandServiceProvider::class);
     }
 }

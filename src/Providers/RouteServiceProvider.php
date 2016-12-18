@@ -20,23 +20,13 @@ class RouteServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Get the routes namespace
-     *
-     * @return string
-     */
-    protected function getRouteNamespace()
-    {
-        return 'Arcanesoft\\Auth\\Http\\Routes';
-    }
-
-    /**
      * Get the auth foundation route prefix.
      *
      * @return string
      */
     public function getAdminAuthPrefix()
     {
-        $prefix = Arr::get($this->getFoundationRouteGroup(), 'prefix', 'dashboard');
+        $prefix = Arr::get($this->getAdminRouteGroup(), 'prefix', 'dashboard');
 
         return "$prefix/" . config('arcanesoft.auth.route.prefix', 'authorization');
     }
@@ -97,7 +87,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapAdminRoutes(Router $router)
     {
-        $attributes = array_merge($this->getFoundationRouteGroup(), [
+        $attributes = array_merge($this->getAdminRouteGroup(), [
             'as'        => 'admin::auth.',
             'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Admin',
         ]);

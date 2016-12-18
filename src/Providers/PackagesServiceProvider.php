@@ -36,7 +36,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerGravatarPackage()
     {
-        $this->app->register(GravatarServiceProvider::class);
+        $this->registerProvider(GravatarServiceProvider::class);
     }
 
     /**
@@ -44,7 +44,7 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function registerLaravelAuthPackage()
     {
-        $this->app->register(LaravelAuthServiceProvider::class);
+        $this->registerProvider(LaravelAuthServiceProvider::class);
 
         $this->configLaravelAuthPackage();
         $this->rebindModels();
@@ -65,7 +65,7 @@ class PackagesServiceProvider extends ServiceProvider
         $config->set('laravel-auth', Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher']));
 
         if (SocialAuthenticator::isEnabled()) {
-            $this->app->register(\Laravel\Socialite\SocialiteServiceProvider::class);
+            $this->registerProvider(\Laravel\Socialite\SocialiteServiceProvider::class);
         }
     }
 
