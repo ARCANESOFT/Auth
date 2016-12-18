@@ -32,7 +32,7 @@
         {{-- Menu Footer --}}
         <li class="user-footer">
             <div class="pull-left">
-                {{ link_to_route('auth::admin.profile.index', trans('auth::generals.profile'), [], ['class' => 'btn btn-default btn-flat']) }}
+                {{ link_to_route('admin::auth.profile.index', trans('auth::generals.profile'), [], ['class' => 'btn btn-default btn-flat']) }}
             </div>
             <div class="pull-right">
                 {{ link_to_route('auth::logout', trans('auth::generals.logout'), [], ['class' => 'btn btn-default btn-flat']) }}
