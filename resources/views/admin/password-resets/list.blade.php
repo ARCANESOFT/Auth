@@ -14,12 +14,14 @@
                 </span>
             @endif
             <div class="box-tools">
+                @if ($resets->total())
                 <a href="#clearPasswordResetsModal" class="btn btn-xs btn-primary">
                     <i class="fa fa-fw fa-trash-o"></i> Clear expired
                 </a>
                 <a href="#deletePasswordResetsModal" class="btn btn-xs btn-danger">
                     <i class="fa fa-fw fa-trash-o"></i> Delete all
                 </a>
+                @endif
             </div>
         </div>
         <div class="box-body no-padding">
@@ -137,7 +139,7 @@
             $clearPasswordResetsForm.submit(function (e) {
                 e.preventDefault();
                 var $submitBtn = $clearPasswordResetsForm.find('button[type="submit"]');
-                $submitBtn.button('loading');
+                    $submitBtn.button('loading');
 
                 $.ajax({
                     url:      $clearPasswordResetsForm.attr('action'),
@@ -161,8 +163,9 @@
                         $submitBtn.button('reset');
                     }
                 });
+
                 return false;
-            })
+            });
 
             var $deletePasswordResetsModal = $('div#deletePasswordResetsModal'),
                 $deletePasswordResetsForm  = $('form#deletePasswordResetsForm');

@@ -1,12 +1,12 @@
-@if ($permission->hasGroup())
-    <?php
-        /** @var  \Arcanesoft\Auth\Models\PermissionsGroup  $group */
-        $group = $permission->group->load('permissions');
-    ?>
-    <div class="box box-primary">
-        <div class="box-header">
-            <h3 class="box-title">Permissions Group</h3>
-        </div>
+<div class="box box-default">
+    <div class="box-header">
+        <h3 class="box-title">Permissions Group</h3>
+    </div>
+    @if ($permission->hasGroup())
+        <?php
+            /** @var  \Arcanesoft\Auth\Models\PermissionsGroup  $group */
+            $group = $permission->group->load('permissions');
+        ?>
         <div class="box-body no-padding">
             <div class="table-responsive">
                 <table class="table table-condensed no-margin">
@@ -46,12 +46,8 @@
         <div class="box-footer">
             {{ link_to_route('admin::auth.permissions.group', 'Show all permissions', [$group->hashed_id], ['class' => 'btn btn-sm btn-default btn-block']) }}
         </div>
-    </div>
-@else
-    <div class="box box-default">
-        <div class="box-header">
-            <h3 class="box-title">Permissions Group</h3>
-        </div>
+    @else
+
         <div class="box-body no-padding">
             <table class="table table-condensed no-margin">
                 <tbody>
@@ -69,5 +65,5 @@
         <div class="box-footer">
             {{ link_to_route('admin::auth.permissions.group', 'Show all permissions', [hasher()->encode(0)], ['class' => 'btn btn-sm btn-default btn-block']) }}
         </div>
-    </div>
-@endif
+    @endif
+</div>

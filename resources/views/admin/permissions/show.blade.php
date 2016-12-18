@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            @include('auth::admin.permissions._inc.permission-group')
+            @include('auth::admin.permissions._includes.permission-group')
         </div>
 
         <div class="col-md-7">

@@ -36,6 +36,7 @@ class ProfileController extends Controller
     {
         parent::__construct();
 
+        $this->addBreadcrumbRoute('Profile', 'admin::auth.profile.index');
         $this->setCurrentPage('auth-profile');
     }
 
@@ -47,19 +48,29 @@ class ProfileController extends Controller
     {
         $user = $this->getAuthenticatedUser();
 
-        $this->setTitle($title = "Profile - {$user->full_name}");
-        $this->addBreadcrumbRoute($title, 'admin::auth.profile.index');
+        $this->setTitle("Profile - {$user->full_name}");
+        $this->addBreadcrumbRoute($user->full_name, 'admin::auth.profile.index');
 
         return $this->view('admin.profile.index', compact('user'));
     }
 
+    public function edit()
+    {
+        // TODO: complete the implementation
+    }
+
+    public function update()
+    {
+        // TODO: complete the implementation
+    }
+
     public function updatePassword(UpdatePasswordRequest $request, User $user)
     {
-        $user->password = $request->get('password');
-        $user->save();
+        $user->update([
+            'password' => $request->get('password'),
+        ]);
 
-        $message = 'The password was updated successfully !';
-        Log::info($message, $user->toArray());
+        Log::info($message = 'The password was updated successfully !', $user->toArray());
         $this->notifySuccess($message, 'Password Updated !');
 
         return redirect()->route('admin::auth.profile.index');

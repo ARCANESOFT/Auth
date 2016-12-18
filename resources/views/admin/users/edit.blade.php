@@ -13,24 +13,6 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('username', 'has-error') }}">
-                                    {{ Form::label('username', 'Username', ['class' => 'control-label']) }}
-                                    {{ Form::text('username', old('username', $user->username), ['class' => 'form-control']) }}
-                                    @if ($errors->has('username'))
-                                        <span class="text-red">{!! $errors->first('username') !!}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('email', 'has-error') }}">
-                                    {{ Form::label('email', 'Email', ['class' => 'control-label']) }}
-                                    {{ Form::email('email', old('email', $user->email), ['class' => 'form-control']) }}
-                                    @if ($errors->has('email'))
-                                        <span class="text-red">{!! $errors->first('email') !!}</span>
-                                    @endif
-                                </div>
-                            </div>
-                            <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('first_name', 'has-error') }}">
                                     {{ Form::label('first_name', 'First Name', ['class' => 'control-label']) }}
                                     {{ Form::text('first_name', old('first_name', $user->first_name), ['class' => 'form-control']) }}
@@ -45,6 +27,24 @@
                                     {{ Form::text('last_name', old('last_name', $user->last_name), ['class' => 'form-control']) }}
                                     @if ($errors->has('last_name'))
                                         <span class="text-red">{!! $errors->first('last_name') !!}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group {{ $errors->first('username', 'has-error') }}">
+                                    {{ Form::label('username', 'Username', ['class' => 'control-label']) }}
+                                    {{ Form::text('username', old('username', $user->username), ['class' => 'form-control']) }}
+                                    @if ($errors->has('username'))
+                                        <span class="text-red">{!! $errors->first('username') !!}</span>
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group {{ $errors->first('email', 'has-error') }}">
+                                    {{ Form::label('email', 'Email', ['class' => 'control-label']) }}
+                                    {{ Form::email('email', old('email', $user->email), ['class' => 'form-control']) }}
+                                    @if ($errors->has('email'))
+                                        <span class="text-red">{!! $errors->first('email') !!}</span>
                                     @endif
                                 </div>
                             </div>
@@ -77,9 +77,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @include('auth::admin.users._partials.roles-checkbox', [
-                    'old' => old('roles', $user->roles->pluck('id')->toArray())
-                ])
+                @include('auth::admin.users._partials.roles-checkbox', ['old' => old('roles', $user->roles->pluck('id', 'id'))])
             </div>
         </div>
     {{ Form::close() }}

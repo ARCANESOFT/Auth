@@ -70,18 +70,18 @@ class ComposerServiceProvider extends ServiceProvider
     private function registerOtherComposers()
     {
         view()->composer(
-            'auth::foundation.roles._partials.permissions-checkbox',
+            'auth::admin.roles._partials.permissions-checkbox',
             'Arcanesoft\Auth\ViewComposers\PermissionsComposer@composeRolePermissions'
         );
 
         view()->composer(
-            'auth::foundation.users.list',
+            'auth::admin.users.list',
             'Arcanesoft\Auth\ViewComposers\RolesComposer@composeFilters'
         );
 
         view()->composer(
-            'auth::foundation.permissions.list',
-            'Arcanesoft\Auth\ViewComposers\PermissionsGroupsComposer@composeFilters'
+            \Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::VIEW,
+            \Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::class
         );
     }
 }

@@ -15,17 +15,7 @@
             @endif
 
             <div class="box-tools">
-                <div class="dropdown pull-right">
-                    <button class="btn btn-sm btn-default dropdown-toggle" type="button" id="groupFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Group <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="groupFilter">
-                        <li>{{ link_to_route('admin::auth.permissions.index', 'All') }}</li>
-                        @foreach ($groupFilters as $groupFilter)
-                        <li>{!! $groupFilter !!}</li>
-                        @endforeach
-                    </ul>
-                </div>
+                @include(Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::VIEW)
             </div>
         </div>
         <div class="box-body no-padding">

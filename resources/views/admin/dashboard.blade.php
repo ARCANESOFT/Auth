@@ -3,7 +3,7 @@
 @endsection
 
 @section('content')
-    @include('auth::foundation._includes.dashboard')
+    @include('auth::admin._composers.dashboard')
 @endsection
 
 @section('scripts')
