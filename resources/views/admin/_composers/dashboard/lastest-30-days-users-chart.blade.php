@@ -8,6 +8,8 @@
 </div>
 
 @section('scripts')
+    @parent
+
     <script>
         $(function () {
             new Chart($('canvas#latestUsersChart'), {
