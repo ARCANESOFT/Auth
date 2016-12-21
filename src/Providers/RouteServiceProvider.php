@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapPublicRoutes(Router $router)
     {
-        $configs    = $this->config()->get('arcanesoft.auth.authentication');
+        $configs    = $this->config()->get('arcanesoft.auth.authentication', []);
         $attributes = Arr::get($configs, 'routes.global', [
             'prefix'    => 'auth',
             'as'        => 'auth::',
@@ -76,14 +76,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapAdminRoutes(Router $router)
     {
-        $namespace  = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
+        $namespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
 
         $router->group($this->getAdminAttributes('auth.', $namespace), function (Router $router) {
             Routes\Admin\ProfileRoutes::register($router);
         });
 
         $attributes = $this->getAdminAttributes(
-            'auth.', $namespace, config('arcanesoft.auth.route.prefix', 'authorization')
+            'auth.', $namespace, $this->config()->get('arcanesoft.auth.route.prefix', 'authorization')
         );
 
         $router->group($attributes, function (Router $router) {
