@@ -16,22 +16,6 @@ use Illuminate\Support\Arr;
 class RouteServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the auth foundation route prefix.
-     *
-     * @return string
-     */
-    public function getAdminAuthPrefix()
-    {
-        $prefix = Arr::get($this->getAdminRouteGroup(), 'prefix', 'dashboard');
-
-        return "$prefix/" . config('arcanesoft.auth.route.prefix', 'authorization');
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -46,6 +30,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->mapAdminRoutes($router);
     }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Routes
+     | ------------------------------------------------------------------------------------------------
+     */
     /**
      * Define the public routes for the application.
      *
@@ -72,6 +60,7 @@ class RouteServiceProvider extends ServiceProvider
                 Routes\Front\SocialiteRoutes::register($router);
         });
 
+        // API ??
         $router->group(array_merge($attributes, [
             'prefix' => 'api',
             'as'     => $attributes['as'] . 'api.',
@@ -87,19 +76,17 @@ class RouteServiceProvider extends ServiceProvider
      */
     private function mapAdminRoutes(Router $router)
     {
-        $attributes = array_merge($this->getAdminRouteGroup(), [
-            'as'        => 'admin::auth.',
-            'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Admin',
-        ]);
+        $namespace  = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
 
-        $router->group($attributes, function (Router $router) {
+        $router->group($this->getAdminAttributes('auth.', $namespace), function (Router $router) {
             Routes\Admin\ProfileRoutes::register($router);
         });
 
-        $router->group(array_merge(
-            $attributes,
-            ['prefix' => $this->getAdminAuthPrefix()]
-        ), function (Router $router) {
+        $attributes = $this->getAdminAttributes(
+            'auth.', $namespace, config('arcanesoft.auth.route.prefix', 'authorization')
+        );
+
+        $router->group($attributes, function (Router $router) {
             Routes\Admin\StatsRoutes::register($router);
             Routes\Admin\UsersRoutes::register($router);
             Routes\Admin\RolesRoutes::register($router);
@@ -107,10 +94,8 @@ class RouteServiceProvider extends ServiceProvider
             Routes\Admin\PasswordResetsRoutes::register($router);
         });
 
-        $router->group(array_merge(
-            $attributes,
-            ['prefix' => $this->getAdminAuthPrefix()]
-        ), function (Router $router) {
+        // API ??
+        $router->group($attributes, function (Router $router) {
             Routes\Admin\ApiRoutes::register($router);
         });
     }
