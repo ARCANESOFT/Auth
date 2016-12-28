@@ -30,7 +30,7 @@ class CreateRoleRequest extends RoleFormRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'slug' => 'required|min:3|unique:roles,slug',
+            'slug' => ['required', 'min:3', $this->getSlugRule()],
         ]);
     }
 }

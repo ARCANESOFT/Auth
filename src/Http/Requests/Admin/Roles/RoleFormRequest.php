@@ -3,6 +3,7 @@
 use Arcanesoft\Auth\Http\Requests\FormRequest;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
+use Illuminate\Validation\Rule;
 
 /**
  * Class     RoleFormRequest
@@ -24,26 +25,38 @@ abstract class RoleFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'        => 'required|min:3',
-            'slug'        => 'required|min:3|unique:roles,slug',
-            'description' => 'required|min:10',
-            'permissions' => 'required|array|in:'.Permission::getIds()->implode(','),
+            'name'        => ['required', 'min:3'],
+            'slug'        => ['required', 'min:3', $this->getSlugRule()],
+            'description' => ['required', 'min:10'],
+            'permissions' => ['required', 'array', 'in:'.Permission::getIds()->implode(',')],
+        ];
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Sanitize the inputs.
+     *
+     * @return array
+     */
+    protected function sanitize()
+    {
+        return [
+            'slug' => (new Role)->makeSlugName($this->get($this->has('slug') ? 'slug' : 'name'))
         ];
     }
 
     /**
-     * Sanitize the inputs.
+     * Get the slug rule.
      *
-     * @param  array  $inputs
+     * @param  string  $column
      *
-     * @return array
+     * @return \Illuminate\Validation\Rules\Unique
      */
-    public function sanitize(array $inputs)
+    protected function getSlugRule($column = 'slug')
     {
-        $inputs['slug'] = (new Role)->makeSlugName(
-            $this->get($this->has('slug') ? 'slug' : 'name')
-        );
-
-        return $inputs;
+        return Rule::unique('roles', $column);
     }
 }

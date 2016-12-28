@@ -11,17 +11,6 @@ use Arcanesoft\Auth\Http\Requests\FormRequest;
 class UpdatePasswordRequest extends FormRequest
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Authenticated user.
-     *
-     * @var \Arcanesoft\Contracts\Auth\Models\User $user
-     */
-    protected $user;
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -32,9 +21,10 @@ class UpdatePasswordRequest extends FormRequest
      */
     public function authorize()
     {
-        $this->user = $this->route('auth_user');
+        /** @var  \Arcanesoft\Contracts\Auth\Models\User  $user */
+        $user = $this->route('auth_user');
 
-        return $this->user->id === auth()->user()->id;
+        return $user->id === auth()->user()->id;
     }
 
     /**
@@ -45,8 +35,8 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => 'required|min:8|different:password|user_password',
-            'password'     => 'required|min:8|different:old_password|confirmed',
+            'old_password' => ['required', 'min:8', 'different:password', 'user_password'],
+            'password'     => ['required', 'min:8', 'different:old_password', 'confirmed'],
         ];
     }
 

@@ -30,9 +30,9 @@ class CreateUserRequest extends UserFormRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'username' => 'required|min:3|unique:users,username',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
+            'username' => ['required', 'min:3', $this->getUsernameRule()],
+            'email'    => ['required', 'email', $this->getEmailRule()],
+            'password' => ['required', 'min:8', 'confirmed'],
         ]);
     }
 }

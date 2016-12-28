@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
-use Arcanesoft\Core\Bases\AdminController as BaseController;
+use Arcanesoft\Core\Bases\AdminController;
 use Arcanesoft\Core\Traits\Notifyable;
 
 /**
@@ -9,7 +9,7 @@ use Arcanesoft\Core\Traits\Notifyable;
  * @package  Arcanesoft\Auth\Http\Controllers\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-abstract class Controller extends BaseController
+abstract class Controller extends AdminController
 {
     /* ------------------------------------------------------------------------------------------------
      |  Traits

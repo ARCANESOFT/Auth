@@ -29,14 +29,14 @@ class UpdateUserRequest extends UserFormRequest
      */
     public function rules()
     {
-        /** @var \Arcanesoft\Contracts\Auth\Models\User  $user */
+        /** @var  \Arcanesoft\Contracts\Auth\Models\User  $user */
         $user = $this->route('auth_user');
 
         return array_merge(parent::rules(), [
-            'username'              => "required|min:3|unique:users,username,{$user->id}",
-            'email'                 => "required|email|unique:users,email,{$user->id}",
-            'password'              => 'required_with:password_confirmation|min:8|confirmed',
-            'password_confirmation' => 'required_with:password',
+            'username'              => ['required', 'min:3', $this->getUsernameRule()->ignore($user->id)],
+            'email'                 => ['required', 'email', $this->getEmailRule()->ignore($user->id)],
+            'password'              => ['required_with:password_confirmation', 'min:8', 'confirmed'],
+            'password_confirmation' => ['required_with:password'],
         ]);
     }
 }

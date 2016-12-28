@@ -4,6 +4,7 @@ use Arcanesoft\Auth\Http\Requests\FormRequest;
 use Arcanesoft\Contracts\Auth\Models\Role as RoleContract;
 use Cache;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 /**
  * Class     UserFormRequest
@@ -25,8 +26,8 @@ abstract class UserFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|min:2',
-            'last_name'  => 'required|min:2',
+            'first_name' => ['required', 'min:2'],
+            'last_name'  => ['required', 'min:2'],
             'roles'      => $this->getRolesRule(),
         ];
     }
@@ -34,15 +35,13 @@ abstract class UserFormRequest extends FormRequest
     /**
      * Sanitize all inputs.
      *
-     * @param  array  $inputs
-     *
      * @return array
      */
-    public function sanitize(array $inputs)
+    protected function sanitize()
     {
-        $inputs['username'] = $this->sanitizeUsername($inputs);
-
-        return $inputs;
+        return [
+            'username' => $this->sanitizeUsername(),
+        ];
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -52,17 +51,39 @@ abstract class UserFormRequest extends FormRequest
     /**
      * Sanitize the username.
      *
-     * @param  array  $inputs
-     *
      * @return string
      */
-    protected function sanitizeUsername(array $inputs)
+    protected function sanitizeUsername()
     {
         $username = $this->has('username')
-            ? $inputs['username']
-            : Str::limit($inputs['first_name'], 1, '.') . ' ' . $inputs['last_name'];
+            ? $this->get('username')
+            : Str::limit($this->get('first_name'), 1, '.').' '.$this->get('last_name');
 
         return Str::slug($username, config('arcanesoft.auth.slug-separator', '.'));
+    }
+
+    /**
+     * Get the email rule.
+     *
+     * @param  string  $column
+     *
+     * @return \Illuminate\Validation\Rules\Unique
+     */
+    protected function getEmailRule($column = 'email')
+    {
+        return Rule::unique('users', $column);
+    }
+
+    /**
+     * Get the username rule.
+     *
+     * @param  string  $column
+     *
+     * @return \Illuminate\Validation\Rules\Unique
+     */
+    protected function getUsernameRule($column = 'username')
+    {
+        return Rule::unique('users', $column);
     }
 
     /**
@@ -76,6 +97,6 @@ abstract class UserFormRequest extends FormRequest
             return app(RoleContract::class)->pluck('id');
         });
 
-        return 'required|array|min:1|in:' . $rolesIds->implode(',');
+        return ['required', 'array', 'min:1', 'in:'.$rolesIds->implode(',')];
     }
 }

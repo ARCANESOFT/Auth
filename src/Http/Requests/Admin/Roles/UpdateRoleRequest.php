@@ -29,11 +29,11 @@ class UpdateRoleRequest extends RoleFormRequest
      */
     public function rules()
     {
-        /** @var \Arcanesoft\Auth\Models\Role $role */
+        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role = $this->route('auth_role');
 
         return array_merge(parent::rules(), [
-            'slug' => "required|min:3|unique:roles,slug,{$role->id}",
+            'slug' => ['required', 'min:3', $this->getSlugRule()->ignore($role->id)],
         ]);
     }
 }

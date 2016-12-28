@@ -4,12 +4,12 @@ use Arcanedev\Support\ServiceProvider;
 use \Arcanesoft\Auth\ViewComposers\Dashboard;
 
 /**
- * Class     ComposerServiceProvider
+ * Class     ViewComposerServiceProvider
  *
  * @package  Arcanesoft\Auth\Providers
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ComposerServiceProvider extends ServiceProvider
+class ViewComposerServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -22,14 +22,6 @@ class ComposerServiceProvider extends ServiceProvider
     {
         $this->registerDashboardComposers();
         $this->registerOtherComposers();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function register()
-    {
-        //
     }
 
     /* ------------------------------------------------------------------------------------------------
