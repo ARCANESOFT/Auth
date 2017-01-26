@@ -1,4 +1,4 @@
-@extends('_template.default.layout')
+@extends('_templates.default.master')
 
 @section('content')
     <div class="container">
