@@ -51,4 +51,18 @@ class ResetPasswordController extends Controller
             ['token' => $token, 'email' => $request->get('email')]
         );
     }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the post reset redirect path.
+     *
+     * @return string
+     */
+    public function redirectTo()
+    {
+        return '/home';
+    }
 }

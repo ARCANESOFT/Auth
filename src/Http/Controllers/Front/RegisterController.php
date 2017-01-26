@@ -77,6 +77,20 @@ class RegisterController extends Controller
             ->with('success', 'You\'re account is confirmed !');
     }
 
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the post register redirect path.
+     *
+     * @return string
+     */
+    public function redirectTo()
+    {
+        return '/home';
+    }
+
     /**
      * Get a validator for an incoming registration request.
      *

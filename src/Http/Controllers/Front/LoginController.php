@@ -17,17 +17,6 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
-
-    /* ------------------------------------------------------------------------------------------------
      |  Constructor
      | ------------------------------------------------------------------------------------------------
      */
@@ -53,5 +42,19 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth::public.login');
+    }
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Other Functions
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Get the post login redirect path.
+     *
+     * @return string
+     */
+    public function redirectTo()
+    {
+        return '/home';
     }
 }
