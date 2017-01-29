@@ -1,11 +1,8 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
-use Arcanedev\LaravelAuth\Services\SocialAuthenticator;
-use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanesoft\Auth\Http\Routes;
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
 use Illuminate\Contracts\Routing\Registrar as Router;
-use Illuminate\Support\Arr;
 
 /**
  * Class     RouteServiceProvider
@@ -26,49 +23,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Router $router)
     {
-        $this->mapPublicRoutes($router);
         $this->mapAdminRoutes($router);
     }
 
     /* ------------------------------------------------------------------------------------------------
-     |  Routes
+     |  Other Functions
      | ------------------------------------------------------------------------------------------------
      */
-    /**
-     * Define the public routes for the application.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
-     */
-    private function mapPublicRoutes(Router $router)
-    {
-        $configs    = $this->config()->get('arcanesoft.auth.authentication', []);
-        $attributes = Arr::get($configs, 'routes.global', [
-            'prefix'    => 'auth',
-            'as'        => 'auth::',
-            'namespace' => 'Arcanesoft\\Auth\\Http\\Controllers\\Front',
-        ]);
-
-        $router->group($attributes, function (Router $router) {
-            Routes\Front\AuthenticationRoutes::register($router);
-            Routes\Front\RegisterRoutes::register($router);
-            Routes\Front\PasswordResetRoutes::register($router);
-
-            if (UserImpersonator::isEnabled())
-                Routes\Front\ImpersonateRoutes::register($router);
-
-            if (SocialAuthenticator::isEnabled())
-                Routes\Front\SocialiteRoutes::register($router);
-        });
-
-        // API ??
-        $router->group(array_merge($attributes, [
-            'prefix' => 'api',
-            'as'     => $attributes['as'] . 'api.',
-        ]), function (Router $router) {
-            Routes\Front\ApiRoutes::register($router);
-        });
-    }
-
     /**
      * Define the foundation routes for the application.
      *
