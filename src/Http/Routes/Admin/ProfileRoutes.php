@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\Support\Bases\RouteRegister;
-use Illuminate\Contracts\Routing\Registrar;
+use Arcanedev\Support\Routing\RouteRegistrar;
 
 /**
  * Class     ProfileRoutes
@@ -9,7 +8,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class ProfileRoutes extends RouteRegister
+class ProfileRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -17,17 +16,15 @@ class ProfileRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
-        $this->group(['prefix' => 'profile', 'as' => 'profile.'], function () {
+        $this->prefix('profile')->name('profile.')->group(function () {
             $this->get('/', 'ProfileController@index')
                  ->name('index'); // admin::auth.profile.index
 
             // TODO: Remove the user id ??
-            $this->group(['prefix' => '{auth_user}/password', 'as' => 'password.'], function () {
+            $this->prefix('{auth_user}/password')->name('password.')->group(function () {
                 $this->put('/', 'ProfileController@updatePassword')
                      ->name('update'); // admin::auth.profile.password.update
             });

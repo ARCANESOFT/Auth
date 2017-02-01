@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\Support\Bases\RouteRegister;
-use Illuminate\Contracts\Routing\Registrar;
+use Arcanedev\Support\Routing\RouteRegistrar;
 
 /**
  * Class     PasswordResetsRoutes
@@ -9,7 +8,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PasswordResetsRoutes extends RouteRegister
+class PasswordResetsRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -17,12 +16,10 @@ class PasswordResetsRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
-        $this->group(['prefix' => 'password-resets', 'as' => 'password-resets.'], function () {
+        $this->prefix('password-resets')->name('password-resets.')->group(function () {
             $this->get('/', 'PasswordResetsController@index')
                  ->name('index');  // admin::auth.password-resets.index
 

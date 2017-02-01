@@ -1,6 +1,5 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
-use Arcanesoft\Auth\Http\Controllers\Admin\Controller;
 use Arcanesoft\Auth\Policies\DashboardPolicy;
 
 /**

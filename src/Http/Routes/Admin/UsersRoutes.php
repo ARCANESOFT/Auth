@@ -1,9 +1,8 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
 use Arcanedev\LaravelAuth\Services\UserImpersonator;
-use Arcanedev\Support\Bases\RouteRegister;
+use Arcanedev\Support\Routing\RouteRegistrar;
 use Arcanesoft\Auth\Models\User;
-use Illuminate\Contracts\Routing\Registrar;
 
 /**
  * Class     UsersRoutes
@@ -11,7 +10,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class UsersRoutes extends RouteRegister
+class UsersRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -19,16 +18,14 @@ class UsersRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
         $this->bind('auth_user', function($hashedId) {
             return User::firstHashedOrFail($hashedId);
         });
 
-        $this->group(['prefix' => 'users', 'as' => 'users.'], function () {
+        $this->prefix('users')->name('users.')->group(function () {
             $this->get('/', 'UsersController@index')
                  ->name('index'); // admin::auth.users.index
 
@@ -44,7 +41,7 @@ class UsersRoutes extends RouteRegister
             $this->post('store', 'UsersController@store')
                  ->name('store'); // admin::auth.users.store
 
-            $this->group(['prefix' => '{auth_user}'], function () {
+            $this->prefix('{auth_user}')->group(function () {
                 $this->get('/', 'UsersController@show')
                      ->name('show'); // admin::auth.users.show
 

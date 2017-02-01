@@ -1,8 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\Support\Bases\RouteRegister;
+use Arcanedev\Support\Routing\RouteRegistrar;
 use Arcanesoft\Auth\Models\Role;
-use Illuminate\Contracts\Routing\Registrar;
 
 /**
  * Class     RolesRoutes
@@ -10,7 +9,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class RolesRoutes extends RouteRegister
+class RolesRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -18,16 +17,14 @@ class RolesRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
         $this->bind('auth_role', function($hashedId) {
             return Role::firstHashedOrFail($hashedId);
         });
 
-        $this->group(['prefix' => 'roles', 'as' => 'roles.'], function () {
+        $this->prefix('roles')->name('roles.')->group(function () {
             $this->get('/', 'RolesController@index')
                  ->name('index'); // admin::auth.roles.index
 
@@ -37,7 +34,7 @@ class RolesRoutes extends RouteRegister
             $this->post('store', 'RolesController@store')
                  ->name('store'); // admin::auth.roles.store
 
-            $this->group(['prefix' => '{auth_role}'], function () {
+            $this->name('{auth_role}')->group(function () {
                 $this->get('/', 'RolesController@show')
                      ->name('show'); // admin::auth.roles.show
 

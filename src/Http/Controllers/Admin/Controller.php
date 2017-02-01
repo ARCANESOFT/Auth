@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
-use Arcanesoft\Core\Bases\AdminController;
+use Arcanesoft\Core\Http\Controllers\AdminController;
 use Arcanesoft\Core\Traits\Notifyable;
 
 /**
