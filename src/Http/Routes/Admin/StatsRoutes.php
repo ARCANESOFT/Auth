@@ -1,7 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\Support\Bases\RouteRegister;
-use Illuminate\Contracts\Routing\Registrar;
+use Arcanedev\Support\Routing\RouteRegistrar;
 
 /**
  * Class     StatsRoutes
@@ -9,7 +8,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class StatsRoutes extends RouteRegister
+class StatsRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -17,12 +16,10 @@ class StatsRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
-        $this->group(['prefix' => 'stats'], function () {
+        $this->prefix('stats')->group(function () {
             $this->get('/', 'DashboardController@index')
                  ->name('dashboard'); // admin::auth.dashboard
         });

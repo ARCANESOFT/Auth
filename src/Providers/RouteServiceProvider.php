@@ -2,7 +2,7 @@
 
 use Arcanesoft\Auth\Http\Routes;
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
-use Illuminate\Contracts\Routing\Registrar as Router;
+use Illuminate\Contracts\Routing\Registrar as RouterContract;
 
 /**
  * Class     RouteServiceProvider
@@ -21,7 +21,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Router $router)
+    public function map(RouterContract $router)
     {
         $this->mapAdminRoutes($router);
     }
@@ -35,11 +35,11 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    private function mapAdminRoutes(Router $router)
+    private function mapAdminRoutes(RouterContract $router)
     {
         $namespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
 
-        $router->group($this->getAdminAttributes('auth.', $namespace), function (Router $router) {
+        $router->group($this->getAdminAttributes('auth.', $namespace), function ($router) {
             Routes\Admin\ProfileRoutes::register($router);
         });
 
@@ -47,7 +47,7 @@ class RouteServiceProvider extends ServiceProvider
             'auth.', $namespace, $this->config()->get('arcanesoft.auth.route.prefix', 'authorization')
         );
 
-        $router->group($attributes, function (Router $router) {
+        $router->group($attributes, function ($router) {
             Routes\Admin\StatsRoutes::register($router);
             Routes\Admin\UsersRoutes::register($router);
             Routes\Admin\RolesRoutes::register($router);
@@ -56,7 +56,7 @@ class RouteServiceProvider extends ServiceProvider
         });
 
         // API ??
-        $router->group($attributes, function (Router $router) {
+        $router->group($attributes, function ($router) {
             Routes\Admin\ApiRoutes::register($router);
         });
     }

@@ -8,6 +8,8 @@ use Illuminate\Contracts\Auth\Guard;
  *
  * @package  Arcanesoft\Auth\Http\Middleware
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo: Replace this middleware by core admin middleware ?
  */
 class VerifyAdministrator
 {

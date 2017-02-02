@@ -1,9 +1,8 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\Support\Bases\RouteRegister;
+use Arcanedev\Support\Routing\RouteRegistrar;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\PermissionsGroup;
-use Illuminate\Contracts\Routing\Registrar;
 
 /**
  * Class     PermissionsRoutes
@@ -11,7 +10,7 @@ use Illuminate\Contracts\Routing\Registrar;
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionsRoutes extends RouteRegister
+class PermissionsRoutes extends RouteRegistrar
 {
     /* ------------------------------------------------------------------------------------------------
      |  Main Functions
@@ -19,10 +18,8 @@ class PermissionsRoutes extends RouteRegister
      */
     /**
      * Map routes.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(Registrar $router)
+    public function map()
     {
         $this->bind('auth_permission', function($hashedId) {
             return Permission::firstHashedOrFail($hashedId);
@@ -32,14 +29,14 @@ class PermissionsRoutes extends RouteRegister
             return PermissionsGroup::firstHashedOrFail($hashedId);
         });
 
-        $this->group(['prefix' => 'permissions', 'as' => 'permissions.'], function () {
+        $this->prefix('permissions')->name('permissions.')->group(function () {
             $this->get('/', 'PermissionsController@index')
                  ->name('index'); // admin::auth.permissions.index
 
             $this->get('group/{auth_permissions_group}', 'PermissionsController@group')
                  ->name('group'); // admin::auth.permissions.group
 
-            $this->group(['prefix' => '{auth_permission}'], function () {
+            $this->prefix('{auth_permission}')->group(function () {
                 $this->get('/', 'PermissionsController@show')
                      ->name('show'); // admin::auth.permissions.show
 
