@@ -9,6 +9,8 @@ use Arcanesoft\Auth\Models\User;
  *
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo Fixing the issue with nested groups and removing the `clear()` method.
  */
 class UsersRoutes extends RouteRegistrar
 {
@@ -25,7 +27,7 @@ class UsersRoutes extends RouteRegistrar
             return User::firstHashedOrFail($hashedId);
         });
 
-        $this->prefix('users')->name('users.')->group(function () {
+        $this->clear()->prefix('users')->name('users.')->group(function () {
             $this->get('/', 'UsersController@index')
                  ->name('index'); // admin::auth.users.index
 
@@ -41,7 +43,7 @@ class UsersRoutes extends RouteRegistrar
             $this->post('store', 'UsersController@store')
                  ->name('store'); // admin::auth.users.store
 
-            $this->prefix('{auth_user}')->group(function () {
+            $this->clear()->prefix('{auth_user}')->group(function () {
                 $this->get('/', 'UsersController@show')
                      ->name('show'); // admin::auth.users.show
 

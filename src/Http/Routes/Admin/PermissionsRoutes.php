@@ -9,6 +9,8 @@ use Arcanesoft\Auth\Models\PermissionsGroup;
  *
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo Fixing the issue with nested groups and removing the `clear()` method.
  */
 class PermissionsRoutes extends RouteRegistrar
 {
@@ -29,14 +31,14 @@ class PermissionsRoutes extends RouteRegistrar
             return PermissionsGroup::firstHashedOrFail($hashedId);
         });
 
-        $this->prefix('permissions')->name('permissions.')->group(function () {
+        $this->clear()->prefix('permissions')->name('permissions.')->group(function () {
             $this->get('/', 'PermissionsController@index')
                  ->name('index'); // admin::auth.permissions.index
 
             $this->get('group/{auth_permissions_group}', 'PermissionsController@group')
                  ->name('group'); // admin::auth.permissions.group
 
-            $this->prefix('{auth_permission}')->group(function () {
+            $this->clear()->prefix('{auth_permission}')->group(function () {
                 $this->get('/', 'PermissionsController@show')
                      ->name('show'); // admin::auth.permissions.show
 

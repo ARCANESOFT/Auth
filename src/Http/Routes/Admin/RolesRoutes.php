@@ -8,6 +8,8 @@ use Arcanesoft\Auth\Models\Role;
  *
  * @package  Arcanesoft\Auth\Http\Routes\Admin
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @todo Fixing the issue with nested groups and removing the `clear()` method.
  */
 class RolesRoutes extends RouteRegistrar
 {
@@ -24,7 +26,7 @@ class RolesRoutes extends RouteRegistrar
             return Role::firstHashedOrFail($hashedId);
         });
 
-        $this->prefix('roles')->name('roles.')->group(function () {
+        $this->clear()->prefix('roles')->name('roles.')->group(function () {
             $this->get('/', 'RolesController@index')
                  ->name('index'); // admin::auth.roles.index
 
@@ -34,7 +36,7 @@ class RolesRoutes extends RouteRegistrar
             $this->post('store', 'RolesController@store')
                  ->name('store'); // admin::auth.roles.store
 
-            $this->name('{auth_role}')->group(function () {
+            $this->clear()->prefix('{auth_role}')->group(function () {
                 $this->get('/', 'RolesController@show')
                      ->name('show'); // admin::auth.roles.show
 
