@@ -1,6 +1,6 @@
 <div class="info-box">
     <span class="info-box-icon bg-yellow">
-        <i class="ion ion-locked"></i>
+        <i class="ion ion-ios-lock"></i>
     </span>
     <div class="info-box-content">
         <span class="info-box-text">Roles Total</span>

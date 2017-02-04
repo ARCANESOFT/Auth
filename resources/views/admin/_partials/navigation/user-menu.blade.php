@@ -1,6 +1,6 @@
 <?php
-    /** @var  Arcanesoft\Auth\Models\User  $user */
-    $user = auth()->user();
+/** @var  Arcanesoft\Auth\Models\User  $user */
+$user = auth()->user();
 ?>
 <li class="dropdown user user-menu">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -32,10 +32,17 @@
         {{-- Menu Footer --}}
         <li class="user-footer">
             <div class="pull-left">
-                {{ link_to_route('admin::auth.profile.index', trans('auth::generals.profile'), [], ['class' => 'btn btn-default btn-flat']) }}
+                <a href="{{ route('admin::auth.profile.index') }}" class="btn btn-default btn-flat">
+                    <i class="fa fa-fw fa-user"></i> {{ trans('auth::generals.profile') }}
+                </a>
             </div>
             <div class="pull-right">
-                {{ link_to_route('auth::logout', trans('auth::generals.logout'), [], ['class' => 'btn btn-default btn-flat']) }}
+                <a href="#" class="btn btn-default btn-flat" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    {{ trans('auth::generals.logout') }} <i class="fa fa-fw fa-sign-out"></i>
+                </a>
+                <form id="logout-form" action="{{ route('auth::logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
             </div>
         </li>
     </ul>
