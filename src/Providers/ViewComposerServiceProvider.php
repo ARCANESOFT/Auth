@@ -1,7 +1,8 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
-use Arcanedev\Support\ServiceProvider;
-use \Arcanesoft\Auth\ViewComposers\Dashboard;
+use Arcanedev\Support\Providers\ViewComposerServiceProvider as ServiceProvider;
+use Arcanesoft\Auth\ViewComposers;
+use Arcanesoft\Auth\ViewComposers\Dashboard;
 
 /**
  * Class     ViewComposerServiceProvider
@@ -12,6 +13,24 @@ use \Arcanesoft\Auth\ViewComposers\Dashboard;
 class ViewComposerServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
+     |  Properties
+     | ------------------------------------------------------------------------------------------------
+     */
+    /**
+     * Register the composer classes.
+     *
+     * @var array
+     */
+    protected $composerClasses = [
+        // Dashboard view composers
+        Dashboard\UsersCountComposer::VIEW                   => Dashboard\UsersCountComposer::class,
+        Dashboard\RolesCountComposer::VIEW                   => Dashboard\RolesCountComposer::class,
+        Dashboard\PermissionsCountComposer::VIEW             => Dashboard\PermissionsCountComposer::class,
+        Dashboard\LatestThirtyDaysCreatedUsersComposer::VIEW => Dashboard\LatestThirtyDaysCreatedUsersComposer::class,
+        Dashboard\OnlineUsersCountComposer::VIEW             => Dashboard\OnlineUsersCountComposer::class,
+    ];
+
+    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -20,7 +39,8 @@ class ViewComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerDashboardComposers();
+        parent::boot();
+
         $this->registerOtherComposers();
     }
 
@@ -29,51 +49,23 @@ class ViewComposerServiceProvider extends ServiceProvider
      | ------------------------------------------------------------------------------------------------
      */
     /**
-     * Register all the dashboard view composers.
+     * Register other view composers.
      */
-    private function registerDashboardComposers()
-    {
-        view()->composer(
-            Dashboard\UsersCountComposer::VIEW,
-            Dashboard\UsersCountComposer::class
-        );
-
-        view()->composer(
-            Dashboard\RolesCountComposer::VIEW,
-            Dashboard\RolesCountComposer::class
-        );
-
-        view()->composer(
-            Dashboard\PermissionsCountComposer::VIEW,
-            Dashboard\PermissionsCountComposer::class
-        );
-
-        view()->composer(
-            Dashboard\LatestThirtyDaysCreatedUsersComposer::VIEW,
-            Dashboard\LatestThirtyDaysCreatedUsersComposer::class
-        );
-
-        view()->composer(
-            Dashboard\OnlineUsersCountComposer::VIEW,
-            Dashboard\OnlineUsersCountComposer::class
-        );
-    }
-
     private function registerOtherComposers()
     {
-        view()->composer(
+        $this->composer(
             'auth::admin.roles._partials.permissions-checkbox',
             'Arcanesoft\Auth\ViewComposers\PermissionsComposer@composeRolePermissions'
         );
 
-        view()->composer(
+        $this->composer(
             'auth::admin.users.list',
             'Arcanesoft\Auth\ViewComposers\RolesComposer@composeFilters'
         );
 
-        view()->composer(
-            \Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::VIEW,
-            \Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::class
+        $this->composer(
+            ViewComposers\PermissionGroupsFilterComposer::VIEW,
+            ViewComposers\PermissionGroupsFilterComposer::class
         );
     }
 }

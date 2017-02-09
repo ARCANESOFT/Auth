@@ -2,7 +2,6 @@
 
 use Arcanesoft\Auth\Http\Routes;
 use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
-use Illuminate\Contracts\Routing\Registrar as RouterContract;
 
 /**
  * Class     RouteServiceProvider
@@ -18,12 +17,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     /**
      * Define the routes for the application.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    public function map(RouterContract $router)
+    public function map()
     {
-        $this->mapAdminRoutes($router);
+        $this->mapAdminRoutes();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -32,32 +29,30 @@ class RouteServiceProvider extends ServiceProvider
      */
     /**
      * Define the foundation routes for the application.
-     *
-     * @param  \Illuminate\Contracts\Routing\Registrar  $router
      */
-    private function mapAdminRoutes(RouterContract $router)
+    private function mapAdminRoutes()
     {
         $namespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
 
-        $router->group($this->getAdminAttributes('auth.', $namespace), function ($router) {
-            Routes\Admin\ProfileRoutes::register($router);
+        $this->group($this->getAdminAttributes('auth.', $namespace), function () {
+            Routes\Admin\ProfileRoutes::register();
         });
 
         $attributes = $this->getAdminAttributes(
             'auth.', $namespace, $this->config()->get('arcanesoft.auth.route.prefix', 'authorization')
         );
 
-        $router->group($attributes, function ($router) {
-            Routes\Admin\StatsRoutes::register($router);
-            Routes\Admin\UsersRoutes::register($router);
-            Routes\Admin\RolesRoutes::register($router);
-            Routes\Admin\PermissionsRoutes::register($router);
-            Routes\Admin\PasswordResetsRoutes::register($router);
+        $this->group($attributes, function () {
+            Routes\Admin\StatsRoutes::register();
+            Routes\Admin\UsersRoutes::register();
+            Routes\Admin\RolesRoutes::register();
+            Routes\Admin\PermissionsRoutes::register();
+            Routes\Admin\PasswordResetsRoutes::register();
         });
 
         // API ??
-        $router->group($attributes, function ($router) {
-            Routes\Admin\ApiRoutes::register($router);
+        $this->group($attributes, function () {
+            Routes\Admin\ApiRoutes::register();
         });
     }
 }

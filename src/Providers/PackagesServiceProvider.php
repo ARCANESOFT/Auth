@@ -103,18 +103,4 @@ class PackagesServiceProvider extends ServiceProvider
     {
         //
     }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the config repository instance.
-     *
-     * @return \Illuminate\Contracts\Config\Repository
-     */
-    protected function config()
-    {
-        return $this->app['config'];
-    }
 }

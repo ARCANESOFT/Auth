@@ -2,7 +2,6 @@
 
 use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;
 use Arcanesoft\Auth\Policies;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 
 /**
  * Class     AuthorizationServiceProvider
@@ -13,36 +12,21 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 class AuthorizationServiceProvider extends ServiceProvider
 {
     /* ------------------------------------------------------------------------------------------------
-     |  Properties
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * The policy mappings for the application.
-     *
-     * @var array
-     */
-    protected $policies = [
-        //
-    ];
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
     /**
      * Register any application authentication / authorization services.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    public function boot(GateContract $gate)
+    public function boot()
     {
         parent::registerPolicies();
 
-        $this->registerDashboardPolicies($gate);
-        $this->registerUsersPolicies($gate);
-        $this->registerRolesPolicies($gate);
-        $this->registerPermissionsPolicies($gate);
-        $this->registerPasswordResetsPolicies($gate);
+        $this->registerDashboardPolicies();
+        $this->registerUsersPolicies();
+        $this->registerRolesPolicies();
+        $this->registerPermissionsPolicies();
+        $this->registerPasswordResetsPolicies();
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -51,12 +35,10 @@ class AuthorizationServiceProvider extends ServiceProvider
      */
     /**
      * Register dashboard authorizations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    private function registerDashboardPolicies($gate)
+    private function registerDashboardPolicies()
     {
-        $this->defineMany($gate,
+        $this->defineMany(
             Policies\DashboardPolicy::class,
             Policies\DashboardPolicy::getPolicies()
         );
@@ -64,12 +46,10 @@ class AuthorizationServiceProvider extends ServiceProvider
 
     /**
      * Register users authorizations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    private function registerUsersPolicies(GateContract $gate)
+    private function registerUsersPolicies()
     {
-        $this->defineMany($gate,
+        $this->defineMany(
             Policies\UsersPolicy::class,
             Policies\UsersPolicy::getPolicies()
         );
@@ -77,12 +57,10 @@ class AuthorizationServiceProvider extends ServiceProvider
 
     /**
      * Register roles authorizations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    private function registerRolesPolicies(GateContract $gate)
+    private function registerRolesPolicies()
     {
-        $this->defineMany($gate,
+        $this->defineMany(
             Policies\RolesPolicy::class,
             Policies\RolesPolicy::getPolicies()
         );
@@ -90,12 +68,10 @@ class AuthorizationServiceProvider extends ServiceProvider
 
     /**
      * Register permissions authorizations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    private function registerPermissionsPolicies(GateContract $gate)
+    private function registerPermissionsPolicies()
     {
-        $this->defineMany($gate,
+        $this->defineMany(
             Policies\PermissionsPolicy::class,
             Policies\PermissionsPolicy::getPolicies()
         );
@@ -103,12 +79,10 @@ class AuthorizationServiceProvider extends ServiceProvider
 
     /**
      * Register password resets authorizations.
-     *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
      */
-    private function registerPasswordResetsPolicies(GateContract $gate)
+    private function registerPasswordResetsPolicies()
     {
-        $this->defineMany($gate,
+        $this->defineMany(
             Policies\PasswordResetsPolicy::class,
             Policies\PasswordResetsPolicy::getPolicies()
         );
