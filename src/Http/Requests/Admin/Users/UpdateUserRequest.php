@@ -35,8 +35,8 @@ class UpdateUserRequest extends UserFormRequest
         return array_merge(parent::rules(), [
             'username'              => ['required', 'min:3', $this->getUsernameRule()->ignore($user->id)],
             'email'                 => ['required', 'email', $this->getEmailRule()->ignore($user->id)],
-            'password'              => ['required_with:password_confirmation', 'min:8', 'confirmed'],
-            'password_confirmation' => ['required_with:password'],
+            'password'              => ['nullable', 'required_with:password_confirmation', 'min:8', 'confirmed'],
+            'password_confirmation' => ['nullable', 'required_with:password'],
         ]);
     }
 }

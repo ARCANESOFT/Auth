@@ -206,13 +206,7 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
-        $inputs = ['username', 'email', 'first_name', 'last_name'];
-
-        if ($request->has('password')) {
-            $inputs[] = 'password';
-        }
-
-        $user->update($request->only($inputs));
+        $user->update($request->intersect(['username', 'email', 'password', 'first_name', 'last_name']));
         $user->roles()->sync($request->get('roles'));
 
         $message = "The user {$user->username} was updated successfully !";
