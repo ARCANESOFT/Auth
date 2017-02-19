@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     /* ------------------------------------------------------------------------------------------------
      |  Route
      | ------------------------------------------------------------------------------------------------
@@ -17,9 +18,11 @@ return [
         'login-logout'  => [
             'enabled' => true,
         ],
+
         'register'      => [
             'enabled' => true,
         ],
+
         'password-reset' => [
             'enabled' => true,
         ],
@@ -31,6 +34,8 @@ return [
      */
     'database'           => [
         'connection' => config('database.default'),
+
+        'prefix'     => 'auth_'
     ],
 
     /* ------------------------------------------------------------------------------------------------
@@ -51,6 +56,11 @@ return [
         'slug-separator' => '-',
     ],
 
+    'role-user'          => [
+        'table'          => 'role_user',
+        'model'          => \Arcanedev\LaravelAuth\Models\Pivots\RoleUser::class,
+    ],
+
     'permissions-groups' => [
         'table'          => 'permissions_groups',
         'model'          => \Arcanesoft\Auth\Models\PermissionsGroup::class,
@@ -65,12 +75,37 @@ return [
         'slug-separator' => '.',
     ],
 
+    'permission-role'    => [
+        'table'          => 'permission_role',
+        'model'          => \Arcanedev\LaravelAuth\Models\Pivots\PermissionRole::class,
+    ],
+
+    'password-resets'    => [
+        'model'          => \Arcanedev\LaravelAuth\Models\PasswordReset::class,
+    ],
+
+    /* ------------------------------------------------------------------------------------------------
+     |  Observers
+     | ------------------------------------------------------------------------------------------------
+     */
+    'observers' => [
+        'enabled'  => true,
+
+        'bindings' => [
+            'users'              => \Arcanesoft\Contracts\Auth\Models\User::class,
+            'roles'              => \Arcanesoft\Contracts\Auth\Models\Role::class,
+            'permissions-groups' => \Arcanesoft\Contracts\Auth\Models\PermissionsGroup::class,
+            'permissions'        => \Arcanesoft\Contracts\Auth\Models\Permission::class,
+        ],
+    ],
+
     /* ------------------------------------------------------------------------------------------------
      |  User confirmation
      | ------------------------------------------------------------------------------------------------
      */
     'user-confirmation'  => [
         'enabled'   => true,
+
         'length'    => 30,
     ],
 
@@ -80,6 +115,7 @@ return [
      */
     'impersonation'      => [
         'enabled' => false,
+
         'key'     => 'impersonate',
     ],
 
@@ -133,6 +169,7 @@ return [
      */
     'throttles'          => [
         'enabled' => true,
+
         'table'   => 'throttles',
     ],
 
@@ -150,9 +187,4 @@ return [
         ],
     ],
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other stuff
-     | ------------------------------------------------------------------------------------------------
-     */
-    'use-observers'      => true,
 ];
