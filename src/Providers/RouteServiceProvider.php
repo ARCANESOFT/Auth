@@ -11,48 +11,43 @@ use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
  */
 class RouteServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Properties
+     | -----------------------------------------------------------------
+     */
+    protected $adminNamespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
+
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Define the routes for the application.
      */
     public function map()
     {
-        $this->mapAdminRoutes();
+        // Admin Routes
+        $this->adminGroup(function () {
+            $this->name('auth.')->group(function () {
+                $this->mapAdminRoutes();
+            });
+        });
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
-     */
     /**
      * Define the foundation routes for the application.
      */
     private function mapAdminRoutes()
     {
-        $namespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
+        Routes\Admin\ProfileRoutes::register();
 
-        $this->group($this->getAdminAttributes('auth.', $namespace), function () {
-            Routes\Admin\ProfileRoutes::register();
-        });
-
-        $attributes = $this->getAdminAttributes(
-            'auth.', $namespace, $this->config()->get('arcanesoft.auth.route.prefix', 'authorization')
-        );
-
-        $this->group($attributes, function () {
-            Routes\Admin\StatsRoutes::register();
-            Routes\Admin\UsersRoutes::register();
-            Routes\Admin\RolesRoutes::register();
-            Routes\Admin\PermissionsRoutes::register();
-            Routes\Admin\PasswordResetsRoutes::register();
-        });
-
-        // API ??
-        $this->group($attributes, function () {
-            Routes\Admin\ApiRoutes::register();
-        });
+        $this->prefix($this->config()->get('arcanesoft.auth.route.prefix', 'authorization'))
+            ->group(function () {
+                Routes\Admin\StatsRoutes::register();
+                Routes\Admin\UsersRoutes::register();
+                Routes\Admin\RolesRoutes::register();
+                Routes\Admin\PermissionsRoutes::register();
+                Routes\Admin\PasswordResetsRoutes::register();
+            });
     }
 }

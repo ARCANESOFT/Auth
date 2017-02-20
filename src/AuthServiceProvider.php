@@ -22,20 +22,6 @@ class AuthServiceProvider extends PackageServiceProvider
     protected $package = 'auth';
 
     /* ------------------------------------------------------------------------------------------------
-     |  Getters & Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the base path of the package.
-     *
-     * @return string
-     */
-    public function getBasePath()
-    {
-        return dirname(__DIR__);
-    }
-
-    /* ------------------------------------------------------------------------------------------------
      |  Main Functions
      | ------------------------------------------------------------------------------------------------
      */
@@ -54,6 +40,7 @@ class AuthServiceProvider extends PackageServiceProvider
             Providers\AuthorizationServiceProvider::class,
             Providers\ViewComposerServiceProvider::class,
         ]);
+
         $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
     }
 
