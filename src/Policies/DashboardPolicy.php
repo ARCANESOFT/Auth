@@ -8,29 +8,13 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class DashboardPolicy extends Policy
+class DashboardPolicy extends AbstractPolicy
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constants
      | ------------------------------------------------------------------------------------------------
      */
     const PERMISSION_STATS = 'auth.dashboard.stats';
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Getters and Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the policies.
-     *
-     * @return array
-     */
-    public static function getPolicies()
-    {
-        return [
-            'statsPolicy' => static::PERMISSION_STATS,
-        ];
-    }
 
     /* ------------------------------------------------------------------------------------------------
      |  Policies Functions

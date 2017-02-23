@@ -8,7 +8,7 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionsPolicy extends Policy
+class PermissionsPolicy extends AbstractPolicy
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constants
@@ -17,24 +17,6 @@ class PermissionsPolicy extends Policy
     const PERMISSION_LIST   = 'auth.permissions.list';
     const PERMISSION_SHOW   = 'auth.permissions.show';
     const PERMISSION_UPDATE = 'auth.permissions.update';
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Getters and Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the policies.
-     *
-     * @return array
-     */
-    public static function getPolicies()
-    {
-        return [
-            'listPolicy'   => static::PERMISSION_LIST,
-            'showPolicy'   => static::PERMISSION_SHOW,
-            'updatePolicy' => static::PERMISSION_UPDATE,
-        ];
-    }
 
     /* ------------------------------------------------------------------------------------------------
      |  Policies Functions

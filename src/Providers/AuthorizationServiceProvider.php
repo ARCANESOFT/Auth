@@ -1,7 +1,11 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
 use Arcanedev\Support\Providers\AuthorizationServiceProvider as ServiceProvider;
-use Arcanesoft\Auth\Policies;
+use Arcanesoft\Auth\Policies\DashboardPolicy;
+use Arcanesoft\Auth\Policies\PasswordResetsPolicy;
+use Arcanesoft\Auth\Policies\PermissionsPolicy;
+use Arcanesoft\Auth\Policies\RolesPolicy;
+use Arcanesoft\Auth\Policies\UsersPolicy;
 
 /**
  * Class     AuthorizationServiceProvider
@@ -22,69 +26,14 @@ class AuthorizationServiceProvider extends ServiceProvider
     {
         parent::registerPolicies();
 
-        $this->registerDashboardPolicies();
-        $this->registerUsersPolicies();
-        $this->registerRolesPolicies();
-        $this->registerPermissionsPolicies();
-        $this->registerPasswordResetsPolicies();
-    }
+        $this->defineMany(DashboardPolicy::class, DashboardPolicy::policies());
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Policies
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Register dashboard authorizations.
-     */
-    private function registerDashboardPolicies()
-    {
-        $this->defineMany(
-            Policies\DashboardPolicy::class,
-            Policies\DashboardPolicy::getPolicies()
-        );
-    }
+        $this->defineMany(UsersPolicy::class, UsersPolicy::policies());
 
-    /**
-     * Register users authorizations.
-     */
-    private function registerUsersPolicies()
-    {
-        $this->defineMany(
-            Policies\UsersPolicy::class,
-            Policies\UsersPolicy::getPolicies()
-        );
-    }
+        $this->defineMany(RolesPolicy::class, RolesPolicy::policies());
 
-    /**
-     * Register roles authorizations.
-     */
-    private function registerRolesPolicies()
-    {
-        $this->defineMany(
-            Policies\RolesPolicy::class,
-            Policies\RolesPolicy::getPolicies()
-        );
-    }
+        $this->defineMany(PermissionsPolicy::class, PermissionsPolicy::policies());
 
-    /**
-     * Register permissions authorizations.
-     */
-    private function registerPermissionsPolicies()
-    {
-        $this->defineMany(
-            Policies\PermissionsPolicy::class,
-            Policies\PermissionsPolicy::getPolicies()
-        );
-    }
-
-    /**
-     * Register password resets authorizations.
-     */
-    private function registerPasswordResetsPolicies()
-    {
-        $this->defineMany(
-            Policies\PasswordResetsPolicy::class,
-            Policies\PasswordResetsPolicy::getPolicies()
-        );
+        $this->defineMany(PasswordResetsPolicy::class, PasswordResetsPolicy::policies());
     }
 }

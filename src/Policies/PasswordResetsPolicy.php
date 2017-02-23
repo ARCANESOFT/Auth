@@ -8,7 +8,7 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PasswordResetsPolicy extends Policy
+class PasswordResetsPolicy extends AbstractPolicy
 {
     /* ------------------------------------------------------------------------------------------------
      |  Constants
@@ -16,23 +16,6 @@ class PasswordResetsPolicy extends Policy
      */
     const PERMISSION_LIST   = 'auth.password-resets.list';
     const PERMISSION_DELETE = 'auth.password-resets.delete';
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Getters and Setters
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * Get the policies.
-     *
-     * @return array
-     */
-    public static function getPolicies()
-    {
-        return [
-            'listPolicy'   => static::PERMISSION_LIST,
-            'deletePolicy' => static::PERMISSION_DELETE,
-        ];
-    }
 
     /* ------------------------------------------------------------------------------------------------
      |  Policies Functions
