@@ -10,9 +10,9 @@ use Arcanedev\Support\Routing\RouteRegistrar;
  */
 class PasswordResetsRoutes extends RouteRegistrar
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Map routes.
@@ -23,10 +23,12 @@ class PasswordResetsRoutes extends RouteRegistrar
             $this->get('/', 'PasswordResetsController@index')
                  ->name('index');  // admin::auth.password-resets.index
 
-            $this->delete('clear', 'PasswordResetsController@clear')
+            $this->middleware('ajax')
+                 ->delete('clear', 'PasswordResetsController@clear')
                  ->name('clear');  // admin::auth.password-resets.clear
 
-            $this->delete('delete', 'PasswordResetsController@delete')
+            $this->middleware('ajax')
+                 ->delete('delete', 'PasswordResetsController@delete')
                  ->name('delete'); // admin::auth.password-resets.delete
         });
     }

@@ -7,14 +7,12 @@ use Arcanesoft\Auth\Policies\DashboardPolicy;
  *
  * @package  Arcanesoft\Auth\Http\Controllers\Foundation
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
- *
- * @todo: Adding the authorization checks
  */
 class DashboardController extends Controller
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
@@ -26,16 +24,15 @@ class DashboardController extends Controller
         $this->setCurrentPage('auth-dashboard');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     public function index()
     {
         $this->authorize(DashboardPolicy::PERMISSION_STATS);
 
-        $title = 'Authorization - Dashboard';
-        $this->setTitle($title);
+        $this->setTitle('Authorization - Dashboard');
         $this->addBreadcrumb('Statistics');
 
         return $this->view('admin.dashboard');

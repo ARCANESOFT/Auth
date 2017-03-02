@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanesoft\Auth\Http\Requests\Admin\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Admin\Roles\UpdateRoleRequest;
 use Arcanesoft\Auth\Policies\RolesPolicy;
@@ -14,9 +15,15 @@ use Log;
  */
 class RolesController extends Controller
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use JsonResponses;
+
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * The Role model.
@@ -25,9 +32,9 @@ class RolesController extends Controller
      */
     protected $role;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
@@ -44,9 +51,9 @@ class RolesController extends Controller
         $this->addBreadcrumbRoute('Roles', 'admin::auth.roles.index');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     public function index()
     {
@@ -54,8 +61,7 @@ class RolesController extends Controller
 
         $roles = $this->role->with('users', 'permissions')->paginate(30);
 
-        $title = 'List of roles';
-        $this->setTitle($title);
+        $this->setTitle($title = 'List of roles');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.list', compact('roles'));
@@ -65,8 +71,7 @@ class RolesController extends Controller
     {
         $this->authorize(RolesPolicy::PERMISSION_CREATE);
 
-        $title = 'Create a role';
-        $this->setTitle($title);
+        $this->setTitle($title = 'Create a role');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.create');
@@ -97,8 +102,7 @@ class RolesController extends Controller
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions', 'permissions.group']);
 
-        $title = 'Role details';
-        $this->setTitle($title);
+        $this->setTitle($title = 'Role details');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.show', compact('role'));
@@ -111,8 +115,7 @@ class RolesController extends Controller
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions']);
 
-        $title = 'Edit Role';
-        $this->setTitle($title);
+        $this->setTitle($title = 'Edit Role');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.edit', compact('role'));
@@ -140,7 +143,6 @@ class RolesController extends Controller
     public function activate(Role $role)
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
-        self::onlyAjax();
         $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         try {
@@ -158,25 +160,16 @@ class RolesController extends Controller
             Log::info($message, $role->toArray());
             $this->notifySuccess($message, $title);
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 
     public function delete(Role $role)
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
-        self::onlyAjax();
         $this->authorize(RolesPolicy::PERMISSION_DELETE);
 
         try {
@@ -186,18 +179,10 @@ class RolesController extends Controller
             Log::info($message, $role->toArray());
             $this->notifySuccess($message, 'Role deleted !');
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 }

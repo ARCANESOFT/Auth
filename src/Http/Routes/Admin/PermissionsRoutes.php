@@ -12,9 +12,9 @@ use Arcanesoft\Auth\Models\PermissionsGroup;
  */
 class PermissionsRoutes extends RouteRegistrar
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Map routes.
@@ -40,7 +40,8 @@ class PermissionsRoutes extends RouteRegistrar
                 $this->get('/', 'PermissionsController@show')
                      ->name('show'); // admin::auth.permissions.show
 
-                $this->delete('roles/{auth_role}/detach', 'PermissionsController@detachRole')
+                $this->middleware('ajax')
+                     ->delete('roles/{auth_role}/detach', 'PermissionsController@detachRole')
                      ->name('roles.detach'); // admin::auth.permissions.roles.detach
             });
         });

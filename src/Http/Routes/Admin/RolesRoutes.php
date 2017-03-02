@@ -11,9 +11,9 @@ use Arcanesoft\Auth\Models\Role;
  */
 class RolesRoutes extends RouteRegistrar
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Map routes.
@@ -44,10 +44,12 @@ class RolesRoutes extends RouteRegistrar
                 $this->put('update', 'RolesController@update')
                      ->name('update'); // admin::auth.roles.update
 
-                $this->put('activate', 'RolesController@activate')
+                $this->middleware('ajax')
+                     ->put('activate', 'RolesController@activate')
                      ->name('activate'); // admin::auth.roles.activate
 
-                $this->delete('delete', 'RolesController@delete')
+                $this->middleware('ajax')
+                     ->delete('delete', 'RolesController@delete')
                      ->name('delete'); // admin::auth.roles.delete
             });
         });

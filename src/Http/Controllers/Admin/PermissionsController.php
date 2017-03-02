@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanesoft\Auth\Policies\PermissionsPolicy;
 use Arcanesoft\Contracts\Auth\Models\Permission;
 use Arcanesoft\Contracts\Auth\Models\PermissionsGroup;
@@ -14,9 +15,15 @@ use Log;
  */
 class PermissionsController extends Controller
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use JsonResponses;
+
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /** @var  \Arcanesoft\Contracts\Auth\Models\Permission  */
     protected $permission;
@@ -24,9 +31,9 @@ class PermissionsController extends Controller
     /** @var int */
     protected $perPage = 30;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
@@ -43,9 +50,9 @@ class PermissionsController extends Controller
         $this->addBreadcrumbRoute('Permissions', 'admin::auth.permissions.index');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     public function index()
     {
@@ -94,7 +101,6 @@ class PermissionsController extends Controller
 
     public function detachRole(Permission $permission, Role $role)
     {
-        self::onlyAjax();
         $this->authorize(PermissionsPolicy::PERMISSION_UPDATE);
 
         try {
@@ -106,18 +112,10 @@ class PermissionsController extends Controller
             Log::info($message, compact('permission', 'role'));
             $this->notifySuccess($message, $title);
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 }

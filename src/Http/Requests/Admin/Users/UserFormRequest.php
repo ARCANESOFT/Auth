@@ -14,9 +14,9 @@ use Illuminate\Validation\Rule;
  */
 abstract class UserFormRequest extends FormRequest
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Get the validation rules that apply to the request.
@@ -44,9 +44,9 @@ abstract class UserFormRequest extends FormRequest
         ];
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Sanitize the username.
@@ -71,7 +71,7 @@ abstract class UserFormRequest extends FormRequest
      */
     protected function getEmailRule($column = 'email')
     {
-        return Rule::unique('users', $column);
+        return Rule::unique($this->getUsersTable(), $column);
     }
 
     /**
@@ -83,7 +83,17 @@ abstract class UserFormRequest extends FormRequest
      */
     protected function getUsernameRule($column = 'username')
     {
-        return Rule::unique('users', $column);
+        return Rule::unique($this->getUsersTable(), $column);
+    }
+
+    /**
+     * Get the users table name.
+     *
+     * @return string
+     */
+    protected function getUsersTable()
+    {
+        return $this->getPrefixTable().config('arcanesoft.auth.users.table', 'users');
     }
 
     /**

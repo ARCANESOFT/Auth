@@ -10,9 +10,9 @@ use Arcanedev\Support\Bases\FormRequest as BaseFormRequest;
  */
 abstract class FormRequest extends BaseFormRequest
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * The message format.
@@ -20,4 +20,28 @@ abstract class FormRequest extends BaseFormRequest
      * @var string
      */
     protected $errorsFormat = '<i class="fa fa-fw fa-exclamation-circle"></i> :message';
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Get the database connection.
+     *
+     * @return string
+     */
+    protected function getDbConnection()
+    {
+        return config('arcanesoft.auth.database.connection', null);
+    }
+
+    /**
+     * Get the table's prefix.
+     *
+     * @return string
+     */
+    protected function getPrefixTable()
+    {
+        return config('arcanesoft.auth.database.prefix', 'auth_');
+    }
 }
