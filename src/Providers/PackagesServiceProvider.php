@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Providers;
 
 use Arcanedev\Gravatar\GravatarServiceProvider;
+use Arcanedev\LaravelApiHelper\ApiHelperServiceProvider;
 use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
 use Arcanedev\LaravelAuth\Services\SocialAuthenticator;
 use Arcanedev\Support\ServiceProvider;
@@ -14,25 +15,36 @@ use Illuminate\Support\Arr;
  */
 class PackagesServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Register the service provider.
      */
     public function register()
     {
+        parent::register();
+
+        $this->registerApiHelperPackage();
         $this->registerGravatarPackage();
         $this->registerLaravelAuthPackage();
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Register Packages
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
-     * Register the gravatar package.
+     * Register the API Helper package.
+     */
+    private function registerApiHelperPackage()
+    {
+        $this->registerProvider(ApiHelperServiceProvider::class);
+    }
+
+    /**
+     * Register the Gravatar package.
      */
     private function registerGravatarPackage()
     {
@@ -40,7 +52,7 @@ class PackagesServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the laravel auth package.
+     * Register the Laravel Auth package.
      */
     private function registerLaravelAuthPackage()
     {
@@ -48,15 +60,14 @@ class PackagesServiceProvider extends ServiceProvider
 
         $this->configLaravelAuthPackage();
         $this->rebindModels();
-        $this->registerDependencies();
     }
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Config Packages
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
-     * Config the laravel auth package (override).
+     * Config the Laravel Auth package.
      */
     private function configLaravelAuthPackage()
     {
@@ -94,13 +105,5 @@ class PackagesServiceProvider extends ServiceProvider
         foreach ($bindings as $binding) {
             $this->bind($binding['abstract'], $binding['concrete']);
         }
-    }
-
-    /**
-     * Register the package dependencies.
-     */
-    private function registerDependencies()
-    {
-        //
     }
 }

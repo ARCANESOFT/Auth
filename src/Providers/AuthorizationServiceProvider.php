@@ -15,9 +15,9 @@ use Arcanesoft\Auth\Policies\UsersPolicy;
  */
 class AuthorizationServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * Register any application authentication / authorization services.
@@ -26,14 +26,16 @@ class AuthorizationServiceProvider extends ServiceProvider
     {
         parent::registerPolicies();
 
-        $this->defineMany(DashboardPolicy::class, DashboardPolicy::policies());
+        $authPolicies = [
+            DashboardPolicy::class      => DashboardPolicy::policies(),
+            UsersPolicy::class          => UsersPolicy::policies(),
+            RolesPolicy::class          => RolesPolicy::policies(),
+            PermissionsPolicy::class    => PermissionsPolicy::policies(),
+            PasswordResetsPolicy::class => PasswordResetsPolicy::policies()
+        ];
 
-        $this->defineMany(UsersPolicy::class, UsersPolicy::policies());
-
-        $this->defineMany(RolesPolicy::class, RolesPolicy::policies());
-
-        $this->defineMany(PermissionsPolicy::class, PermissionsPolicy::policies());
-
-        $this->defineMany(PasswordResetsPolicy::class, PasswordResetsPolicy::policies());
+        foreach ($authPolicies as $class => $policies) {
+            $this->defineMany($class, $policies);
+        }
     }
 }

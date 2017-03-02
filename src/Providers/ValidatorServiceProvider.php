@@ -12,9 +12,9 @@ use Illuminate\Contracts\Foundation\Application;
  */
 class ValidatorServiceProvider extends ServiceProvider
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * The Validator instance.
@@ -23,9 +23,9 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     protected $validator;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * {@inheritdoc}
@@ -34,7 +34,6 @@ class ValidatorServiceProvider extends ServiceProvider
     {
         parent::__construct($app);
 
-        /** @var  \    $validator */
         $this->validator = $app['validator'];
     }
 
@@ -67,13 +66,15 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     private function registerUserValidators()
     {
-        $class = \Arcanesoft\Auth\Validators\UserValidator::class;
+        $this->extendValidator(
+            'user_password',
+            \Arcanesoft\Auth\Validators\UserValidator::class,
+            function($message, $attribute) {
+                $message = 'auth::validation.user_password';
 
-        $this->extendValidator('user_password', $class, function($message, $attribute) {
-            $message = 'auth::validation.user_password';
-
-            return str_replace(':attribute', $attribute, trans($message));
-        });
+                return str_replace(':attribute', $attribute, trans($message));
+            }
+        );
     }
 
     /* ------------------------------------------------------------------------------------------------
@@ -89,10 +90,9 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     private function extendValidator($name, $class, Closure $replacer = null)
     {
-        $this->validator->extend($name, $class . '@validate' . studly_case($name));
+        $this->validator->extend($name, "{$class}@validate" . studly_case($name));
 
-        if ( ! is_null($replacer)) {
+        if ( ! is_null($replacer))
             $this->validator->replacer($name, $replacer);
-        }
     }
 }
