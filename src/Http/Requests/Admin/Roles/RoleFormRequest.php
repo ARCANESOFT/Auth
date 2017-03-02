@@ -44,7 +44,9 @@ abstract class RoleFormRequest extends FormRequest
     protected function sanitize()
     {
         return [
-            'slug' => (new Role)->makeSlugName($this->get($this->has('slug') ? 'slug' : 'name'))
+            'slug' => (new Role)->makeSlugName(
+                $this->get($this->has('slug') ? 'slug' : 'name')
+            )
         ];
     }
 
@@ -57,6 +59,16 @@ abstract class RoleFormRequest extends FormRequest
      */
     protected function getSlugRule($column = 'slug')
     {
-        return Rule::unique('roles', $column);
+        return Rule::unique($this->getRolesTable(), $column);
+    }
+
+    /**
+     * Get the roles table name.
+     *
+     * @return string
+     */
+    protected function getRolesTable()
+    {
+        return $this->getPrefixTable().config('arcanesoft.auth.roles.table', 'roles');
     }
 }
