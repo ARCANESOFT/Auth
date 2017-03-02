@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanesoft\Auth\Models\PasswordReset;
 use Arcanesoft\Auth\Policies\PasswordResetsPolicy;
 
@@ -11,6 +12,12 @@ use Arcanesoft\Auth\Policies\PasswordResetsPolicy;
  */
 class PasswordResetsController extends Controller
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use JsonResponses;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -53,21 +60,19 @@ class PasswordResetsController extends Controller
 
     public function delete()
     {
-        parent::onlyAjax();
-
         $this->authorize(PasswordResetsPolicy::PERMISSION_DELETE);
 
-        return response()->json([]);
+        // TODO: Complete the implementation
+
+        return $this->jsonResponseSuccess('The password reset was deleted!');
     }
 
     public function clear()
     {
-        parent::onlyAjax();
-
         $this->authorize(PasswordResetsPolicy::PERMISSION_DELETE);
 
         PasswordReset::getTokenRepository()->deleteExpired();
 
-        return response()->json(['status' => 'success']);
+        return $this->jsonResponseSuccess('All the expired password resets was cleared!');
     }
 }

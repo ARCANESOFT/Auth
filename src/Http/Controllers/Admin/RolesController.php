@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanesoft\Auth\Http\Requests\Admin\Roles\CreateRoleRequest;
 use Arcanesoft\Auth\Http\Requests\Admin\Roles\UpdateRoleRequest;
 use Arcanesoft\Auth\Policies\RolesPolicy;
@@ -14,6 +15,12 @@ use Log;
  */
 class RolesController extends Controller
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use JsonResponses;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -136,7 +143,6 @@ class RolesController extends Controller
     public function activate(Role $role)
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
-        self::onlyAjax();
         $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         try {
@@ -154,25 +160,16 @@ class RolesController extends Controller
             Log::info($message, $role->toArray());
             $this->notifySuccess($message, $title);
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 
     public function delete(Role $role)
     {
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
-        self::onlyAjax();
         $this->authorize(RolesPolicy::PERMISSION_DELETE);
 
         try {
@@ -182,18 +179,10 @@ class RolesController extends Controller
             Log::info($message, $role->toArray());
             $this->notifySuccess($message, 'Role deleted !');
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 }

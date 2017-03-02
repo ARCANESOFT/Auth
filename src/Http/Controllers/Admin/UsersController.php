@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanesoft\Auth\Http\Requests\Admin\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Admin\Users\UpdateUserRequest;
@@ -16,6 +17,12 @@ use Log;
  */
 class UsersController extends Controller
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+    use JsonResponses;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
@@ -220,7 +227,6 @@ class UsersController extends Controller
      */
     public function activate(User $user)
     {
-        self::onlyAjax();
         $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         try {
@@ -238,19 +244,11 @@ class UsersController extends Controller
             Log::info($message, $user->toArray());
             $this->notifySuccess($message, $title);
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch (\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 
     /**
@@ -262,7 +260,6 @@ class UsersController extends Controller
      */
     public function restore(User $user)
     {
-        self::onlyAjax();
         $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         try {
@@ -272,19 +269,11 @@ class UsersController extends Controller
             Log::info($message, $user->toArray());
             $this->notifySuccess($message, 'User restored !');
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch (\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 
     /**
@@ -296,7 +285,6 @@ class UsersController extends Controller
      */
     public function delete(User $user)
     {
-        self::onlyAjax();
         $this->authorize(UsersPolicy::PERMISSION_DELETE);
 
         try {
@@ -312,19 +300,11 @@ class UsersController extends Controller
 
             $this->notifySuccess($message, 'User deleted !');
 
-            $ajax = [
-                'status'  => 'success',
-                'message' => $message,
-            ];
+            return $this->jsonResponseSuccess($message);
         }
         catch(\Exception $e) {
-            $ajax = [
-                'status'  => 'error',
-                'message' => $e->getMessage(),
-            ];
+            return $this->jsonResponseError($e->getMessage(), 500);
         }
-
-        return response()->json($ajax);
     }
 
     /**

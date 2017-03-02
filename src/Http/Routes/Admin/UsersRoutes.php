@@ -51,13 +51,16 @@ class UsersRoutes extends RouteRegistrar
                 $this->put('update', 'UsersController@update')
                      ->name('update'); // admin::auth.users.update
 
-                $this->put('activate', 'UsersController@activate')
+                $this->middleware('ajax')
+                     ->put('activate', 'UsersController@activate')
                      ->name('activate'); // admin::auth.users.activate
 
-                $this->put('restore', 'UsersController@restore')
+                $this->middleware('ajax')
+                     ->put('restore', 'UsersController@restore')
                      ->name('restore'); // admin::auth.users.restore
 
-                $this->delete('delete', 'UsersController@delete')
+                $this->middleware('ajax')
+                     ->delete('delete', 'UsersController@delete')
                      ->name('delete'); // admin::auth.users.delete
 
                 if (UserImpersonator::isEnabled()) {
