@@ -42,12 +42,12 @@ class RouteServiceProvider extends ServiceProvider
         Routes\Admin\ProfileRoutes::register();
 
         $this->prefix($this->config()->get('arcanesoft.auth.route.prefix', 'authorization'))
-            ->group(function () {
-                Routes\Admin\StatsRoutes::register();
-                Routes\Admin\UsersRoutes::register();
-                Routes\Admin\RolesRoutes::register();
-                Routes\Admin\PermissionsRoutes::register();
-                Routes\Admin\PasswordResetsRoutes::register();
-            });
+             ->group(function () {
+                 Routes\Admin\StatsRoutes::register();
+                 Routes\Admin\UsersRoutes::register();
+                 Routes\Admin\RolesRoutes::register();
+                 Routes\Admin\PermissionsRoutes::register();
+                 Routes\Admin\PasswordResetsRoutes::register();
+             });
     }
 }

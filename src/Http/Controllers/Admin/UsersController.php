@@ -16,9 +16,9 @@ use Log;
  */
 class UsersController extends Controller
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * The user model.
@@ -27,9 +27,9 @@ class UsersController extends Controller
      */
     protected $user;
 
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Constructor
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
     /**
      * Instantiate the controller.
@@ -46,9 +46,9 @@ class UsersController extends Controller
         $this->addBreadcrumbRoute('Users', 'admin::auth.users.index');
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
     /**
      * List the users.
@@ -67,8 +67,7 @@ class UsersController extends Controller
             ? $users->onlyTrashed()->paginate(30)
             : $users->paginate(30);
 
-        $title = 'List of users' . ($trashed ? ' - Trashed' : '');
-        $this->setTitle($title);
+        $this->setTitle($title = 'List of users' . ($trashed ? ' - Trashed' : ''));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.list', compact('trashed', 'users'));
@@ -98,8 +97,7 @@ class UsersController extends Controller
 
         $users = $role->users()->with('roles')->paginate(30);
 
-        $title = "List of users - {$role->name} Role" . ($trashed ? ' - Trashed' : '');
-        $this->setTitle($title);
+        $this->setTitle($title = "List of users - {$role->name} Role" . ($trashed ? ' - Trashed' : ''));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.list', compact('trashed', 'users'));
@@ -118,8 +116,7 @@ class UsersController extends Controller
 
         $roles = $role->all();
 
-        $title = 'Create a new user';
-        $this->setTitle($title);
+        $this->setTitle($title = 'Create a new user');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.create', compact('roles'));
@@ -128,8 +125,8 @@ class UsersController extends Controller
     /**
      * Store the new user.
      *
-     * @param  \Arcanesoft\Auth\Http\Requests\Admin\Users\CreateUserRequest $request
-     * @param  \Arcanesoft\Contracts\Auth\Models\User                       $user
+     * @param  \Arcanesoft\Auth\Http\Requests\Admin\Users\CreateUserRequest  $request
+     * @param  \Arcanesoft\Contracts\Auth\Models\User                        $user
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -165,8 +162,7 @@ class UsersController extends Controller
 
         $user->load(['roles', 'roles.permissions']);
 
-        $title = 'User details';
-        $this->setTitle($title);
+        $this->setTitle($title = 'User details');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.show', compact('user'));
@@ -187,8 +183,7 @@ class UsersController extends Controller
         $user->load(['roles', 'roles.permissions']);
         $roles = $role->all();
 
-        $title = 'Edit a user';
-        $this->setTitle($title);
+        $this->setTitle($title = 'Edit a user');
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.edit', compact('user', 'roles'));
@@ -197,8 +192,8 @@ class UsersController extends Controller
     /**
      * Update the user.
      *
-     * @param  \Arcanesoft\Auth\Http\Requests\Admin\Users\UpdateUserRequest $request
-     * @param  \Arcanesoft\Contracts\Auth\Models\User                       $user
+     * @param  \Arcanesoft\Auth\Http\Requests\Admin\Users\UpdateUserRequest  $request
+     * @param  \Arcanesoft\Contracts\Auth\Models\User                        $user
      *
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -341,9 +336,8 @@ class UsersController extends Controller
      */
     public function impersonate(User $user)
     {
-        if (UserImpersonator::start($user)) {
+        if (UserImpersonator::start($user))
             return redirect()->to('/');
-        }
 
         $this->notifyDanger('Impersonate disabled for this user.', 'Impersonation failed');
 
