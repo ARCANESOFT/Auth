@@ -149,9 +149,7 @@ class UsersController extends Controller
         $user->save();
         $user->roles()->sync($request->get('roles'));
 
-        $message = "The user {$user->username} was created successfully !";
-        Log::info($message, $user->toArray());
-        $this->notifySuccess($message, 'User created !');
+        $this->transNotification('created', ['name' => $user->full_name], $user->toArray());
 
         return redirect()->route('admin::auth.users.index');
     }
@@ -211,9 +209,7 @@ class UsersController extends Controller
         $user->update($request->intersect(['username', 'email', 'password', 'first_name', 'last_name']));
         $user->roles()->sync($request->get('roles'));
 
-        $message = "The user {$user->username} was updated successfully !";
-        Log::info($message, $user->toArray());
-        $this->notifySuccess($message, 'User Updated !');
+        $this->transNotification('updated', ['name' => $user->full_name], $user->toArray());
 
         return redirect()->route('admin::auth.users.show', [$user->hashed_id]);
     }
@@ -230,21 +226,11 @@ class UsersController extends Controller
         $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
         try {
-            if ($user->isActive()) {
-                $title   = 'User disabled !';
-                $message = "The user {$user->username} has been successfully disabled !";
-                $user->deactivate();
-            }
-            else {
-                $title   = 'User activated !';
-                $message = "The user {$user->username} has been successfully activated !";
-                $user->activate();
-            }
+            ($active = $user->isActive()) ? $user->deactivate() : $user->activate();
 
-            Log::info($message, $user->toArray());
-            $this->notifySuccess($message, $title);
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification($active ? 'disabled' : 'enabled', ['name' => $user->full_name], $user->toArray())
+            );
         }
         catch (\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
@@ -265,11 +251,9 @@ class UsersController extends Controller
         try {
             $user->restore();
 
-            $message = "The user {$user->username} has been successfully restored !";
-            Log::info($message, $user->toArray());
-            $this->notifySuccess($message, 'User restored !');
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification('restored', ['name' => $user->full_name], $user->toArray())
+            );
         }
         catch (\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
@@ -288,19 +272,11 @@ class UsersController extends Controller
         $this->authorize(UsersPolicy::PERMISSION_DELETE);
 
         try {
-            if ($user->trashed()) {
-                $user->forceDelete();
-                $message = "The user {$user->username} has been successfully deleted !";
-                Log::info($message, $user->toArray());
-            }
-            else {
-                $user->delete();
-                $message = "The user {$user->username} was placed in trashed users !";
-            }
+            ($trashed = $user->trashed()) ? $user->forceDelete() : $user->delete();
 
-            $this->notifySuccess($message, 'User deleted !');
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification($trashed ? 'deleted' : 'trashed', ['name' => $user->full_name], $user->toArray())
+            );
         }
         catch(\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
@@ -322,5 +298,29 @@ class UsersController extends Controller
         $this->notifyDanger('Impersonate disabled for this user.', 'Impersonation failed');
 
         return redirect()->back();
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Functions
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Notify with translation.
+     *
+     * @param  string  $action
+     * @param  array   $replace
+     * @param  array   $context
+     *
+     * @return string
+     */
+    protected function transNotification($action, array $replace = [], array $context = [])
+    {
+        $title   = trans("auth::users.messages.{$action}.title");
+        $message = trans("auth::users.messages.{$action}.message", $replace);
+
+        Log::info($message, $context);
+        $this->notifySuccess($message, $title);
+
+        return $message;
     }
 }

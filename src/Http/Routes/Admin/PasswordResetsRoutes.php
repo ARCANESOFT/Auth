@@ -23,12 +23,12 @@ class PasswordResetsRoutes extends RouteRegistrar
             $this->get('/', 'PasswordResetsController@index')
                  ->name('index');  // admin::auth.password-resets.index
 
-            $this->middleware('ajax')
-                 ->delete('clear', 'PasswordResetsController@clear')
+            $this->delete('clear', 'PasswordResetsController@clear')
+                 ->middleware('ajax')
                  ->name('clear');  // admin::auth.password-resets.clear
 
-            $this->middleware('ajax')
-                 ->delete('delete', 'PasswordResetsController@delete')
+            $this->delete('delete', 'PasswordResetsController@delete')
+                 ->middleware('ajax')
                  ->name('delete'); // admin::auth.password-resets.delete
         });
     }

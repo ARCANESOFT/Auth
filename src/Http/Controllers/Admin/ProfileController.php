@@ -66,9 +66,7 @@ class ProfileController extends Controller
 
     public function updatePassword(UpdatePasswordRequest $request, User $user)
     {
-        $user->update([
-            'password' => $request->get('password'),
-        ]);
+        $user->update($request->only(['password']));
 
         Log::info($message = 'The password was updated successfully !', $user->toArray());
         $this->notifySuccess($message, 'Password Updated !');

@@ -44,12 +44,12 @@ class RolesRoutes extends RouteRegistrar
                 $this->put('update', 'RolesController@update')
                      ->name('update'); // admin::auth.roles.update
 
-                $this->middleware('ajax')
-                     ->put('activate', 'RolesController@activate')
+                $this->put('activate', 'RolesController@activate')
+                     ->middleware('ajax')
                      ->name('activate'); // admin::auth.roles.activate
 
-                $this->middleware('ajax')
-                     ->delete('delete', 'RolesController@delete')
+                $this->delete('delete', 'RolesController@delete')
+                     ->middleware('ajax')
                      ->name('delete'); // admin::auth.roles.delete
             });
         });

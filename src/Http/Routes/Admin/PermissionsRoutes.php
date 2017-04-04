@@ -40,8 +40,8 @@ class PermissionsRoutes extends RouteRegistrar
                 $this->get('/', 'PermissionsController@show')
                      ->name('show'); // admin::auth.permissions.show
 
-                $this->middleware('ajax')
-                     ->delete('roles/{auth_role}/detach', 'PermissionsController@detachRole')
+                $this->delete('roles/{auth_role}/detach', 'PermissionsController@detachRole')
+                     ->middleware('ajax')
                      ->name('roles.detach'); // admin::auth.permissions.roles.detach
             });
         });
