@@ -48,7 +48,7 @@ class RolesController extends Controller
         $this->role = $role;
 
         $this->setCurrentPage('auth-roles');
-        $this->addBreadcrumbRoute('Roles', 'admin::auth.roles.index');
+        $this->addBreadcrumbRoute(trans('auth::roles.titles.roles'), 'admin::auth.roles.index');
     }
 
     /* -----------------------------------------------------------------
@@ -61,7 +61,7 @@ class RolesController extends Controller
 
         $roles = $this->role->with('users', 'permissions')->paginate(30);
 
-        $this->setTitle($title = 'List of roles');
+        $this->setTitle($title = trans('auth::roles.titles.roles-list'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.list', compact('roles'));
@@ -71,7 +71,7 @@ class RolesController extends Controller
     {
         $this->authorize(RolesPolicy::PERMISSION_CREATE);
 
-        $this->setTitle($title = 'Create a role');
+        $this->setTitle($title = trans('auth::roles.titles.create-role'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.create');
@@ -85,14 +85,10 @@ class RolesController extends Controller
         $this->role->save();
         $this->role->permissions()->attach($request->get('permissions'));
 
-        $message = 'The new role was successfully created !';
-
-        Log::info($message, $this->role->toArray());
-        $this->notifySuccess($message, 'Role created !');
+        $this->transNotification('created', ['name' => $this->role->name], $this->role->toArray());
 
         return redirect()
-            ->route('admin::auth.roles.index')
-            ->with('success', $message);
+            ->route('admin::auth.roles.index');
     }
 
     public function show(Role $role)
@@ -102,7 +98,7 @@ class RolesController extends Controller
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions', 'permissions.group']);
 
-        $this->setTitle($title = 'Role details');
+        $this->setTitle($title = trans('auth::roles.titles.role-details'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.show', compact('role'));
@@ -115,7 +111,7 @@ class RolesController extends Controller
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $role->load(['users', 'permissions']);
 
-        $this->setTitle($title = 'Edit Role');
+        $this->setTitle($title = trans('auth::roles.titles.edit-role'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.roles.edit', compact('role'));
@@ -130,37 +126,23 @@ class RolesController extends Controller
         $role->save();
         $role->permissions()->sync($request->get('permissions'));
 
-        $message = 'The role was successfully updated !';
-
-        Log::info($message, $role->toArray());
-        $this->notifySuccess($message, 'Role updated !');
+        $this->transNotification('updated', ['name' => $role->name], $role->toArray());
 
         return redirect()
-            ->route('admin::auth.roles.show', [$role->hashed_id])
-            ->with('success', $message);
+            ->route('admin::auth.roles.show', [$role->hashed_id]);
     }
 
     public function activate(Role $role)
     {
-        /** @var  \Arcanesoft\Auth\Models\Role  $role */
         $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         try {
-            if ($role->isActive()) {
-                $role->deactivate();
-                $title   = 'Role disabled !';
-                $message = "The role {$role->name} has been successfully disabled !";
-            }
-            else {
-                $role->activate();
-                $title   = 'Role activated !';
-                $message = "The role {$role->name} has been successfully activated !";
-            }
+            /** @var  \Arcanesoft\Auth\Models\Role  $role */
+            ($active = $role->isActive()) ? $role->deactivate() : $role->activate();
 
-            Log::info($message, $role->toArray());
-            $this->notifySuccess($message, $title);
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification($active ? 'disabled' : 'enabled', ['name' => $role->name], $role->toArray())
+            );
         }
         catch(\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
@@ -175,14 +157,36 @@ class RolesController extends Controller
         try {
             $role->delete();
 
-            $message = "The role {$role->name} has been successfully deleted !";
-            Log::info($message, $role->toArray());
-            $this->notifySuccess($message, 'Role deleted !');
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification('deleted', ['name' => $role->name], $role->toArray())
+            );
         }
         catch(\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
         }
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Notify with translation.
+     *
+     * @param  string  $action
+     * @param  array   $replace
+     * @param  array   $context
+     *
+     * @return string
+     */
+    protected function transNotification($action, array $replace = [], array $context = [])
+    {
+        $title   = trans("auth::roles.messages.{$action}.title");
+        $message = trans("auth::roles.messages.{$action}.message", $replace);
+
+        Log::info($message, $context);
+        $this->notifySuccess($message, $title);
+
+        return $message;
     }
 }

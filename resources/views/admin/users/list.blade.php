@@ -1,12 +1,12 @@
 @section('header')
-    <h1><i class="fa fa-fw fa-users"></i> Users <small>List of users</small></h1>
+    <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.users-list') }}</small></h1>
 @endsection
 
 @section('content')
     <div class="box box-primary">
         <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
-                Total : {{ $users->total() }}
+                {{ trans('core::pagination.total', ['total' => $users->total()]) }}
             </span>
 
             @if ($users->hasPages())
@@ -18,17 +18,17 @@
             <div class="box-tools">
                 <div class="btn-group" role="group">
                     <a href="{{ route('admin::auth.users.index') }}" class="btn btn-xs btn-default {{ route_is('admin::auth.users.index') ? 'active' : '' }}">
-                        <i class="fa fa-fw fa-bars"></i> All
+                        <i class="fa fa-fw fa-bars"></i> {{ trans('core::generals.all') }}
                     </a>
                     <a href="{{ route('admin::auth.users.trash') }}" class="btn btn-xs btn-default {{ route_is('admin::auth.users.trash') ? 'active' : '' }}">
-                        <i class="fa fa-fw fa-trash-o"></i> Trashed
+                        <i class="fa fa-fw fa-trash-o"></i> {{ trans('core::generals.trashed') }}
                     </a>
                 </div>
 
                 @unless($trashed)
                     <div class="btn-group">
                         <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Roles <span class="caret"></span>
+                            {{ trans('auth::roles.titles.roles') }} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li>{{ link_to_route('admin::auth.users.index', 'All') }}</li>
@@ -50,13 +50,13 @@
                     <thead>
                         <tr>
                             <th style="width: 40px;"></th>
-                            <th>Username</th>
-                            <th>Full name</th>
-                            <th>Email</th>
-                            <th>Roles</th>
-                            <th class="text-center">Last activity</th>
-                            <th class="text-center" style="width: 80px;">Status</th>
-                            <th class="text-right" style="width: 160px;">Actions</th>
+                            <th>{{ trans('auth::users.attributes.username') }}</th>
+                            <th>{{ trans('auth::users.attributes.full_name') }}</th>
+                            <th>{{ trans('auth::users.attributes.email') }}</th>
+                            <th>{{ trans('auth::roles.titles.roles') }}</th>
+                            <th class="text-center">{{ trans('auth::users.attributes.last_activity') }}</th>
+                            <th class="text-center" style="width: 80px;">{{ trans('core::generals.status') }}</th>
+                            <th class="text-right" style="width: 160px;">{{ trans('core::generals.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,7 +64,7 @@
                             @foreach($users as $user)
                             <tr>
                                 <td class="text-center">
-                                    {{ Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
+                                    {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
                                 </td>
                                 <td>{{ $user->username }}</td>
                                 <td>{{ $user->full_name }}</td>
@@ -99,8 +99,8 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="7" class="text-center">
-                                    <span class="label label-default">The list of users is empty.</span>
+                                <td colspan="8" class="text-center">
+                                    <span class="label label-default">{{ trans('auth::users.list-empty') }}</span>
                                 </td>
                             </tr>
                         @endif

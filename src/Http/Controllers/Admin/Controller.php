@@ -39,6 +39,6 @@ abstract class Controller extends AdminController
     {
         parent::__construct();
 
-        $this->addBreadcrumbRoute('Authorization', 'admin::auth.dashboard');
+        $this->addBreadcrumbRoute(trans('auth::generals.authorization'), 'admin::auth.dashboard');
     }
 }

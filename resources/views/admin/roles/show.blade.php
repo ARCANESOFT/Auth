@@ -1,5 +1,7 @@
+<?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+
 @section('header')
-    <h1><i class="fa fa-fw fa-lock"></i> Roles <small>Role details</small></h1>
+    <h1><i class="fa fa-fw fa-lock"></i> {{ trans('auth::roles.titles.roles') }} <small>{{ trans('auth::roles.titles.role-details') }}</small></h1>
 @endsection
 
 @section('content')
@@ -8,28 +10,28 @@
             {{-- ROLE DETAILS --}}
             <div class="box box-warning">
                 <div class="box-header">
-                    <h3 class="box-title">Role details</h3>
+                    <h3 class="box-title">{{ trans('auth::roles.titles.role-details') }}</h3>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
                         <table class="table table-condensed no-margin">
                             <tbody>
                                 <tr>
-                                    <th>Name :</th>
+                                    <th>{{ trans('auth::roles.attributes.name') }} :</th>
                                     <td>{{ $role->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Slug :</th>
+                                    <th>{{ trans('auth::roles.attributes.slug') }} :</th>
                                     <td>
                                         <span class="label label-primary">{{ $role->slug }}</span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Description :</th>
+                                    <th>{{ trans('auth::roles.attributes.description') }} :</th>
                                     <td>{{ $role->description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Users :</th>
+                                    <th>{{ trans('auth::users.titles.users') }} :</th>
                                     <td>
                                         <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
                                             {{ $role->users->count() }}
@@ -37,7 +39,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Permissions :</th>
+                                    <th>{{ trans('auth::permissions.titles.permissions') }} :</th>
                                     <td>
                                         <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
                                             {{ $role->permissions->count() }}
@@ -45,27 +47,31 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Status :</th>
+                                    <th>{{ trans('core::generals.status') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
-                                            <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
-                                        </span>
+                                        @if ($role->isActive())
+                                            <span class="label label-success"><i class="fa fa-fw fa-check"></i></span>
+                                        @else
+                                            <span class="label label-default"><i class="fa fa-fw fa-ban"></i></span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Locked :</th>
+                                    <th>{{ trans('auth::roles.attributes.locked') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
-                                            <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
-                                        </span>
+                                        @if ($role->isLocked())
+                                            <span class="label label-danger"><i class="fa fa-fw fa-lock"></i></span>
+                                        @else
+                                            <span class="label label-success"><i class="fa fa-fw fa-unlock"></i></span>
+                                        @endif
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Created at :</th>
+                                    <th>{{ trans('core::generals.created_at') }} :</th>
                                     <td><small>{{ $role->created_at }}</small></td>
                                 </tr>
                                 <tr>
-                                    <th>Updated at :</th>
+                                    <th>{{ trans('core::generals.updated_at') }} :</th>
                                     <td><small>{{ $role->updated_at }}</small></td>
                                 </tr>
                             </tbody>
@@ -121,13 +127,14 @@
             </div>
         </div>
         <div class="col-md-8">
+            {{-- TABS --}}
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a href="#users" data-toggle="tab" aria-expanded="true">Users</a>
+                        <a href="#users" data-toggle="tab" aria-expanded="true">{{ trans('auth::users.titles.users') }}</a>
                     </li>
                     <li>
-                        <a href="#permissions" data-toggle="tab" aria-expanded="true">Permissions</a>
+                        <a href="#permissions" data-toggle="tab" aria-expanded="true">{{ trans('auth::permissions.titles.permissions') }}</a>
                     </li>
                 </ul>
                 <div class="tab-content no-padding">
@@ -138,19 +145,26 @@
                                 <thead>
                                     <tr>
                                         <th style="width: 40px;"></th>
-                                        <th>Username</th>
-                                        <th>Full name</th>
-                                        <th>Email</th>
-                                        <th class="text-center" style="width: 80px;">Status</th>
-                                        <th class="text-right" style="width: 120px;">Actions</th>
+                                        <th>{{ trans('auth::users.attributes.username') }}</th>
+                                        <th>{{ trans('auth::users.attributes.full_name') }}</th>
+                                        <th>{{ trans('auth::users.attributes.email') }}</th>
+                                        <th class="text-center" style="width: 80px;">{{ trans('core::generals.status') }}</th>
+                                        <th class="text-right" style="width: 120px;">{{ trans('core::generals.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($role->users->count())
+                                    @if ($role->users->isEmpty())
+                                        <tr>
+                                            <td colspan="6" class="text-center">
+                                                <span class="label label-default">{{ trans('auth::roles.has-no-users') }}</span>
+                                            </td>
+                                        </tr>
+                                    @else
                                         @foreach ($role->users as $user)
+                                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
                                         <tr>
                                             <td class="text-center">
-                                                {{ Html::image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
+                                                {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
                                             </td>
                                             <td>{{ $user->username }}</td>
                                             <td>{{ $user->full_name }}</td>
@@ -158,8 +172,8 @@
                                             <td class="text-center">
                                                 @if ($user->isAdmin())
                                                     <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
-                                                        <i class="fa fa-fw fa-star"></i>
-                                                    </span>
+                                                    <i class="fa fa-fw fa-star"></i>
+                                                </span>
                                                 @endif
                                                 @if ($user->isActive())
                                                     <span class="label label-success"><i class="fa fa-check"></i></span>
@@ -181,12 +195,6 @@
                                             </td>
                                         </tr>
                                         @endforeach
-                                    @else
-                                        <tr>
-                                            <td colspan="6" class="text-center">
-                                                <span class="label label-default">This role has no users.</span>
-                                            </td>
-                                        </tr>
                                     @endif
                                 </tbody>
                             </table>
@@ -199,42 +207,45 @@
                             <table class="table table-condensed table-hover no-margin">
                                 <thead>
                                     <tr>
-                                        <th>Group</th>
-                                        <th>Slug</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th class="text-right" style="width: 80px;">Actions</th>
+                                        <th>{{ trans('auth::permissions.attributes.group') }}</th>
+                                        <th>{{ trans('auth::permissions.attributes.slug') }}</th>
+                                        <th>{{ trans('auth::permissions.attributes.name') }}</th>
+                                        <th>{{ trans('auth::permissions.attributes.description') }}</th>
+                                        <th class="text-right" style="width: 80px;">{{ trans('core::generals.actions') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if ($role->permissions->count())
-                                        @foreach ($role->permissions->sortByDesc('group_id') as $permission)
-                                        <tr>
-                                            <td>
-                                                <span class="label label-{{ $permission->hasGroup() ? 'primary' : 'default' }}">
-                                                    {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-success">{{ $permission->slug }}</span>
-                                            </td>
-                                            <td>{{ $permission->name }}</td>
-                                            <td>{{ $permission->description }}</td>
-                                            <td class="text-right">
-                                                @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
-                                                    <a href="{{ route('admin::auth.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                        <i class="fa fa-fw fa-search"></i>
-                                                    </a>
-                                                @endcan
-                                            </td>
-                                        </tr>
-                                        @endforeach
-                                    @else
+                                    @if ($role->permissions->isEmpty())
                                         <tr>
                                             <td colspan="5" class="text-center">
-                                                <span class="label label-default">This role has no permissions.</span>
+                                                <span class="label label-default">{{ trans('auth::roles.has-no-permissions') }}</span>
                                             </td>
                                         </tr>
+                                    @else
+                                        @foreach ($role->permissions->sortByDesc('group_id') as $permission)
+                                            <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+                                            <tr>
+                                                <td>
+                                                    @if ($permission->hasGroup())
+                                                        <span class="label label-primary">{{ $permission->group->name }}</span>
+                                                    @else
+                                                        <span class="label label-default">{{ trans('auth::permission-groups.custom') }}</span>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <span class="label label-success">{{ $permission->slug }}</span>
+                                                </td>
+                                                <td>{{ $permission->name }}</td>
+                                                <td>{{ $permission->description }}</td>
+                                                <td class="text-right">
+                                                    @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
+                                                        <a href="{{ route('admin::auth.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
+                                                            <i class="fa fa-fw fa-search"></i>
+                                                        </a>
+                                                    @endcan
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     @endif
                                 </tbody>
                             </table>
@@ -246,7 +257,7 @@
     </div>
 @endsection
 
-@section('scripts')
+@section('modals')
     {{-- ACTIVATE MODAL --}}
     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
@@ -318,77 +329,83 @@
     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         {{-- ACTIVATE MODAL --}}
         <script>
-            var $activateRoleModal = $('div#activateRoleModal'),
-                $activateRoleForm  = $('form#activateRoleForm');
+            $(function() {
+                var $activateRoleModal = $('div#activateRoleModal'),
+                    $activateRoleForm  = $('form#activateRoleForm');
 
-            $activateRoleForm.submit(function (event) {
-                event.preventDefault();
-                var $submitBtn = $activateRoleForm.find('button[type="submit"]');
-                    $submitBtn.button('loading');
+                $activateRoleForm.on('submit', function (event) {
+                    event.preventDefault();
 
-                $.ajax({
-                    url:      $activateRoleForm.attr('action'),
-                    type:     $activateRoleForm.attr('method'),
-                    dataType: 'json',
-                    data:     $activateRoleForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $activateRoleModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
+                    var $submitBtn = $activateRoleForm.find('button[type="submit"]');
+                        $submitBtn.button('loading');
+
+                    $.ajax({
+                        url:      $activateRoleForm.attr('action'),
+                        type:     $activateRoleForm.attr('method'),
+                        dataType: 'json',
+                        data:     $activateRoleForm.serialize(),
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $activateRoleModal.modal('hide');
+                                location.reload();
+                            }
+                            else {
+                                alert('ERROR ! Check the console !');
+                                console.error(data.message);
+                                $submitBtn.button('reset');
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('AJAX ERROR ! Check the console !');
+                            console.error(xhr);
                             $submitBtn.button('reset');
                         }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                    });
 
-                return false;
+                    return false;
+                });
             });
         </script>
     @endcan
 
     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-        {{-- DELETE MODAL --}}
         <script>
-            var $deleteRoleModal = $('div#deleteRoleModal'),
-                $deleteRoleForm  = $('form#deleteRoleForm');
+            {{-- DELETE MODAL --}}
+            $(function () {
+                var $deleteRoleModal = $('div#deleteRoleModal'),
+                    $deleteRoleForm  = $('form#deleteRoleForm');
 
-            $deleteRoleForm.submit(function (event) {
-                event.preventDefault();
-                var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
-                    $submitBtn.button('loading');
+                $deleteRoleForm.on('submit', function (event) {
+                    event.preventDefault();
 
-                $.ajax({
-                    url:      $deleteRoleForm.attr('action'),
-                    type:     $deleteRoleForm.attr('method'),
-                    dataType: 'json',
-                    data:     $deleteRoleForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $deleteRoleModal.modal('hide');
-                            location.replace("{{ route('admin::auth.roles.index') }}");
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
+                    var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
+                        $submitBtn.button('loading');
+
+                    $.ajax({
+                        url:      $deleteRoleForm.attr('action'),
+                        type:     $deleteRoleForm.attr('method'),
+                        dataType: 'json',
+                        data:     $deleteRoleForm.serialize(),
+                        success: function(data) {
+                            if (data.status === 'success') {
+                                $deleteRoleModal.modal('hide');
+                                location.replace("{{ route('admin::auth.roles.index') }}");
+                            }
+                            else {
+                                alert('ERROR ! Check the console !');
+                                console.error(data.message);
+                                $submitBtn.button('reset');
+                            }
+                        },
+                        error: function(xhr) {
+                            alert('AJAX ERROR ! Check the console !');
+                            console.error(xhr);
                             $submitBtn.button('reset');
                         }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                    });
 
-                return false;
+                    return false;
+                });
             });
         </script>
     @endcan

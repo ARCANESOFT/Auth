@@ -58,7 +58,7 @@ class PermissionGroupsFilterComposer extends ViewComposer
         //----------------------------------
         if (Permission::where('group_id', 0)->count()) {
             $filters->push([
-                'name'   => 'Custom',
+                'name'   => trans('auth::permission-groups.custom'),
                 'params' => [hasher()->encode(0)],
             ]);
         }

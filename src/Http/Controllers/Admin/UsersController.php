@@ -50,7 +50,7 @@ class UsersController extends Controller
         $this->user = $user;
 
         $this->setCurrentPage('auth-users');
-        $this->addBreadcrumbRoute('Users', 'admin::auth.users.index');
+        $this->addBreadcrumbRoute(trans('auth::users.titles.users'), 'admin::auth.users.index');
     }
 
     /* -----------------------------------------------------------------
@@ -74,7 +74,8 @@ class UsersController extends Controller
             ? $users->onlyTrashed()->paginate(30)
             : $users->paginate(30);
 
-        $this->setTitle($title = 'List of users' . ($trashed ? ' - Trashed' : ''));
+        $title = trans('auth::users.titles.users-list').($trashed ? ' - '.trans('core::generals.trashed') : '');
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.list', compact('trashed', 'users'));
@@ -104,7 +105,8 @@ class UsersController extends Controller
 
         $users = $role->users()->with('roles')->paginate(30);
 
-        $this->setTitle($title = "List of users - {$role->name} Role" . ($trashed ? ' - Trashed' : ''));
+        $title = trans('auth::users.titles.users-list') ." - {$role->name} Role". ($trashed ? ' - '.trans('core::generals.trashed') : '');
+        $this->setTitle($title);
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.list', compact('trashed', 'users'));
@@ -123,7 +125,7 @@ class UsersController extends Controller
 
         $roles = $role->all();
 
-        $this->setTitle($title = 'Create a new user');
+        $this->setTitle($title = trans('auth::users.titles.create-user'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.create', compact('roles'));
@@ -141,10 +143,9 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_CREATE);
 
-        $data = $request->only([
-            'username', 'email', 'first_name', 'last_name', 'password'
-        ]);
-        $user->fill($data);
+        $user->fill(
+            $request->only(['username', 'email', 'first_name', 'last_name', 'password'])
+        );
         $user->is_active = true;
         $user->save();
         $user->roles()->sync($request->get('roles'));
@@ -167,7 +168,7 @@ class UsersController extends Controller
 
         $user->load(['roles', 'roles.permissions']);
 
-        $this->setTitle($title = 'User details');
+        $this->setTitle($title = trans('auth::users.titles.user-details'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.show', compact('user'));
@@ -188,7 +189,7 @@ class UsersController extends Controller
         $user->load(['roles', 'roles.permissions']);
         $roles = $role->all();
 
-        $this->setTitle($title = 'Edit a user');
+        $this->setTitle($title = trans('auth::users.titles.edit-user'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.users.edit', compact('user', 'roles'));
@@ -292,16 +293,20 @@ class UsersController extends Controller
      */
     public function impersonate(User $user)
     {
-        if (UserImpersonator::start($user))
-            return redirect()->to('/');
+        if ( ! UserImpersonator::start($user)) {
+            $this->notifyDanger(
+                trans('auth::users.messages.impersonation-failed.message'),
+                trans('auth::users.messages.impersonation-failed.title')
+            );
 
-        $this->notifyDanger('Impersonate disabled for this user.', 'Impersonation failed');
+            return redirect()->back();
+        }
 
-        return redirect()->back();
+        return redirect()->to('/');
     }
 
     /* -----------------------------------------------------------------
-     |  Other Functions
+     |  Other Methods
      | -----------------------------------------------------------------
      */
     /**

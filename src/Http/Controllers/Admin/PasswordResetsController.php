@@ -37,7 +37,7 @@ class PasswordResetsController extends Controller
         parent::__construct();
 
         $this->setCurrentPage('auth-password-resets');
-        $this->addBreadcrumbRoute('Password Resets', 'admin::auth.password-resets.index');
+        $this->addBreadcrumbRoute(trans('auth::password-resets.titles.password-resets'), 'admin::auth.password-resets.index');
     }
 
     /* -----------------------------------------------------------------
@@ -52,7 +52,7 @@ class PasswordResetsController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($this->perPage);
 
-        $this->setTitle($title = 'List of password resets');
+        $this->setTitle($title = trans('auth::password-resets.titles.password-resets-list'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.password-resets.list', compact('resets'));

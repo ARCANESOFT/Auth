@@ -6,20 +6,42 @@ return [
      |  Attributes
      | -----------------------------------------------------------------
      */
-    'email'                 => 'Email',
-    'username'              => 'Nom d\'utilisateur',
-    'password'              => 'Mot de passe',
-    'password_confirmation' => 'Confirmation mot de passe',
-    'first_name'            => 'Prénom',
-    'last_name'             => 'Nom',
+
+    'attributes' => [
+        'email'                 => 'Email',
+        'username'              => "Nom d'utilisateur",
+        'password'              => 'Mot de passe',
+        'password_confirmation' => 'Confirmation mot de passe',
+        'first_name'            => 'Prénom',
+        'last_name'             => 'Nom',
+        'full_name'             => 'Nom complet',
+        'last_activity'         => 'Dernière Activité',
+    ],
+
+    /* -----------------------------------------------------------------
+     |  Titles
+     | -----------------------------------------------------------------
+     */
+
+    'titles' => [
+        'users'        => 'Utilisateurs',
+        'users-list'   => 'Liste des utilisateurs',
+        'create-user'  => 'Créer un utilisateur',
+        'new-user'     => 'Nouvel utilisateur',
+        'edit-user'    => 'Modifier un utilisateur',
+        'update-user'  => 'Mettre à jour un utilisateur',
+        'user-details' => "Fiche de l'utilisateur",
+    ],
 
     /* -----------------------------------------------------------------
      |  Messages
      | -----------------------------------------------------------------
      */
 
-    'since'       => 'Membre depuis :date',
-    'no-activity' => 'Aucune activité en ce moment',
+    'since'        => 'Membre depuis :date',
+    'no-activity'  => 'Aucune activité en ce moment',
+    'list-empty'   => 'La liste des utilisateurs est vide.',
+    'has-no-roles' => "Cet utilisateur n'a aucun rôle.",
 
     'messages' => [
         'created'  => [
@@ -28,7 +50,7 @@ return [
         ],
 
         'updated'  => [
-            'title'   => "L'utilisateur a été mis à jour !",
+            'title'   => 'Utilisateur modifié !',
             'message' => "L'utilisateur [:name] a été mis à jour avec succès !",
         ],
 
@@ -53,8 +75,13 @@ return [
         ],
 
         'restored' => [
-            'title'   => "L'utilisateur a été restauré !",
+            'title'   => 'Utilisateur a été restauré !',
             'message' => "L'utilisateur [:name] a été restauré avec succès !",
+        ],
+
+        'impersonation-failed' => [
+            'title'   => "L'emprunt d'identité a échoué !",
+            'message' => "L'emprunt d'identité est désactivé pour cet utilisateur !",
         ],
     ],
 ];

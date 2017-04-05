@@ -1,12 +1,14 @@
+<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $roles */ ?>
+
 @section('header')
-    <h1><i class="fa fa-fw fa-lock"></i> Roles <small>List of roles</small></h1>
+    <h1><i class="fa fa-fw fa-lock"></i> {{ trans('auth::roles.titles.roles') }} <small>{{ trans('auth::roles.titles.roles-list') }}</small></h1>
 @endsection
 
 @section('content')
     <div class="box box-warning">
         <div class="box-header with-boder">
             <span class="label label-info" style="margin-right: 5px;">
-                Total : {{ $roles->total() }}
+                {{ trans('core::pagination.total', ['total' => $roles->total()]) }}
             </span>
             @if ($roles->hasPages())
                 <span class="label label-info">
@@ -25,18 +27,19 @@
                 <table class="table table-condensed table-hover no-margin">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Slug</th>
-                            <th>Description</th>
-                            <th class="text-center">Users</th>
-                            <th class="text-center">Permissions</th>
-                            <th class="text-center" style="width: 60px;">Status</th>
-                            <th class="text-center" style="width: 60px;">Locked</th>
-                            <th class="text-right" style="width: 135px;">Actions</th>
+                            <th>{{ trans('auth::roles.attributes.name') }}</th>
+                            <th>{{ trans('auth::roles.attributes.slug') }}</th>
+                            <th>{{ trans('auth::roles.attributes.description') }}</th>
+                            <th class="text-center">{{ trans('auth::users.titles.users') }}</th>
+                            <th class="text-center">{{ trans('auth::permissions.titles.permissions') }}</th>
+                            <th class="text-center" style="width: 60px;">{{ trans('core::generals.actions') }}</th>
+                            <th class="text-center" style="width: 60px;">{{ trans('auth::roles.attributes.locked') }}</th>
+                            <th class="text-right" style="width: 135px;">{{ trans('core::generals.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($roles as $role)
+                        <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
                         <tr>
                             <td>{{ $role->name }}</td>
                             <td>
@@ -54,14 +57,18 @@
                                 </span>
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isActive() ? 'success' : 'default' }}">
-                                    <i class="fa fa-fw fa-{{ $role->isActive() ? 'check' : 'ban' }}"></i>
-                                </span>
+                                @if ($role->isActive())
+                                    <span class="label label-success"><i class="fa fa-fw fa-check"></i></span>
+                                @else
+                                    <span class="label label-default"><i class="fa fa-fw fa-ban"></i></span>
+                                @endif
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->isLocked() ? 'danger' : 'success' }}">
-                                    <i class="fa fa-fw fa-{{ $role->isLocked() ? 'lock' : 'unlock' }}"></i>
-                                </span>
+                                @if ($role->isLocked())
+                                    <span class="label label-danger"><i class="fa fa-fw fa-lock"></i></span>
+                                @else
+                                    <span class="label label-success"><i class="fa fa-fw fa-unlock"></i></span>
+                                @endif
                             </td>
                             <td class="text-right">
                                 @include('auth::admin.roles._partials.table-actions')
@@ -74,9 +81,7 @@
         </div>
 
         @if ($roles->hasPages())
-            <div class="box-footer clearfix">
-                {!! $roles->render() !!}
-            </div>
+            <div class="box-footer clearfix">{!! $roles->render() !!}</div>
         @endif
     </div>
 @endsection

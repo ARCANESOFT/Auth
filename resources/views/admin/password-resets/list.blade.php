@@ -1,25 +1,26 @@
+<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $resets */ ?>
 @section('header')
-    <h1><i class="fa fa-fw fa-refresh"></i> Password Resets <small>List of password resets</small></h1>
+    <h1><i class="fa fa-fw fa-refresh"></i> {{ trans('auth::password-resets.titles.password-resets') }} <small>{{ trans('auth::password-resets.titles.password-resets-list') }}</small></h1>
 @endsection
 
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
-                Total : {{ $resets->total() }}
+                {{ trans('core::pagination.total', ['total' => $resets->total()]) }}
             </span>
             @if ($resets->hasPages())
                 <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $resets->currentPage(), 'last' => $resets->lastPage()]) }}
+                    {{ trans('core::pagination.pages', ['current' => $resets->currentPage(), 'last' => $resets->lastPage()]) }}
                 </span>
             @endif
             <div class="box-tools">
                 @if ($resets->total())
                 <a href="#clearPasswordResetsModal" class="btn btn-xs btn-primary">
-                    <i class="fa fa-fw fa-trash-o"></i> Clear expired
+                    <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.clear-expired') }}
                 </a>
                 <a href="#deletePasswordResetsModal" class="btn btn-xs btn-danger">
-                    <i class="fa fa-fw fa-trash-o"></i> Delete all
+                    <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.delete-all') }}
                 </a>
                 @endif
             </div>
@@ -29,21 +30,26 @@
                 <table class="table table-condensed table-hover no-margin">
                     <thead>
                         <tr>
-                            <th>Email</th>
-                            <th>Full name</th>
-                            <th>Created at</th>
-                            <th class="text-center">Expired</th>
-                            <th class="text-right" style="width: 80px;">Actions</th>
+                            <th>{{ trans('auth::users.attributes.email') }}</th>
+                            <th>{{ trans('auth::users.attributes.full_name') }}</th>
+                            <th>{{ trans('core::generals.created_at') }}</th>
+                            <th class="text-center">{{ trans('auth::password-resets.attributes.expired') }}</th>
+                            <th class="text-right" style="width: 80px;">{{ trans('core::generals.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                    @if ($resets->count())
+                    @if ($resets->isEmpty())
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <span class="label label-default">{{ trans('auth::password-resets.list-empty') }}</span>
+                            </td>
+                        </tr>
+                    @else
                         @foreach ($resets as $reset)
+                        <?php /** @var  \Arcanesoft\Auth\Models\PasswordReset  $reset */ ?>
                         <tr>
                             <td>{{ $reset->email }}</td>
-                            <td>
-                                {{ $reset->user->full_name }}
-                            </td>
+                            <td>{{ $reset->user->full_name }}</td>
                             <td><small>{{ $reset->created_at }}</small></td>
                             <td class="text-center">
                                 @if ($reset->isExpired())
@@ -59,21 +65,13 @@
                             </td>
                         </tr>
                         @endforeach
-                    @else
-                        <tr>
-                            <td colspan="6" class="text-center">
-                                <span class="label label-default">The password resets list is empty.</span>
-                            </td>
-                        </tr>
                     @endif
                     </tbody>
                 </table>
             </div>
         </div>
         @if ($resets->hasPages())
-            <div class="box-footer clearfix">
-                {!! $resets->render() !!}
-            </div>
+            <div class="box-footer clearfix">{!! $resets->render() !!}</div>
         @endif
     </div>
 @endsection

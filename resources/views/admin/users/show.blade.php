@@ -1,5 +1,7 @@
+<?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+
 @section('header')
-    <h1><i class="fa fa-fw fa-users"></i> Users <small>User details</small></h1>
+    <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.user-details') }}</small></h1>
 @endsection
 
 @section('content')
@@ -9,7 +11,7 @@
             <div class="box box-widget widget-user-2">
                 <div class="widget-user-header bg-blue">
                     <div class="widget-user-image">
-                        {{ Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
+                        {{ html()->image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
                     </div>
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
                     <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
@@ -19,29 +21,29 @@
                         <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
-                                    <th>Username :</th>
+                                    <th>{{ trans('auth::users.attributes.username') }} :</th>
                                     <td>{{ $user->username }}</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>First Name :</th>
+                                    <th>{{ trans('auth::users.attributes.first_name') }} :</th>
                                     <td>{{ $user->first_name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Last Name :</th>
+                                    <th>{{ trans('auth::users.attributes.last_name') }} :</th>
                                     <td>{{ $user->last_name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Email :</th>
+                                    <th>{{ trans('auth::users.attributes.email') }} :</th>
                                     <td>{{ $user->email }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Last activity :</th>
+                                    <th>{{ trans('auth::users.attributes.last_activity') }} :</th>
                                     <td><small>{{ $user->formatted_last_activity }}</small></td>
                                 </tr>
                                 <tr>
-                                    <th>Status :</th>
+                                    <th>{{ trans('core::generals.status') }} :</th>
                                     <td>
                                         @if ($user->isAdmin())
                                             <span class="label label-warning" style="margin-right: 5px;">
@@ -63,16 +65,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Created at :</th>
+                                    <th>{{ trans('core::generals.created_at') }} :</th>
                                     <td><small>{{ $user->created_at }}</small></td>
                                 </tr>
                                 <tr>
-                                    <th>Updated at :</th>
+                                    <th>{{ trans('core::generals.updated_at') }} :</th>
                                     <td><small>{{ $user->updated_at }}</small></td>
                                 </tr>
                                 @if ($user->trashed())
                                     <tr>
-                                        <th>Deleted at :</th>
+                                        <th>{{ trans('core::generals.deleted_at') }} :</th>
                                         <td><small>{{ $user->deleted_at }}</small></td>
                                     </tr>
                                 @endif
@@ -142,7 +144,7 @@
         </div>
         <div class="col-sm-7">
             {{-- ROLES TABLE --}}
-            @include('auth::admin.users._includes.roles-table', compact('user'))
+            @include('auth::admin.users._includes.roles-table', ['roles' => $user->roles])
         </div>
     </div>
 @endsection

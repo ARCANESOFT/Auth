@@ -47,7 +47,7 @@ class PermissionsController extends Controller
         $this->permission = $permission;
 
         $this->setCurrentPage('auth-permissions');
-        $this->addBreadcrumbRoute('Permissions', 'admin::auth.permissions.index');
+        $this->addBreadcrumbRoute(trans('auth::permissions.titles.permissions'), 'admin::auth.permissions.index');
     }
 
     /* -----------------------------------------------------------------
@@ -62,7 +62,7 @@ class PermissionsController extends Controller
             ->orderBy('group_id')
             ->paginate($this->perPage);
 
-        $this->setTitle($title = 'List of permissions');
+        $this->setTitle($title = trans('auth::permissions.titles.permissions-list'));
         $this->addBreadcrumb($title);
 
         return $this->view('admin.permissions.list', compact('permissions'));
@@ -78,10 +78,10 @@ class PermissionsController extends Controller
             ->with('group', 'roles')
             ->paginate($this->perPage);
 
-        $groupName = $groupId == 0 ? 'Custom' : $group->name;
+        $this->addBreadcrumbRoute(trans('auth::permissions.titles.permissions-list'), 'admin::auth.permissions.index');
 
-        $this->setTitle($title = "List of permissions - $groupName");
-        $this->addBreadcrumbRoute('List of permissions', 'admin::auth.permissions.index');
+        $groupName = $groupId == 0 ? trans('auth::permission-groups.custom') : $group->name;
+        $this->setTitle($title = trans('auth::permissions.titles.permissions-list')." - $groupName");
         $this->addBreadcrumb($groupName);
 
         return $this->view('admin.permissions.list', compact('permissions'));

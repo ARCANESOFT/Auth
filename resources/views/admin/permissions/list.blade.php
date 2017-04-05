@@ -1,16 +1,17 @@
+<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $permissions */ ?>
 @section('header')
-    <h1><i class="fa fa-fw fa-check-circle"></i> Permissions <small>List of permissions</small></h1>
+    <h1><i class="fa fa-fw fa-check-circle"></i> {{ trans('auth::permissions.titles.permissions') }} <small>{{ trans('auth::permissions.titles.permissions-list') }}</small></h1>
 @endsection
 
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
             <span class="label label-info" style="margin-right: 5px;">
-                Total : {{ $permissions->total() }}
+                {{ trans('core::pagination.total', ['total' => $permissions->total()]) }}
             </span>
             @if ($permissions->hasPages())
                 <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
+                    {{ trans('core::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
                 </span>
             @endif
 
@@ -23,23 +24,30 @@
                 <table class="table table-condensed table-hover no-margin">
                     <thead>
                         <tr>
-                            <th>Group</th>
-                            <th>Slug</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th class="text-center">N° Roles</th>
-                            <th class="text-right" style="width: 80px;">Actions</th>
+                            <th>{{ trans('auth::permissions.attributes.group') }}</th>
+                            <th>{{ trans('auth::permissions.attributes.slug') }}</th>
+                            <th>{{ trans('auth::permissions.attributes.name') }}</th>
+                            <th>{{ trans('auth::permissions.attributes.description') }}</th>
+                            <th class="text-center">{{ trans('auth::roles.titles.roles') }}</th>
+                            <th class="text-right" style="width: 80px;">{{ trans('core::generals.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($permissions->count())
+                        @if ($permissions->isEmpty())
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <span class="label label-default">{{ trans('auth::permissions.list-empty') }}</span>
+                                </td>
+                            </tr>
+                        @else
                             @foreach ($permissions as $permission)
+                            <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
                             <tr>
                                 <td>
                                     @if ($permission->hasGroup())
                                         <span class="label label-primary">{{ $permission->group->name }}</span>
                                     @else
-                                        <span class="label label-default">Custom</span>
+                                        <span class="label label-default">{{ trans('auth::permission-groups.custom') }}</span>
                                     @endif
                                 </td>
                                 <td>
@@ -48,7 +56,7 @@
                                 <td>{{ $permission->name }}</td>
                                 <td>{{ $permission->description }}</td>
                                 <td class="text-center">
-                                    <span class="label label-{{ $permission->roles->count() ? 'info' : 'default'}}">
+                                    <span class="label label-{{ $permission->roles->isEmpty() ? 'default' : 'info' }}">
                                         {{ $permission->roles->count() }}
                                     </span>
                                 </td>
@@ -61,12 +69,6 @@
                                 </td>
                             </tr>
                             @endforeach
-                        @else
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <span class="label label-default">The permission list is empty.</span>
-                                </td>
-                            </tr>
                         @endif
                     </tbody>
                 </table>

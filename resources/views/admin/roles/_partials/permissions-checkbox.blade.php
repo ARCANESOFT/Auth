@@ -1,6 +1,7 @@
+<?php /** @var  \Illuminate\Database\Eloquent\Collection  $permissions */ ?>
 <div class="box box-success">
     <div class="box-header with-border">
-        <h3 class="box-title">Permissions</h3>
+        <h3 class="box-title">{{ trans('auth::permissions.titles.permissions') }}</h3>
 
         @if ($errors->has('permissions'))
             <div class="box-tools">
@@ -13,32 +14,31 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Group</th>
-                    <th>Slug</th>
-                    <th>Name</th>
-                    <th>Description</th>
+                    <th>{{ trans('auth::permissions.attributes.group') }}</th>
+                    <th>{{ trans('auth::permissions.attributes.slug') }}</th>
+                    <th>{{ trans('auth::permissions.attributes.name') }}</th>
+                    <th>{{ trans('auth::permissions.attributes.description') }}</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($permissions as $permission)
+                <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
                 <tr>
                     <td>
                         {{ Form::checkbox('permissions[]', $permission->id, $old->has($permission->id), ['data-permission-group' => $permission->group_id]) }}
                     </td>
                     <td>
-                        <span class="label label-{{$permission->hasGroup() ? 'primary' : 'default' }}">
-                            {{ $permission->hasGroup() ? $permission->group->name : 'Custom' }}
-                        </span>
+                        @if ($permission->hasGroup())
+                            <span class="label label-primary">{{ $permission->group->name }}</span>
+                        @else
+                            <span class="label label-default">{{ trans('auth::permissions.custom-group') }}</span>
+                        @endif
                     </td>
                     <td>
                         <span class="label label-success">{{ $permission->slug }}</span>
                     </td>
-                    <td>
-                        {{ $permission->name }}
-                    </td>
-                    <td>
-                        {{ $permission->description }}
-                    </td>
+                    <td>{{ $permission->name }}</td>
+                    <td>{{ $permission->description }}</td>
                 </tr>
                 @endforeach
             </tbody>

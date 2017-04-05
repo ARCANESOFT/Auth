@@ -1,5 +1,6 @@
+<?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
 @section('header')
-    <h1><i class="fa fa-fw fa-check-circle"></i> Permissions <small>Permission details</small></h1>
+    <h1><i class="fa fa-fw fa-check-circle"></i> {{ trans('auth::permissions.titles.permissions') }} <small>{{ trans('auth::permissions.titles.permission-details') }}</small></h1>
 @endsection
 
 @section('content')
@@ -7,38 +8,38 @@
         <div class="col-md-5">
             <div class="box box-success">
                 <div class="box-header">
-                    <h3 class="box-title">Permission details</h3>
+                    <h3 class="box-title">{{ trans('auth::permissions.titles.permission-details') }}</h3>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
                         <table class="table table-condensed no-margin">
                             <tbody>
                                 <tr>
-                                    <th>Name :</th>
+                                    <th>{{ trans('auth::permissions.attributes.name') }} :</th>
                                     <td>{{ $permission->name }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Slug :</th>
+                                    <th>{{ trans('auth::permissions.attributes.slug') }} :</th>
                                     <td><span class="label label-success">{{ $permission->slug }}</span></td>
                                 </tr>
                                 <tr>
-                                    <th>Description :</th>
+                                    <th>{{ trans('auth::permissions.attributes.description') }} :</th>
                                     <td>{{ $permission->description }}</td>
                                 </tr>
                                 <tr>
-                                    <th>N° Roles :</th>
+                                    <th>{{ trans('auth::roles.titles.roles') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $permission->roles->count() ? 'info' : 'default' }}">
+                                        <span class="label label-{{ $permission->roles->isEmpty() ? 'default' : 'info' }}">
                                             {{ $permission->roles->count() }}
                                         </span>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Created at :</th>
+                                    <th>{{ trans('core::generals.created_at') }} :</th>
                                     <td><small>{{ $permission->created_at }}</small></td>
                                 </tr>
                                 <tr>
-                                    <th>Updated at :</th>
+                                    <th>{{ trans('core::generals.updated_at') }} :</th>
                                     <td><small>{{ $permission->updated_at }}</small></td>
                                 </tr>
                             </tbody>
@@ -51,30 +52,32 @@
         </div>
 
         <div class="col-md-7">
+            {{-- ROLES --}}
             <div class="box box-warning">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Roles</h3>
+                    <h3 class="box-title">{{ trans('auth::roles.titles.roles') }}</h3>
                 </div>
                 <div class="box-body no-padding">
                     <div class="table-responsive">
                         <table class="table table-condensed no-margin">
                             <thead>
                                 <tr>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th class="text-center">N° Users</th>
+                                    <th>{{ trans('auth::roles.attributes.name') }}</th>
+                                    <th>{{ trans('auth::roles.attributes.description') }}</th>
+                                    <th class="text-center">{{ trans('auth::users.titles.users') }}</th>
                                     <th class="text-right" style="width: 75px;">Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($permission->roles as $role)
+                                <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
                                 <tr>
                                     <td>
                                         <span class="label label-primary">{{ $role->name }}</span>
                                     </td>
                                     <td>{{ $role->description }}</td>
                                     <td class="text-center">
-                                        <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
+                                        <span class="label label-{{ $role->users->isEmpty() ? 'default' : 'info' }}">
                                             {{ $role->users->count() }}
                                         </span>
                                     </td>

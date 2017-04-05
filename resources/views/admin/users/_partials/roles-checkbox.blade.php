@@ -1,6 +1,6 @@
 <div class="box box-warning">
     <div class="box-header with-border">
-        <h3 class="box-title">Roles</h3>
+        <h3 class="box-title">{{ trans('auth::roles.titles.roles') }}</h3>
 
         @if ($errors->has('roles'))
             <div class="box-tools">
