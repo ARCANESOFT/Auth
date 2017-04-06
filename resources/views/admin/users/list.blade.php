@@ -32,7 +32,7 @@
                 </div>
                 @endunless
 
-                @include('core::admin._includes.actions.add-icon-link', ['url' => route('admin::auth.users.create')])
+                @include('core::admin._includes.actions.icon-links.add', ['url' => route('admin::auth.users.create')])
             </div>
         </div>
         <div class="box-body no-padding">
@@ -70,35 +70,33 @@
                                     <small>{{ $user->formatted_last_activity }}</small>
                                 </td>
                                 <td class="text-center">
-                                    @if ($user->isAdmin())
-                                        <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;"><i class="fa fa-fw fa-star"></i></span>
-                                    @endif
+                                    @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
 
                                     @include('core::admin._includes.labels.active-icon', ['active' => $user->isActive()])
                                 </td>
                                 <td class="text-right">
                                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
-                                        @include('core::admin._includes.actions.show-icon-link', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
+                                        @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
                                     @endcan
 
                                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
-                                        @include('core::admin._includes.actions.edit-icon-link', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
+                                        @include('core::admin._includes.actions.icon-links.edit', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
 
-                                        @includeWhen($user->trashed(), 'core::admin._includes.actions.restore-icon-link', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+                                        @includeWhen($user->trashed(), 'core::admin._includes.actions.icon-links.restore', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
 
                                         @if ($user->isAdmin())
-                                            @include('core::admin._includes.actions.'.($user->isActive() ? 'disable-icon-link' : 'enable-icon-link'), ['disabled' => true])
+                                            @include('core::admin._includes.actions.icon-links.'.($user->isActive() ? 'disable' : 'enable'), ['disabled' => true])
                                         @else
                                             @if ($user->isActive())
-                                                @include('core::admin._includes.actions.disable-icon-link', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
+                                                @include('core::admin._includes.actions.icon-links.disable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
                                             @else
-                                                @include('core::admin._includes.actions.enable-icon-link', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
+                                                @include('core::admin._includes.actions.icon-links.enable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
                                             @endif
                                         @endif
                                     @endcan
 
                                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-                                        @include('core::admin._includes.actions.delete-icon-link', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+                                        @include('core::admin._includes.actions.icon-links.delete', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
                                     @endcan
                                 </td>
                             </tr>

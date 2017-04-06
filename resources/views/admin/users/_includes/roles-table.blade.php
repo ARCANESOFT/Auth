@@ -28,9 +28,7 @@
                             <td>{{ $role->description }}</td>
                             <td class="text-right">
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
-                                    <a href="{{ route('admin::auth.roles.show', [$role->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                        <i class="fa fa-fw fa-search"></i>
-                                    </a>
+                                    @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
                                 @endcan
                             </td>
                         </tr>

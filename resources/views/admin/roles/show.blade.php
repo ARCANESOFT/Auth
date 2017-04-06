@@ -33,37 +33,25 @@
                                 <tr>
                                     <th>{{ trans('auth::users.titles.users') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
-                                            {{ $role->users->count() }}
-                                        </span>
+                                        @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::permissions.titles.permissions') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
-                                            {{ $role->permissions->count() }}
-                                        </span>
+                                        @include('core::admin._includes.labels.count-info', ['count' => $role->permissions->count()])
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('core::generals.status') }} :</th>
                                     <td>
-                                        @if ($role->isActive())
-                                            <span class="label label-success"><i class="fa fa-fw fa-check"></i></span>
-                                        @else
-                                            <span class="label label-default"><i class="fa fa-fw fa-ban"></i></span>
-                                        @endif
+                                        @include('core::admin._includes.labels.active-status', ['active' => $role->isActive()])
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::roles.attributes.locked') }} :</th>
                                     <td>
-                                        @if ($role->isLocked())
-                                            <span class="label label-danger"><i class="fa fa-fw fa-lock"></i></span>
-                                        @else
-                                            <span class="label label-success"><i class="fa fa-fw fa-unlock"></i></span>
-                                        @endif
+                                        @include('core::admin._includes.labels.locked-status', ['locked' => $role->isLocked()])
                                     </td>
                                 </tr>
                                 <tr>
@@ -79,50 +67,15 @@
                     </div>
                 </div>
                 <div class="box-footer text-right">
-                    @if ($role->isLocked())
-                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-                            <a href="javascript:void(0);" class="btn btn-sm btn-warning" disabled="disabled">
-                                <i class="fa fa-fw fa-pencil"></i> Update
-                            </a>
+                    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
+                        @include('core::admin._includes.actions.links.edit', $role->isLocked() ? ['disabled' => true] : ['url' => route('admin::auth.roles.edit', [$role->hashed_id])])
+                        @includeWhen($role->isActive(), 'core::admin._includes.actions.links.disable', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal'])
+                        @includeWhen( ! $role->isActive(), 'core::admin._includes.actions.links.enable', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal'])
+                    @endcan
 
-                            @if ($role->isActive())
-                                <a href="javascript:void(0);" class="btn btn-sm btn-inverse" disabled="disabled">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </a>
-                            @else
-                                <a href="javascript:void(0);" class="btn btn-sm btn-success" disabled="disabled">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </a>
-                            @endif
-                        @endcan
-
-                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" disabled="disabled">
-                                <i class="fa fa-fw fa-trash-o"></i> Delete
-                            </a>
-                        @endcan
-                    @else
-                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-                            <a href="{{ route('admin::auth.roles.edit', [$role->hashed_id]) }}" class="btn btn-sm btn-warning">
-                                <i class="fa fa-fw fa-pencil"></i> Update
-                            </a>
-                            @if ($role->isActive())
-                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-sm btn-inverse">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </button>
-                            @else
-                                <button data-target="#activateRoleModal" data-toggle="modal" class="btn btn-sm btn-success">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </button>
-                            @endif
-                        @endcan
-
-                        @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-                            <button data-target="#deleteRoleModal" data-toggle="modal" class="btn btn-sm btn-danger">
-                                <i class="fa fa-fw fa-trash-o"></i> Delete
-                            </button>
-                        @endcan
-                    @endif
+                    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
+                        @include('core::admin._includes.actions.links.delete', $role->isLocked() ? ['disabled' => true] : ['url' => '#deleteRoleModal'])
+                    @endcan
                 </div>
             </div>
         </div>
@@ -161,7 +114,7 @@
                                         </tr>
                                     @else
                                         @foreach ($role->users as $user)
-                                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+                                        <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
                                         <tr>
                                             <td class="text-center">
                                                 {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
@@ -170,27 +123,16 @@
                                             <td>{{ $user->full_name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td class="text-center">
-                                                @if ($user->isAdmin())
-                                                    <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;">
-                                                    <i class="fa fa-fw fa-star"></i>
-                                                </span>
-                                                @endif
-                                                @if ($user->isActive())
-                                                    <span class="label label-success"><i class="fa fa-check"></i></span>
-                                                @else
-                                                    <span class="label label-default"><i class="fa fa-ban"></i></span>
-                                                @endif
+                                                @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
+                                                @include('core::admin._includes.labels.active-icon', ['active' => $user->isActive()])
                                             </td>
                                             <td class="text-right">
-                                                @can('auth.users.show')
-                                                    <a href="{{ route('admin::auth.users.show', [$user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                        <i class="fa fa-fw fa-search"></i>
-                                                    </a>
+                                                @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
+                                                    @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
                                                 @endcan
-                                                @can('auth.users.update')
-                                                    <a href="{{ route('admin::auth.users.edit', [$user->hashed_id]) }}" class="btn btn-xs btn-warning" data-toggle="tooltip" data-original-title="Edit">
-                                                        <i class="fa fa-fw fa-pencil"></i>
-                                                    </a>
+
+                                                @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
+                                                    @include('core::admin._includes.actions.icon-links.edit', $user->isAdmin() ? ['disabled' => true] : ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
                                                 @endcan
                                             </td>
                                         </tr>
@@ -326,87 +268,97 @@
 @endsection
 
 @section('scripts')
+    {{-- ACTIVATE MODAL --}}
     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-        {{-- ACTIVATE MODAL --}}
-        <script>
-            $(function() {
-                var $activateRoleModal = $('div#activateRoleModal'),
-                    $activateRoleForm  = $('form#activateRoleForm');
+    <script>
+        $(function() {
+            var $activateRoleModal = $('div#activateRoleModal'),
+                $activateRoleForm  = $('form#activateRoleForm');
 
-                $activateRoleForm.on('submit', function (event) {
-                    event.preventDefault();
+            $('a[href="#activateRoleModal"]').on('click', function (e) {
+                e.preventDefault();
+                $activateRoleModal.modal('show');
+            });
 
-                    var $submitBtn = $activateRoleForm.find('button[type="submit"]');
-                        $submitBtn.button('loading');
+            $activateRoleForm.on('submit', function (event) {
+                event.preventDefault();
 
-                    $.ajax({
-                        url:      $activateRoleForm.attr('action'),
-                        type:     $activateRoleForm.attr('method'),
-                        dataType: 'json',
-                        data:     $activateRoleForm.serialize(),
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $activateRoleModal.modal('hide');
-                                location.reload();
-                            }
-                            else {
-                                alert('ERROR ! Check the console !');
-                                console.error(data.message);
-                                $submitBtn.button('reset');
-                            }
-                        },
-                        error: function(xhr) {
-                            alert('AJAX ERROR ! Check the console !');
-                            console.error(xhr);
+                var $submitBtn = $activateRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
+
+                $.ajax({
+                    url:      $activateRoleForm.attr('action'),
+                    type:     $activateRoleForm.attr('method'),
+                    dataType: 'json',
+                    data:     $activateRoleForm.serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            $activateRoleModal.modal('hide');
+                            location.reload();
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
                             $submitBtn.button('reset');
                         }
-                    });
-
-                    return false;
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
+                        $submitBtn.button('reset');
+                    }
                 });
+
+                return false;
             });
-        </script>
+        });
+    </script>
     @endcan
 
+    {{-- DELETE MODAL --}}
     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-        <script>
-            {{-- DELETE MODAL --}}
-            $(function () {
-                var $deleteRoleModal = $('div#deleteRoleModal'),
-                    $deleteRoleForm  = $('form#deleteRoleForm');
+    <script>
+        $(function () {
+            var $deleteRoleModal = $('div#deleteRoleModal'),
+                $deleteRoleForm  = $('form#deleteRoleForm');
 
-                $deleteRoleForm.on('submit', function (event) {
-                    event.preventDefault();
+            $('a[href="#deleteRoleModal"]').on('click', function (e) {
+                e.preventDefault();
+                $deleteRoleModal.modal('show');
+            });
 
-                    var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
-                        $submitBtn.button('loading');
+            $deleteRoleForm.on('submit', function (event) {
+                event.preventDefault();
 
-                    $.ajax({
-                        url:      $deleteRoleForm.attr('action'),
-                        type:     $deleteRoleForm.attr('method'),
-                        dataType: 'json',
-                        data:     $deleteRoleForm.serialize(),
-                        success: function(data) {
-                            if (data.status === 'success') {
-                                $deleteRoleModal.modal('hide');
-                                location.replace("{{ route('admin::auth.roles.index') }}");
-                            }
-                            else {
-                                alert('ERROR ! Check the console !');
-                                console.error(data.message);
-                                $submitBtn.button('reset');
-                            }
-                        },
-                        error: function(xhr) {
-                            alert('AJAX ERROR ! Check the console !');
-                            console.error(xhr);
+                var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
+                    $submitBtn.button('loading');
+
+                $.ajax({
+                    url:      $deleteRoleForm.attr('action'),
+                    type:     $deleteRoleForm.attr('method'),
+                    dataType: 'json',
+                    data:     $deleteRoleForm.serialize(),
+                    success: function(data) {
+                        if (data.status === 'success') {
+                            $deleteRoleModal.modal('hide');
+                            location.replace("{{ route('admin::auth.roles.index') }}");
+                        }
+                        else {
+                            alert('ERROR ! Check the console !');
+                            console.error(data.message);
                             $submitBtn.button('reset');
                         }
-                    });
-
-                    return false;
+                    },
+                    error: function(xhr) {
+                        alert('AJAX ERROR ! Check the console !');
+                        console.error(xhr);
+                        $submitBtn.button('reset');
+                    }
                 });
+
+                return false;
             });
-        </script>
+        });
+    </script>
     @endcan
 @endsection

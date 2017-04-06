@@ -45,19 +45,9 @@
                                 <tr>
                                     <th>{{ trans('core::generals.status') }} :</th>
                                     <td>
-                                        @if ($user->isAdmin())
-                                            <span class="label label-warning" style="margin-right: 5px;">
-                                                <i class="fa fa-fw fa-star"></i> SUPER ADMIN
-                                            </span>
-                                        @endif
-
+                                        @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-label')
                                         @include('core::admin._includes.labels.active-status', ['active' => $user->isActive()])
-
-                                        @if ($user->trashed())
-                                            <span class="label label-danger" style="margin-left: 5px;">
-                                                <i class="fa fa-fw fa-trash-o"></i> Trashed
-                                            </span>
-                                        @endif
+                                        @includeWhen($user->trashed(), 'core::admin._includes.labels.trashed-status')
                                     </td>
                                 </tr>
                                 <tr>
@@ -86,57 +76,19 @@
                     @endif
 
                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
-                        <a href="{{ route('admin::auth.users.edit', [$user->hashed_id]) }}" class="btn btn-sm btn-warning">
-                            <i class="fa fa-fw fa-pencil"></i> Edit
-                        </a>
-
-                        @if ($user->isAdmin())
-                            @if ($user->isActive())
-                                <a href="javascript:void(0);" class="btn btn-sm btn-inverse" disabled="disabled">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </a>
-                            @else
-                                <a href="javascript:void(0);" class="btn btn-sm btn-success" disabled="disabled">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </a>
-                            @endif
-                        @else
-                            @if ($user->isActive())
-                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-sm btn-inverse">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </button>
-                            @else
-                                <button data-target="#activateUserModal" data-toggle="modal" class="btn btn-sm btn-success">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </button>
-                            @endif
-                        @endif
-
-                        @if ($user->trashed())
-                            <button data-target="#restoreUserModal" data-toggle="modal" class="btn btn-sm btn-primary">
-                                <i class="fa fa-fw fa-reply"></i> Restore
-                            </button>
-                        @endif
+                        @include('core::admin._includes.actions.links.edit', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
+                        @include('core::admin._includes.actions.links.'.($user->isActive() ? 'disable' : 'enable'), $user->isAdmin() ? ['disabled' => true] : ['url' => '#activateUserModal'])
+                        @includeWhen($user->trashed(), 'core::admin._includes.actions.links.restore', ['url' => '#restoreUserModal'])
                     @endcan
 
                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-                        @if ($user->isAdmin())
-                            <a href="javascript:void(0);" class="btn btn-sm btn-danger" disabled="disabled">
-                                <i class="fa fa-fw fa-trash-o"></i> Delete
-                            </a>
-                        @else
-                            <button data-target="#deleteUserModal" data-toggle="modal" class="btn btn-sm btn-danger">
-                                <i class="fa fa-fw fa-trash-o"></i> Delete
-                            </button>
-                        @endif
+                        @include('core::admin._includes.actions.links.delete', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal'])
                     @endcan
                 </div>
             </div>
 
             {{-- PASSWORD RESET TABLE --}}
-            @if ($user->hasPasswordReset())
-                @include('auth::admin.users._includes.password-reset-table')
-            @endif
+            @includeWhen($user->hasPasswordReset(), 'auth::admin.users._includes.password-reset-table')
         </div>
         <div class="col-sm-7">
             {{-- ROLES TABLE --}}
@@ -151,35 +103,35 @@
         <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
             <div class="modal-dialog" role="document">
                 {{ Form::open(['route' => ['admin::auth.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="activateUserModalLabel">
-                                {{ $user->isActive() ? 'Disable User' : 'Activate User' }}
-                            </h4>
-                        </div>
-                        <div class="modal-body">
-                            @if ($user->isActive())
-                                <p>Are you sure you want to <span class="label label-inverse">disable</span> this user : <strong>{{ $user->username }}</strong> ?</p>
-                            @else
-                                <p>Are you sure you want to <span class="label label-success">activate</span> this user : <strong>{{ $user->username }}</strong> ?</p>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                            @if ($user->isActive())
-                                <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </button>
-                            @else
-                                <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </button>
-                            @endif
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="activateUserModalLabel">
+                            {{ $user->isActive() ? 'Disable User' : 'Activate User' }}
+                        </h4>
                     </div>
+                    <div class="modal-body">
+                        @if ($user->isActive())
+                            <p>Are you sure you want to <span class="label label-inverse">disable</span> this user : <strong>{{ $user->full_name }}</strong> ?</p>
+                        @else
+                            <p>Are you sure you want to <span class="label label-success">activate</span> this user : <strong>{{ $user->full_name }}</strong> ?</p>
+                        @endif
+                    </div>
+                    <div class="modal-footer">
+                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                        @if ($user->isActive())
+                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Disable
+                            </button>
+                        @else
+                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
+                                <i class="fa fa-fw fa-power-off"></i> Activate
+                            </button>
+                        @endif
+                    </div>
+                </div>
                 {{ Form::close() }}
             </div>
         </div>
@@ -197,7 +149,7 @@
                                 <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
                             </div>
                             <div class="modal-body">
-                                <p>Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                                <p>Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>{{ $user->full_name }}</strong> ?</p>
                             </div>
                             <div class="modal-footer">
                                 {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
@@ -225,7 +177,7 @@
                             <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>{{ $user->username }}</strong> ?</p>
+                            <p>Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>{{ $user->full_name }}</strong> ?</p>
                         </div>
                         <div class="modal-footer">
                             {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
@@ -246,6 +198,11 @@
         <script>
             var $activateUserModal = $('div#activateUserModal'),
                 $activateUserForm  = $('form#activateUserForm');
+
+            $('a[href="#activateUserModal"]').on('click', function (e) {
+                e.preventDefault();
+                $activateUserModal.modal('show');
+            });
 
             $activateUserForm.submit(function (event) {
                 event.preventDefault();
@@ -285,7 +242,12 @@
             var $restoreUserModal = $('div#restoreUserModal'),
                 $restoreUserForm  = $('form#restoreUserForm');
 
-            $restoreUserForm.submit(function (event) {
+            $('a[href="#restoreUserModal"]').on('click', function (e) {
+                e.preventDefault();
+                $restoreUserModal.modal('show');
+            });
+
+            $restoreUserForm.on('submit', function (event) {
                 event.preventDefault();
                 var $submitBtn = $restoreUserForm.find('button[type="submit"]');
                     $submitBtn.button('loading');
@@ -325,7 +287,12 @@
             var $deleteUserModal = $('div#deleteUserModal'),
                 $deleteUserForm  = $('form#deleteUserForm');
 
-            $deleteUserForm.submit(function (event) {
+            $('a[href="#deleteUserModal"]').on('click', function (e) {
+                e.preventDefault();
+                $deleteUserModal.modal('show');
+            });
+
+            $deleteUserForm.on('submit', function (event) {
                 event.preventDefault();
                 var $submitBtn = $deleteUserForm.find('button[type="submit"]');
                     $submitBtn.button('loading');

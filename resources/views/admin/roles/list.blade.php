@@ -10,7 +10,7 @@
             @include('core::admin._includes.pagination.labels', ['paginator' => $roles])
 
             <div class="box-tools">
-                @include('core::admin._includes.actions.add-icon-link', ['url' => route('admin::auth.roles.create')])
+                @include('core::admin._includes.actions.icon-links.add', ['url' => route('admin::auth.roles.create')])
             </div>
         </div>
         <div class="box-body no-padding">
@@ -51,21 +51,17 @@
                             </td>
                             <td class="text-right">
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
-                                    @include('core::admin._includes.actions.show-icon-link', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
+                                    @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
                                 @endcan
 
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
-                                    @include('core::admin._includes.actions.edit-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => route('admin::auth.roles.edit', [$role->hashed_id])])
-
-                                    @if ($role->isActive())
-                                        @include('core::admin._includes.actions.disable-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'enabled']])
-                                    @else
-                                        @include('core::admin._includes.actions.enable-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'disabled']])
-                                    @endif
+                                    @include('core::admin._includes.actions.icon-links.edit', $role->isLocked() ? ['disabled' => true] : ['url' => route('admin::auth.roles.edit', [$role->hashed_id])])
+                                    @includeWhen($role->isActive(), 'core::admin._includes.actions.icon-links.disable', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'enabled']])
+                                    @includeWhen( ! $role->isActive(), 'core::admin._includes.actions.icon-links.enable', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'disabled']])
                                 @endcan
 
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
-                                    @include('core::admin._includes.actions.delete-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#deleteRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name]])
+                                    @include('core::admin._includes.actions.icon-links.delete', $role->isLocked() ? ['disabled' => true] : ['url' => '#deleteRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name]])
                                 @endcan
                             </td>
                         </tr>
