@@ -6,23 +6,17 @@
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
-            <span class="label label-info" style="margin-right: 5px;">
-                {{ trans('core::pagination.total', ['total' => $resets->total()]) }}
-            </span>
-            @if ($resets->hasPages())
-                <span class="label label-info">
-                    {{ trans('core::pagination.pages', ['current' => $resets->currentPage(), 'last' => $resets->lastPage()]) }}
-                </span>
-            @endif
+            @include('core::admin._includes.pagination.labels', ['paginator' => $resets])
+
             <div class="box-tools">
-                @if ($resets->total())
+                @unless($resets->isEmpty())
                 <a href="#clearPasswordResetsModal" class="btn btn-xs btn-primary">
                     <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.clear-expired') }}
                 </a>
                 <a href="#deletePasswordResetsModal" class="btn btn-xs btn-danger">
                     <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.delete-all') }}
                 </a>
-                @endif
+                @endunless
             </div>
         </div>
         <div class="box-body no-padding">

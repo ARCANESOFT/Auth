@@ -6,14 +6,7 @@
 @section('content')
     <div class="box box-success">
         <div class="box-header with-border">
-            <span class="label label-info" style="margin-right: 5px;">
-                {{ trans('core::pagination.total', ['total' => $permissions->total()]) }}
-            </span>
-            @if ($permissions->hasPages())
-                <span class="label label-info">
-                    {{ trans('core::pagination.pages', ['current' => $permissions->currentPage(), 'last' => $permissions->lastPage()]) }}
-                </span>
-            @endif
+            @include('core::admin._includes.pagination.labels', ['paginator' => $permissions])
 
             <div class="box-tools">
                 @include(Arcanesoft\Auth\ViewComposers\PermissionGroupsFilterComposer::VIEW)

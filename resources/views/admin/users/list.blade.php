@@ -1,3 +1,5 @@
+<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $users */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.users-list') }}</small></h1>
 @endsection
@@ -5,15 +7,7 @@
 @section('content')
     <div class="box box-primary">
         <div class="box-header with-border">
-            <span class="label label-info" style="margin-right: 5px;">
-                {{ trans('core::pagination.total', ['total' => $users->total()]) }}
-            </span>
-
-            @if ($users->hasPages())
-                <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $users->currentPage(), 'last' => $users->lastPage()]) }}
-                </span>
-            @endif
+            @include('core::admin._includes.pagination.labels', ['paginator' => $users])
 
             <div class="box-tools">
                 <div class="btn-group" role="group">
@@ -26,22 +20,19 @@
                 </div>
 
                 @unless($trashed)
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{ trans('auth::roles.titles.roles') }} <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-right">
-                            <li>{{ link_to_route('admin::auth.users.index', 'All') }}</li>
-                            @foreach($rolesFilters as $filterLink)
-                                <li>{!! $filterLink !!}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="btn-group">
+                    <button class="btn btn-default btn-xs dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{ trans('auth::roles.titles.roles') }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach($rolesFilters as $filterLink)
+                            <li>{{ $filterLink }}</li>
+                        @endforeach
+                    </ul>
+                </div>
                 @endunless
 
-                <a href="{{ route('admin::auth.users.create') }}" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">
-                    <i class="fa fa-plus"></i>
-                </a>
+                @include('core::admin._includes.actions.add-icon-link', ['url' => route('admin::auth.users.create')])
             </div>
         </div>
         <div class="box-body no-padding">
@@ -62,6 +53,7 @@
                     <tbody>
                         @if ($users->count())
                             @foreach($users as $user)
+                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
                             <tr>
                                 <td class="text-center">
                                     {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
@@ -71,7 +63,7 @@
                                 <td>{{ $user->email }}</td>
                                 <td>
                                     @foreach($user->roles as $role)
-                                    <span class="label label-primary" style="margin-right: 5px;">{{  $role->name }}</span>
+                                    <span class="label label-primary" style="margin-right: 5px;">{{ $role->name }}</span>
                                     @endforeach
                                 </td>
                                 <td class="text-center">
@@ -82,18 +74,32 @@
                                         <span class="label label-warning" data-toggle="tooltip" data-original-title="SUPER ADMIN" style="margin-right: 5px;"><i class="fa fa-fw fa-star"></i></span>
                                     @endif
 
-                                    @if ($user->isActive())
-                                        <span class="label label-success" data-toggle="tooltip" data-original-title="Enabled">
-                                            <i class="fa fa-check"></i>
-                                        </span>
-                                    @else
-                                        <span class="label label-default" data-toggle="tooltip" data-original-title="Disabled">
-                                            <i class="fa fa-ban"></i>
-                                        </span>
-                                    @endif
+                                    @include('core::admin._includes.labels.active-icon', ['active' => $user->isActive()])
                                 </td>
                                 <td class="text-right">
-                                    @include('auth::admin.users._partials.table-actions')
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
+                                        @include('core::admin._includes.actions.show-icon-link', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
+                                    @endcan
+
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
+                                        @include('core::admin._includes.actions.edit-icon-link', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
+
+                                        @includeWhen($user->trashed(), 'core::admin._includes.actions.restore-icon-link', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+
+                                        @if ($user->isAdmin())
+                                            @include('core::admin._includes.actions.'.($user->isActive() ? 'disable-icon-link' : 'enable-icon-link'), ['disabled' => true])
+                                        @else
+                                            @if ($user->isActive())
+                                                @include('core::admin._includes.actions.disable-icon-link', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
+                                            @else
+                                                @include('core::admin._includes.actions.enable-icon-link', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
+                                            @endif
+                                        @endif
+                                    @endcan
+
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
+                                        @include('core::admin._includes.actions.delete-icon-link', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+                                    @endcan
                                 </td>
                             </tr>
                             @endforeach

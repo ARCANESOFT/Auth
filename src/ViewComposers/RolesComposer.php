@@ -3,6 +3,7 @@
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 
 /**
  * Class     RolesComposer
@@ -53,13 +54,15 @@ class RolesComposer extends ViewComposer
             return $this->role->has('users')->get();
         });
 
+        $filters->push(link_to_route('admin::auth.users.index', trans('core::generals.all')));
+
         foreach ($roles as $role) {
             /** @var  \Arcanesoft\Auth\Models\Role  $role */
-            $filters->put($role->slug, link_to_route('admin::auth.users.roles-filter.index', $role->name, [
-                $role->hashed_id
-            ]));
+            $filters->push(link_to_route('admin::auth.users.roles-filter.index', $role->name, [$role->hashed_id]));
         }
 
-        $view->with('rolesFilters', $filters);
+        $view->with('rolesFilters', $filters->transform(function ($link) {
+            return new HtmlString($link);
+        }));
     }
 }

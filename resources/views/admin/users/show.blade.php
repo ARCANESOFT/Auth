@@ -51,11 +51,7 @@
                                             </span>
                                         @endif
 
-                                        @if ($user->isActive())
-                                            <span class="label label-success">Acitve</span>
-                                        @else
-                                            <span class="label label-default">Disabled</span>
-                                        @endif
+                                        @include('core::admin._includes.labels.active-status', ['active' => $user->isActive()])
 
                                         @if ($user->trashed())
                                             <span class="label label-danger" style="margin-left: 5px;">

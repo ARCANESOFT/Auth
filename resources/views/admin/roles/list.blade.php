@@ -6,20 +6,11 @@
 
 @section('content')
     <div class="box box-warning">
-        <div class="box-header with-boder">
-            <span class="label label-info" style="margin-right: 5px;">
-                {{ trans('core::pagination.total', ['total' => $roles->total()]) }}
-            </span>
-            @if ($roles->hasPages())
-                <span class="label label-info">
-                    {{ trans('foundation::pagination.pages', ['current' => $roles->currentPage(), 'last' => $roles->lastPage()]) }}
-                </span>
-            @endif
+        <div class="box-header with-border">
+            @include('core::admin._includes.pagination.labels', ['paginator' => $roles])
 
             <div class="box-tools">
-                <a href="{{ route('admin::auth.roles.create') }}" class="btn btn-xs btn-primary" data-toggle="tooltip" data-original-title="Add">
-                    <i class="fa fa-plus"></i>
-                </a>
+                @include('core::admin._includes.actions.add-icon-link', ['url' => route('admin::auth.roles.create')])
             </div>
         </div>
         <div class="box-body no-padding">
@@ -47,31 +38,35 @@
                             </td>
                             <td>{{ $role->description }}</td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->users->count() ? 'info' : 'default' }}">
-                                    {{ $role->users->count() }}
-                                </span>
+                                @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
                             </td>
                             <td class="text-center">
-                                <span class="label label-{{ $role->permissions->count() ? 'info' : 'default' }}">
-                                    {{ $role->permissions->count() }}
-                                </span>
+                                @include('core::admin._includes.labels.count-info', ['count' => $role->permissions->count()])
                             </td>
                             <td class="text-center">
-                                @if ($role->isActive())
-                                    <span class="label label-success"><i class="fa fa-fw fa-check"></i></span>
-                                @else
-                                    <span class="label label-default"><i class="fa fa-fw fa-ban"></i></span>
-                                @endif
+                                @include('core::admin._includes.labels.active-icon', ['active' => $role->isActive()])
                             </td>
                             <td class="text-center">
-                                @if ($role->isLocked())
-                                    <span class="label label-danger"><i class="fa fa-fw fa-lock"></i></span>
-                                @else
-                                    <span class="label label-success"><i class="fa fa-fw fa-unlock"></i></span>
-                                @endif
+                                @include('core::admin._includes.labels.locked-icon', ['locked' => $role->isLocked()])
                             </td>
                             <td class="text-right">
-                                @include('auth::admin.roles._partials.table-actions')
+                                @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
+                                    @include('core::admin._includes.actions.show-icon-link', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
+                                @endcan
+
+                                @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
+                                    @include('core::admin._includes.actions.edit-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => route('admin::auth.roles.edit', [$role->hashed_id])])
+
+                                    @if ($role->isActive())
+                                        @include('core::admin._includes.actions.disable-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'enabled']])
+                                    @else
+                                        @include('core::admin._includes.actions.enable-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#activateRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-role-status' => 'disabled']])
+                                    @endif
+                                @endcan
+
+                                @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
+                                    @include('core::admin._includes.actions.delete-icon-link', $role->isLocked() ? ['disabled' => true] : ['url' => '#deleteRoleModal', 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name]])
+                                @endcan
                             </td>
                         </tr>
                         @endforeach
@@ -88,7 +83,7 @@
 
 @section('modals')
     {{-- ACTIVATE MODAL --}}
-    @can('auth.roles.update')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         <div id="activateRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateRoleModalLabel">
             <div class="modal-dialog" role="document">
                 {{ Form::open(['method' => 'PUT', 'id' => 'activateRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
@@ -118,7 +113,7 @@
     @endcan
 
     {{-- DELETE MODAL --}}
-    @can('auth.roles.delete')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
         <div id="deleteRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteRoleModalLabel">
             <div class="modal-dialog" role="document">
                 {{ Form::open(['method' => 'DELETE', 'id' => 'deleteRoleForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
@@ -146,7 +141,7 @@
 @endsection
 
 @section('scripts')
-    @can('auth.roles.update')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         {{-- ACTIVATE SCRIPT --}}
         <script>
             var $activateRoleModal = $('div#activateRoleModal'),
@@ -213,7 +208,7 @@
         </script>
     @endcan
 
-    @can('auth.roles.delete')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
         {{-- DELETE SCRIPT --}}
         <script>
             var $deleteRoleModal = $('div#deleteRoleModal'),
