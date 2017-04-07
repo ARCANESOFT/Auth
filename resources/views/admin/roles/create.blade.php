@@ -39,9 +39,10 @@
                     </div>
                 </div>
             </div>
-            <div class="box-footer text-right">
-                <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
-                    <i class="fa fa-fw fa-plus"></i> Add
+            <div class="box-footer">
+                {{ link_to_route('admin::auth.roles.index', ucfirst(trans('core::actions.cancel')), [], ['class' => 'btn btn-sm btn-default']) }}
+                <button type="submit" class="btn btn-sm btn-primary pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
+                    <i class="fa fa-fw fa-plus"></i> {{ ucfirst(trans('core::actions.add')) }}
                 </button>
             </div>
         </div>

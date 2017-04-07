@@ -1,3 +1,5 @@
+<?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-lock"></i> {{ trans('auth::roles.titles.roles') }} <small>{{ trans('auth::roles.titles.edit-role') }}</small></h1>
 @endsection
@@ -39,9 +41,10 @@
                     </div>
                 </div>
             </div>
-            <div class="box-footer text-right">
-                <button type="submit" class="btn btn-sm btn-warning" data-loading-text="Loading&hellip;">
-                    <i class="fa fa-fw fa-pencil"></i> Update
+            <div class="box-footer">
+                {{ link_to_route('admin::auth.roles.show', ucfirst(trans('core::actions.cancel')), [$role->hashed_id], ['class' => 'btn btn-sm btn-default']) }}
+                <button type="submit" class="btn btn-sm btn-warning pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
+                    <i class="fa fa-fw fa-pencil"></i> {{ ucfirst(trans('core::actions.update')) }}
                 </button>
             </div>
         </div>

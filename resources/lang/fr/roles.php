@@ -63,4 +63,26 @@ return [
             'message' => 'Le rôle [:name] a été supprimé avec succès !',
         ],
     ],
+
+    /* -----------------------------------------------------------------
+     |  Modals
+     | -----------------------------------------------------------------
+     */
+
+    'modals' => [
+        'enable' => [
+            'title'   => 'Activer le rôle',
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-success">activer</span> ce rôle: <b>:name</b> ?',
+        ],
+
+        'disable' => [
+            'title'   => 'Désactiver le rôle',
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-inverse">désactiver</span> ce rôle: <b>:name</b> ?',
+        ],
+
+        'delete' => [
+            'title'   => 'Supprimer le rôle',
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-danger">supprimer</span> ce rôle: <b>:name</b> ?',
+        ],
+    ],
 ];

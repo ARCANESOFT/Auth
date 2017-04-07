@@ -64,4 +64,26 @@ return [
             'message' => 'The role [:name] has been successfully deleted !',
         ],
     ],
+
+    /* -----------------------------------------------------------------
+     |  Modals
+     | -----------------------------------------------------------------
+     */
+
+    'modals' => [
+        'enable' => [
+            'title'   => 'Activate Role',
+            'message' => 'Are you sure you want to <span class="label label-success">activate</span> this role: <b>:name</b> ?',
+        ],
+
+        'disable' => [
+            'title'   => 'Disable Role',
+            'message' => 'Are you sure you want to <span class="label label-inverse">disable</span> this role: <b>:name</b> ?',
+        ],
+
+        'delete' => [
+            'title'   => 'Delete Role',
+            'message' => 'Are you sure you want to <span class="label label-danger">delete</span> this role: <b>:name</b> ?',
+        ],
+    ],
 ];

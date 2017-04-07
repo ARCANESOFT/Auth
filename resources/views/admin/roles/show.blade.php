@@ -181,9 +181,7 @@
                                                 <td>{{ $permission->description }}</td>
                                                 <td class="text-right">
                                                     @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
-                                                        <a href="{{ route('admin::auth.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                            <i class="fa fa-fw fa-search"></i>
-                                                        </a>
+                                                        @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.permissions.show', [$permission->hashed_id])])
                                                     @endcan
                                                 </td>
                                             </tr>
@@ -211,27 +209,17 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             <h4 class="modal-title" id="activateRoleModalLabel">
-                                {{ $role->isActive() ? 'Disable Role' : 'Activate Role' }}
+                                {{ trans($role->isActive() ? 'auth::roles.modals.disable.title' : 'auth::roles.modals.enable.title') }}
                             </h4>
                         </div>
                         <div class="modal-body">
-                            @if ($role->isActive())
-                                <p>Are you sure you want to <span class="label label-inverse">disable</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                            @else
-                                <p>Are you sure you want to <span class="label label-success">activate</span> this role : <strong>{{ $role->name }}</strong> ?</p>
-                            @endif
+                            <p>{!! trans($role->isActive() ? 'auth::roles.modals.disable.message' : 'auth::roles.modals.enable.message', ['name' => $role->name]) !!}</p>
                         </div>
                         <div class="modal-footer">
-                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                            @if ($role->isActive())
-                                <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Disable
-                                </button>
-                            @else
-                                <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-power-off"></i> Activate
-                                </button>
-                            @endif
+                            {{ Form::button(ucfirst(trans('core::actions.cancel')), ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                            <button type="submit" class="btn btn-sm btn-{{ $role->isActive() ? 'inverse' : 'success' }}" data-loading-text="{{ trans('core::generals.loading') }}">
+                                <i class="fa fa-fw fa-power-off"></i> {{ ucfirst(trans($role->isActive() ? 'core::actions.disable' : 'core::actions.enable')) }}
+                            </button>
                         </div>
                     </div>
                 {{ Form::close() }}
@@ -249,15 +237,15 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 class="modal-title" id="deleteRoleModalLabel">Delete Role</h4>
+                            <h4 class="modal-title" id="deleteRoleModalLabel">{{ trans('auth::roles.modals.delete.title') }}</h4>
                         </div>
                         <div class="modal-body">
-                            <p>Are you sure you want to <span class="label label-danger">delete</span> this role : <strong>{{ $role->name }}</strong> ?</p>
+                            <p>{!! trans('auth::roles.modals.delete.message', ['name' => $role->name]) !!}</p>
                         </div>
                         <div class="modal-footer">
-                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-trash-o"></i> DELETE
+                            {{ Form::button(ucfirst(trans('core::actions.cancel')), ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
+                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="{{ trans('core::generals.loading') }}">
+                                <i class="fa fa-fw fa-trash-o"></i> {{ ucfirst(trans('core::actions.delete')) }}
                             </button>
                         </div>
                     </div>
@@ -286,28 +274,23 @@
                 var $submitBtn = $activateRoleForm.find('button[type="submit"]');
                     $submitBtn.button('loading');
 
-                $.ajax({
-                    url:      $activateRoleForm.attr('action'),
-                    type:     $activateRoleForm.attr('method'),
-                    dataType: 'json',
-                    data:     $activateRoleForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $activateRoleModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                axios.put($activateRoleForm.attr('action'))
+                     .then(function (response) {
+                         if (response.data.status === 'success') {
+                             $activateRoleModal.modal('hide');
+                             location.reload();
+                         }
+                         else {
+                             alert('ERROR ! Check the console !');
+                             console.error(data.message);
+                             $submitBtn.button('reset');
+                         }
+                     })
+                     .catch(function (error) {
+                         alert('AJAX ERROR ! Check the console !');
+                         console.log(error);
+                         $submitBtn.button('reset');
+                     });
 
                 return false;
             });
@@ -333,28 +316,23 @@
                 var $submitBtn = $deleteRoleForm.find('button[type="submit"]');
                     $submitBtn.button('loading');
 
-                $.ajax({
-                    url:      $deleteRoleForm.attr('action'),
-                    type:     $deleteRoleForm.attr('method'),
-                    dataType: 'json',
-                    data:     $deleteRoleForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $deleteRoleModal.modal('hide');
-                            location.replace("{{ route('admin::auth.roles.index') }}");
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                axios.delete($deleteRoleForm.attr('action'))
+                     .then(function (response) {
+                         if (response.data.status === 'success') {
+                             $deleteRoleModal.modal('hide');
+                             location.replace("{{ route('admin::auth.roles.index') }}");
+                         }
+                         else {
+                             alert('ERROR ! Check the console !');
+                             console.error(data.message);
+                             $submitBtn.button('reset');
+                         }
+                     })
+                     .catch(function (error) {
+                         alert('AJAX ERROR ! Check the console !');
+                         console.log(error);
+                         $submitBtn.button('reset');
+                     });
 
                 return false;
             });
