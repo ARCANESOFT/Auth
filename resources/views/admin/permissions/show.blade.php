@@ -6,6 +6,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-5">
+            {{-- PERMISSION --}}
             <div class="box box-success">
                 <div class="box-header">
                     <h3 class="box-title">{{ trans('auth::permissions.titles.permission-details') }}</h3>
@@ -29,9 +30,7 @@
                                 <tr>
                                     <th>{{ trans('auth::roles.titles.roles') }} :</th>
                                     <td>
-                                        <span class="label label-{{ $permission->roles->isEmpty() ? 'default' : 'info' }}">
-                                            {{ $permission->roles->count() }}
-                                        </span>
+                                        @include('core::admin._includes.labels.count-info', ['count' => $permission->roles->count()])
                                     </td>
                                 </tr>
                                 <tr>
@@ -48,6 +47,7 @@
                 </div>
             </div>
 
+            {{-- PERMISSION GROUP --}}
             @include('auth::admin.permissions._includes.permission-group')
         </div>
 
@@ -65,7 +65,7 @@
                                     <th>{{ trans('auth::roles.attributes.name') }}</th>
                                     <th>{{ trans('auth::roles.attributes.description') }}</th>
                                     <th class="text-center">{{ trans('auth::users.titles.users') }}</th>
-                                    <th class="text-right" style="width: 75px;">Actions</th>
+                                    <th class="text-right" style="width: 75px;">{{ trans('core::generals.actions') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -77,27 +77,15 @@
                                     </td>
                                     <td>{{ $role->description }}</td>
                                     <td class="text-center">
-                                        <span class="label label-{{ $role->users->isEmpty() ? 'default' : 'info' }}">
-                                            {{ $role->users->count() }}
-                                        </span>
+                                        @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
                                     </td>
                                     <td class="text-right">
                                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
-                                            <a href="{{ route('admin::auth.roles.show', [$role->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                                <i class="fa fa-fw fa-search"></i>
-                                            </a>
+                                            @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
                                         @endcan
 
                                         @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_UPDATE)
-                                            @if ($role->isLocked())
-                                                <a href="javascript:void(0);" data-toggle="tooltip" data-original-title="Detach" disabled="disabled" class="btn btn-xs btn-danger">
-                                                    <i class="fa fa-fw fa-chain-broken"></i>
-                                                </a>
-                                            @else
-                                                <a href="#detachRoleModal" data-role-name="{{ $role->name }}" data-role-id="{{ $role->hashed_id }}" data-toggle="tooltip" data-original-title="Detach" class="btn btn-xs btn-danger">
-                                                    <i class="fa fa-fw fa-chain-broken"></i>
-                                                </a>
-                                            @endif
+                                            @include('core::admin._includes.actions.icon-links.detach', ['url' => '#detachRoleModal', 'disabled' => $role->isLocked(), 'attributes' => ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name]])
                                         @endcan
                                     </td>
                                 </tr>
@@ -112,7 +100,7 @@
 @endsection
 
 @section('modals')
-    @can('auth.roles.update')
+    @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
         {{-- DETACH MODAL --}}
         <div id="detachRoleModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="detachRoleModalLabel">
             <div class="modal-dialog" role="document">
@@ -122,15 +110,15 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 class="modal-title" id="detachRoleModalLabel">Detach Role</h4>
+                            <h4 class="modal-title" id="detachRoleModalLabel">{{ trans('auth::permissions.modals.detach.title') }}</h4>
                         </div>
                         <div class="modal-body">
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            {{ Form::button('Cancel', ['data-dismiss' => 'modal', 'class' => 'btn btn-sm btn-default pull-left']) }}
-                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-chain-broken"></i> DETACH
+                            {{ Form::button(ucfirst(trans('core::actions.cancel')), ['data-dismiss' => 'modal', 'class' => 'btn btn-sm btn-default pull-left']) }}
+                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="{{ trans('core::generals.loading') }}">
+                                <i class="fa fa-fw fa-chain-broken"></i> {{ ucfirst(trans('core::actions.detach')) }}
                             </button>
                         </div>
                     </div>
@@ -150,10 +138,11 @@
 
             $('a[href="#detachRoleModal"]').on('click', function (event) {
                 event.preventDefault();
-                var modalMessage = 'Are you sure you want to <span class="label label-danger">detach</span> this role : <strong>:role</strong> ?';
+                var that         = $(this),
+                    modalMessage = '{!! trans('auth::permissions.modals.detach.message') !!}';
 
-                $detachRoleForm.attr('action', detachRoleUrl.replace(':id', $(this).data('role-id')));
-                $detachRoleModal.find('.modal-body p').html(modalMessage.replace(':role', $(this).data('role-name')));
+                $detachRoleForm.attr('action', detachRoleUrl.replace(':id', that.data('role-id')));
+                $detachRoleModal.find('.modal-body p').html(modalMessage.replace(':name', that.data('role-name')));
 
                 $detachRoleModal.modal('show');
             });
@@ -168,28 +157,23 @@
                 var submitBtn = $detachRoleForm.find('button[type="submit"]');
                     submitBtn.button('loading');
 
-                $.ajax({
-                    url:      $detachRoleForm.attr('action'),
-                    type:     $detachRoleForm.attr('method'),
-                    dataType: 'json',
-                    data:     $detachRoleForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $detachRoleModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        submitBtn.button('reset');
-                    }
-                });
+                axios.delete($detachRoleForm.attr('action'))
+                     .then(function (response) {
+                         if (response.data.status === 'success') {
+                             $detachRoleModal.modal('hide');
+                             location.reload();
+                         }
+                         else {
+                             alert('ERROR ! Check the console !');
+                             console.error(response.data.message);
+                             submitBtn.button('reset');
+                         }
+                     })
+                     .catch(function (error) {
+                         alert('AJAX ERROR ! Check the console !');
+                         console.log(error);
+                         submitBtn.button('reset');
+                     });
 
                 return false;
             });

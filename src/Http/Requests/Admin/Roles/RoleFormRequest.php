@@ -32,6 +32,17 @@ abstract class RoleFormRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes()
+    {
+        return [
+            'permissions' => trans('auth::permissions.titles.permissions')
+        ];
+    }
     /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------

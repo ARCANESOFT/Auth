@@ -1,3 +1,5 @@
+<?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.update-user') }}</small></h1>
 @endsection
@@ -69,9 +71,9 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        {{ link_to_route('admin::auth.users.show', 'Cancel', [$user->hashed_id], ['class' => 'btn btn-sm btn-default']) }}
-                        <button type="submit" class="btn btn-sm btn-warning pull-right">
-                            <i class="fa fa-fw fa-pencil"></i> Update
+                        {{ link_to_route('admin::auth.users.show', ucfirst(trans('core::actions.cancel')), [$user->hashed_id], ['class' => 'btn btn-sm btn-default']) }}
+                        <button type="submit" class="btn btn-sm btn-warning pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
+                            <i class="fa fa-fw fa-pencil"></i> {{ ucfirst(trans('core::actions.update')) }}
                         </button>
                     </div>
                 </div>

@@ -106,16 +106,39 @@ class PermissionsController extends Controller
         try {
             $permission->detachRole($role, false);
 
-            $title   = 'Role detached !';
-            $message = "The role {$role->name} has been successfully detached from {$permission->name} !";
+            $replace = ['role' => $role->name,      'permission' => $permission->name];
+            $context = ['role' => $role->toArray(), 'permissions' => $permission->toArray()];
 
-            Log::info($message, compact('permission', 'role'));
-            $this->notifySuccess($message, $title);
-
-            return $this->jsonResponseSuccess($message);
+            return $this->jsonResponseSuccess(
+                $this->transNotification('detached', $replace, $context)
+            );
         }
         catch(\Exception $e) {
             return $this->jsonResponseError($e->getMessage(), 500);
         }
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Notify with translation.
+     *
+     * @param  string  $action
+     * @param  array   $replace
+     * @param  array   $context
+     *
+     * @return string
+     */
+    protected function transNotification($action, array $replace = [], array $context = [])
+    {
+        $title   = trans("auth::permissions.messages.{$action}.title");
+        $message = trans("auth::permissions.messages.{$action}.message", $replace);
+
+        Log::info($message, $context);
+        $this->notifySuccess($message, $title);
+
+        return $message;
     }
 }

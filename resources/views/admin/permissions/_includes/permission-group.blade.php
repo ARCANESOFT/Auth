@@ -26,9 +26,7 @@
                         <tr>
                             <th>{{ trans('auth::permissions.titles.permissions') }} :</th>
                             <td>
-                                <span class="label label-{{ $group->permissions->isEmpty() ? 'default' : 'info' }}">
-                                    {{ $group->permissions->count() }}
-                                </span>
+                                @include('core::admin._includes.labels.count-info', ['count' => $group->permissions->count()])
                             </td>
                         </tr>
                         <tr>

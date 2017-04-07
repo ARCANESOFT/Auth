@@ -49,15 +49,11 @@
                                 <td>{{ $permission->name }}</td>
                                 <td>{{ $permission->description }}</td>
                                 <td class="text-center">
-                                    <span class="label label-{{ $permission->roles->isEmpty() ? 'default' : 'info' }}">
-                                        {{ $permission->roles->count() }}
-                                    </span>
+                                    @include('core::admin._includes.labels.count-info', ['count' => $permission->roles->count()])
                                 </td>
                                 <td class="text-right">
                                     @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
-                                        <a href="{{ route('admin::auth.permissions.show', [$permission->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                            <i class="fa fa-fw fa-search"></i>
-                                        </a>
+                                        @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.permissions.show', [$permission->hashed_id])])
                                     @endcan
                                 </td>
                             </tr>
