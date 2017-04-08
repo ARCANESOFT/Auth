@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var  \Illuminate\Support\Collection  $roles
+ * @var  \Illuminate\Support\Collection  $old
+ */
+?>
 <div class="box box-warning">
     <div class="box-header with-border">
         <h3 class="box-title">{{ trans('auth::roles.titles.roles') }}</h3>
@@ -14,13 +20,13 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Name</th>
-                        <th>Slug</th>
-                        <th>Description</th>
+                        <th>{{ trans('auth::roles.attributes.name') }}</th>
+                        <th>{{ trans('auth::roles.attributes.slug') }}</th>
+                        <th>{{ trans('auth::roles.attributes.description') }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($roles->count())
+                    @if ( ! $roles->isEmpty())
                         @foreach ($roles as $role)
                         <tr>
                             <td>{{ Form::checkbox('roles[]', $role->id, $old->has($role->id)) }}</td>

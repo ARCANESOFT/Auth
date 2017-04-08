@@ -46,8 +46,8 @@
                                     <th>{{ trans('core::generals.status') }} :</th>
                                     <td>
                                         @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-label')
-                                        @include('core::admin._includes.labels.active-status', ['active' => $user->isActive()])
-                                        @includeWhen($user->trashed(), 'core::admin._includes.labels.trashed-status')
+                                        {{ label_active_status($user->isActive()) }}
+                                        {{ $user->trashed() ? label_trashed_status() : '' }}
                                     </td>
                                 </tr>
                                 <tr>

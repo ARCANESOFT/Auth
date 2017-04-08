@@ -51,62 +51,61 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($users->count())
-                            @foreach($users as $user)
-                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
-                            <tr>
-                                <td class="text-center">
-                                    {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
-                                </td>
-                                <td>{{ $user->username }}</td>
-                                <td>{{ $user->full_name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>
-                                    @foreach($user->roles as $role)
-                                    <span class="label label-primary" style="margin-right: 5px;">{{ $role->name }}</span>
-                                    @endforeach
-                                </td>
-                                <td class="text-center">
-                                    <small>{{ $user->formatted_last_activity }}</small>
-                                </td>
-                                <td class="text-center">
-                                    @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
-
-                                    @include('core::admin._includes.labels.active-icon', ['active' => $user->isActive()])
-                                </td>
-                                <td class="text-right">
-                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
-                                        @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
-                                    @endcan
-
-                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
-                                        @include('core::admin._includes.actions.icon-links.edit', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
-
-                                        @includeWhen($user->trashed(), 'core::admin._includes.actions.icon-links.restore', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
-
-                                        @if ($user->isAdmin())
-                                            @include('core::admin._includes.actions.icon-links.'.($user->isActive() ? 'disable' : 'enable'), ['disabled' => true])
-                                        @else
-                                            @if ($user->isActive())
-                                                @include('core::admin._includes.actions.icon-links.disable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
-                                            @else
-                                                @include('core::admin._includes.actions.icon-links.enable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
-                                            @endif
-                                        @endif
-                                    @endcan
-
-                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-                                        @include('core::admin._includes.actions.icon-links.delete', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
-                                    @endcan
-                                </td>
-                            </tr>
-                            @endforeach
-                        @else
+                        @if ($users->isEmpty())
                             <tr>
                                 <td colspan="8" class="text-center">
                                     <span class="label label-default">{{ trans('auth::users.list-empty') }}</span>
                                 </td>
                             </tr>
+                        @else
+                            @foreach($users as $user)
+                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+                            <tr>
+                                    <td class="text-center">
+                                        {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
+                                    </td>
+                                    <td>{{ $user->username }}</td>
+                                    <td>{{ $user->full_name }}</td>
+                                    <td>{{ $user->email }}</td>
+                                    <td>
+                                        @foreach($user->roles as $role)
+                                            <span class="label label-primary" style="margin-right: 5px;">{{ $role->name }}</span>
+                                        @endforeach
+                                    </td>
+                                    <td class="text-center">
+                                        <small>{{ $user->formatted_last_activity }}</small>
+                                    </td>
+                                    <td class="text-center">
+                                        @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
+                                        {{ label_active_icon($user->isActive()) }}
+                                    </td>
+                                    <td class="text-right">
+                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
+                                            @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
+                                        @endcan
+
+                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
+                                            @include('core::admin._includes.actions.icon-links.edit', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
+
+                                            @includeWhen($user->trashed(), 'core::admin._includes.actions.icon-links.restore', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+
+                                            @if ($user->isAdmin())
+                                                @include('core::admin._includes.actions.icon-links.'.($user->isActive() ? 'disable' : 'enable'), ['disabled' => true])
+                                            @else
+                                                @if ($user->isActive())
+                                                    @include('core::admin._includes.actions.icon-links.disable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
+                                                @else
+                                                    @include('core::admin._includes.actions.icon-links.enable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
+                                                @endif
+                                            @endif
+                                        @endcan
+
+                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
+                                            @include('core::admin._includes.actions.icon-links.delete', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
+                                        @endcan
+                                    </td>
+                                </tr>
+                            @endforeach
                         @endif
                     </tbody>
                 </table>

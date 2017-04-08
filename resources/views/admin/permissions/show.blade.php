@@ -29,9 +29,7 @@
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::roles.titles.roles') }} :</th>
-                                    <td>
-                                        @include('core::admin._includes.labels.count-info', ['count' => $permission->roles->count()])
-                                    </td>
+                                    <td>{{ label_count($permission->roles->count()) }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('core::generals.created_at') }} :</th>
@@ -77,7 +75,7 @@
                                     </td>
                                     <td>{{ $role->description }}</td>
                                     <td class="text-center">
-                                        @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
+                                        {{ label_count($role->users->count()) }}
                                     </td>
                                     <td class="text-right">
                                         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)

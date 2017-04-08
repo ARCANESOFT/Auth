@@ -37,20 +37,17 @@
                             <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
                             <tr>
                                 <td>
-                                    @if ($permission->hasGroup())
-                                        <span class="label label-primary">{{ $permission->group->name }}</span>
-                                    @else
-                                        <span class="label label-default">{{ trans('auth::permission-groups.custom') }}</span>
-                                    @endif
+                                    @php($hasGroup = $permission->hasGroup())
+                                    <span class="label label-{{ $hasGroup ? 'primary' : 'default' }}">
+                                        {{ $hasGroup ? $permission->group->name : trans('auth::permission-groups.custom') }}
+                                    </span>
                                 </td>
                                 <td>
                                     <span class="label label-success">{{ $permission->slug }}</span>
                                 </td>
                                 <td>{{ $permission->name }}</td>
                                 <td>{{ $permission->description }}</td>
-                                <td class="text-center">
-                                    @include('core::admin._includes.labels.count-info', ['count' => $permission->roles->count()])
-                                </td>
+                                <td class="text-center">{{ label_count($permission->roles->count()) }}</td>
                                 <td class="text-right">
                                     @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
                                         @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.permissions.show', [$permission->hashed_id])])

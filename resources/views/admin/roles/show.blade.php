@@ -32,27 +32,19 @@
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::users.titles.users') }} :</th>
-                                    <td>
-                                        @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
-                                    </td>
+                                    <td>{{ label_count($role->users->count()) }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::permissions.titles.permissions') }} :</th>
-                                    <td>
-                                        @include('core::admin._includes.labels.count-info', ['count' => $role->permissions->count()])
-                                    </td>
+                                    <td>{{ label_count($role->permissions->count()) }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('core::generals.status') }} :</th>
-                                    <td>
-                                        @include('core::admin._includes.labels.active-status', ['active' => $role->isActive()])
-                                    </td>
+                                    <td>{{ label_active_status($role->isActive()) }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('auth::roles.attributes.locked') }} :</th>
-                                    <td>
-                                        @include('core::admin._includes.labels.locked-status', ['locked' => $role->isLocked()])
-                                    </td>
+                                    <td>{{ label_locked_status($role->isLocked()) }}</td>
                                 </tr>
                                 <tr>
                                     <th>{{ trans('core::generals.created_at') }} :</th>
@@ -124,7 +116,7 @@
                                             <td>{{ $user->email }}</td>
                                             <td class="text-center">
                                                 @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
-                                                @include('core::admin._includes.labels.active-icon', ['active' => $user->isActive()])
+                                                {{ label_active_icon($user->isActive()) }}
                                             </td>
                                             <td class="text-right">
                                                 @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)

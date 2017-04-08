@@ -38,16 +38,16 @@
                             </td>
                             <td>{{ $role->description }}</td>
                             <td class="text-center">
-                                @include('core::admin._includes.labels.count-info', ['count' => $role->users->count()])
+                                {{ label_count($role->users->count()) }}
                             </td>
                             <td class="text-center">
-                                @include('core::admin._includes.labels.count-info', ['count' => $role->permissions->count()])
+                                {{ label_count($role->permissions->count()) }}
                             </td>
                             <td class="text-center">
-                                @include('core::admin._includes.labels.active-icon', ['active' => $role->isActive()])
+                                {{ label_active_icon($role->isActive()) }}
                             </td>
                             <td class="text-center">
-                                @include('core::admin._includes.labels.locked-icon', ['locked' => $role->isLocked()])
+                                {{ label_locked_icon($role->isLocked()) }}
                             </td>
                             <td class="text-right">
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)

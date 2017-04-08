@@ -25,9 +25,7 @@
                         </tr>
                         <tr>
                             <th>{{ trans('auth::permissions.titles.permissions') }} :</th>
-                            <td>
-                                @include('core::admin._includes.labels.count-info', ['count' => $group->permissions->count()])
-                            </td>
+                            <td>{{ label_count($group->permissions->count()) }}</td>
                         </tr>
                         <tr>
                             <th>{{ trans('core::generals.created_at') }} :</th>
