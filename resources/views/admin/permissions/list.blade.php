@@ -26,14 +26,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($permissions->isEmpty())
-                            <tr>
-                                <td colspan="6" class="text-center">
-                                    <span class="label label-default">{{ trans('auth::permissions.list-empty') }}</span>
-                                </td>
-                            </tr>
-                        @else
-                            @foreach ($permissions as $permission)
+                        @forelse($permissions as $permission)
                             <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
                             <tr>
                                 <td>
@@ -50,12 +43,17 @@
                                 <td class="text-center">{{ label_count($permission->roles->count()) }}</td>
                                 <td class="text-right">
                                     @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
-                                        @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.permissions.show', [$permission->hashed_id])])
+                                        {{ ui_link_icon('show', route('admin::auth.permissions.show', [$permission->hashed_id])) }}
                                     @endcan
                                 </td>
                             </tr>
-                            @endforeach
-                        @endif
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <span class="label label-default">{{ trans('auth::permissions.list-empty') }}</span>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

@@ -84,4 +84,31 @@ return [
             'message' => "L'emprunt d'identité est désactivé pour cet utilisateur !",
         ],
     ],
+
+    /* -----------------------------------------------------------------
+     |  Modals
+     | -----------------------------------------------------------------
+     */
+
+    'modals' => [
+        'enable' => [
+            'title'   => "Activer l'utilisateur",
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-success">activer</span> cet utilisateur: <b>:name</b> ?',
+        ],
+
+        'disable' => [
+            'title'   => "Désactiver l'utilisateur",
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-inverse">désactiver</span> cet utilisateur: <b>:name</b> ?',
+        ],
+
+        'delete' => [
+            'title'   => "Supprimer l'utilisateur",
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-danger">supprimer</span> cet utilisateur: <b>:name</b> ?',
+        ],
+
+        'restore' => [
+            'title'   => "Restaurer l'utilisateur",
+            'message' => 'Êtes-vous sûr de vouloir <span class="label label-primary">restaurer</span> cet utilisateur: <b>:name</b> ?',
+        ],
+    ],
 ];

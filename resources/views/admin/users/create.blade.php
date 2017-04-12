@@ -69,10 +69,8 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        {{ link_to_route('admin::auth.users.index', ucfirst(trans('core::actions.cancel')), [], ['class' => 'btn btn-sm btn-default']) }}
-                        <button type="submit" class="btn btn-sm btn-primary pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
-                            <i class="fa fa-fw fa-plus"></i> {{ ucfirst(trans('core::actions.add')) }}
-                        </button>
+                        {{ ui_link('cancel', route('admin::auth.users.index')) }}
+                        {{ ui_button('add', 'submit')->appendClass('pull-right')->withLoadingText() }}
                     </div>
                 </div>
             </div>

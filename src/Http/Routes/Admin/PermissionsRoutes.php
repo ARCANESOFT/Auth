@@ -17,18 +17,26 @@ class PermissionsRoutes extends RouteRegistrar
      | -----------------------------------------------------------------
      */
     /**
+     * Register the bindings.
+     */
+    public static function bindings()
+    {
+        $registrar = new static;
+
+        $registrar->bind('auth_permission', function($hashedId) {
+            return Permission::firstHashedOrFail($hashedId);
+        });
+
+        $registrar->bind('auth_permissions_group', function($hashedId) {
+            return PermissionsGroup::firstHashedOrFail($hashedId);
+        });
+    }
+
+    /**
      * Map routes.
      */
     public function map()
     {
-        $this->bind('auth_permission', function($hashedId) {
-            return Permission::firstHashedOrFail($hashedId);
-        });
-
-        $this->bind('auth_permissions_group', function($hashedId) {
-            return PermissionsGroup::firstHashedOrFail($hashedId);
-        });
-
         $this->prefix('permissions')->name('permissions.')->group(function () {
             $this->get('/', 'PermissionsController@index')
                  ->name('index'); // admin::auth.permissions.index

@@ -14,26 +14,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($roles->isEmpty())
-                        <tr>
-                            <td colspan="3" class="text-center">
-                                <span class="label label-default">{{ trans('auth::users.has-no-roles') }}</span>
-                            </td>
-                        </tr>
-                    @else
-                        @foreach ($roles as $role)
+                    @forelse($roles as $role)
                         <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
                         <tr>
                             <td><span class="label label-primary">{{ $role->name }}</span></td>
                             <td>{{ $role->description }}</td>
                             <td class="text-right">
                                 @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_SHOW)
-                                    @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.roles.show', [$role->hashed_id])])
+                                    {{ ui_link_icon('show', route('admin::auth.roles.show', [$role->hashed_id])) }}
                                 @endcan
                             </td>
                         </tr>
-                        @endforeach
-                    @endif
+                    @empty
+                        <tr>
+                            <td colspan="3" class="text-center">
+                                <span class="label label-default">{{ trans('auth::users.has-no-roles') }}</span>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

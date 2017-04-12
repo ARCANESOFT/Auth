@@ -71,10 +71,8 @@
                         </div>
                     </div>
                     <div class="box-footer">
-                        {{ link_to_route('admin::auth.users.show', ucfirst(trans('core::actions.cancel')), [$user->hashed_id], ['class' => 'btn btn-sm btn-default']) }}
-                        <button type="submit" class="btn btn-sm btn-warning pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
-                            <i class="fa fa-fw fa-pencil"></i> {{ ucfirst(trans('core::actions.update')) }}
-                        </button>
+                        {{ ui_link('cancel', route('admin::auth.users.index')) }}
+                        {{ ui_button('update', 'submit')->appendClass('pull-right')->withLoadingText() }}
                     </div>
                 </div>
             </div>

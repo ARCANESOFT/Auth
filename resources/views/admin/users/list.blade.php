@@ -32,7 +32,7 @@
                 </div>
                 @endunless
 
-                @include('core::admin._includes.actions.icon-links.add', ['url' => route('admin::auth.users.create')])
+                {{ ui_link_icon('add', route('admin::auth.users.create')) }}
             </div>
         </div>
         <div class="box-body no-padding">
@@ -51,62 +51,54 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($users->isEmpty())
+                        @forelse ($users as $user)
+                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+                            <tr>
+                                <td class="text-center">
+                                    {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
+                                </td>
+                                <td>{{ $user->username }}</td>
+                                <td>{{ $user->full_name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>
+                                    @foreach($user->roles as $role)
+                                        <span class="label label-primary" style="margin-right: 5px;">{{ $role->name }}</span>
+                                    @endforeach
+                                </td>
+                                <td class="text-center">
+                                    <small>{{ $user->formatted_last_activity }}</small>
+                                </td>
+                                <td class="text-center">
+                                    @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
+                                    {{ label_active_icon($user->isActive()) }}
+                                </td>
+                                <td class="text-right">
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
+                                        {{ ui_link_icon('show', route('admin::auth.users.show', [$user->hashed_id])) }}
+                                    @endcan
+
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
+                                        {{ ui_link_icon('edit', route('admin::auth.users.edit', [$user->hashed_id])) }}
+
+                                        @if ($user->trashed())
+                                            {{ ui_link_icon('restore', '#restore-user-modal', ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]) }}
+                                        @endif
+
+                                        {{ ui_link_icon($user->isActive() ? 'disable' : 'enable', '#activate-user-modal', ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-current-status' => $user->isActive() ? 'enabled' : 'disabled'], $user->isAdmin()) }}
+                                    @endcan
+
+                                    @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
+                                        {{ ui_link_icon('delete', '#delete-user-modal', ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name], $user->isAdmin()) }}
+                                    @endcan
+                                </td>
+                            </tr>
+                        @empty
                             <tr>
                                 <td colspan="8" class="text-center">
                                     <span class="label label-default">{{ trans('auth::users.list-empty') }}</span>
                                 </td>
                             </tr>
-                        @else
-                            @foreach($users as $user)
-                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
-                            <tr>
-                                    <td class="text-center">
-                                        {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
-                                    </td>
-                                    <td>{{ $user->username }}</td>
-                                    <td>{{ $user->full_name }}</td>
-                                    <td>{{ $user->email }}</td>
-                                    <td>
-                                        @foreach($user->roles as $role)
-                                            <span class="label label-primary" style="margin-right: 5px;">{{ $role->name }}</span>
-                                        @endforeach
-                                    </td>
-                                    <td class="text-center">
-                                        <small>{{ $user->formatted_last_activity }}</small>
-                                    </td>
-                                    <td class="text-center">
-                                        @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-icon')
-                                        {{ label_active_icon($user->isActive()) }}
-                                    </td>
-                                    <td class="text-right">
-                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_SHOW)
-                                            @include('core::admin._includes.actions.icon-links.show', ['url' => route('admin::auth.users.show', [$user->hashed_id])])
-                                        @endcan
-
-                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
-                                            @include('core::admin._includes.actions.icon-links.edit', ['url' => route('admin::auth.users.edit', [$user->hashed_id])])
-
-                                            @includeWhen($user->trashed(), 'core::admin._includes.actions.icon-links.restore', ['url' => '#restoreUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
-
-                                            @if ($user->isAdmin())
-                                                @include('core::admin._includes.actions.icon-links.'.($user->isActive() ? 'disable' : 'enable'), ['disabled' => true])
-                                            @else
-                                                @if ($user->isActive())
-                                                    @include('core::admin._includes.actions.icon-links.disable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'enabled']])
-                                                @else
-                                                    @include('core::admin._includes.actions.icon-links.enable', ['url' => '#activateUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name, 'data-role-status' => 'disabled']])
-                                                @endif
-                                            @endif
-                                        @endcan
-
-                                        @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-                                            @include('core::admin._includes.actions.icon-links.delete', $user->isAdmin() ? ['disabled' => true] : ['url' => '#deleteUserModal', 'attributes' => ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name]])
-                                        @endcan
-                                    </td>
-                                </tr>
-                            @endforeach
-                        @endif
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -120,27 +112,23 @@
 @section('modals')
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
         {{-- ACTIVATE MODAL --}}
-        <div id="activateUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="activateUserModalLabel">
+        <div id="activate-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['method' => 'PUT', 'id' => 'activateUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ Form::open(['method' => 'PUT', 'id' => 'activate-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 class="modal-title" id="activateUserModalLabel"></h4>
+                            <h4 class="modal-title"></h4>
                         </div>
                         <div class="modal-body">
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                            <button id="activateBtn" type="submit" class="btn btn-sm btn-success" data-loading-text="Loading&hellip;" style="display: none;">
-                                <i class="fa fa-fw fa-power-off"></i> Activate
-                            </button>
-                            <button id="disableBtn" type="submit" class="btn btn-sm btn-inverse" data-loading-text="Loading&hellip;" style="display: none;">
-                                <i class="fa fa-fw fa-power-off"></i> Disable
-                            </button>
+                            {{ ui_button('cancel')->appendClass('pull-left')->setAttribute('data-dismiss', 'modal') }}
+                            {{ ui_button('enable', 'submit')->withLoadingText() }}
+                            {{ ui_button('disable', 'submit')->withLoadingText() }}
                         </div>
                     </div>
                 {{ Form::close() }}
@@ -149,24 +137,22 @@
 
         {{-- RESTORE MODAL --}}
         @if ($trashed)
-            <div id="restoreUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="restoreUserModalLabel">
+            <div id="restore-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    {{ Form::open(['method' => 'PUT', 'id' => 'restoreUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                    {{ Form::open(['method' => 'PUT', 'id' => 'restore-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
-                                <h4 class="modal-title" id="restoreUserModalLabel">Restore User</h4>
+                                <h4 class="modal-title">{{ trans('auth::users.modals.restore.title') }}</h4>
                             </div>
                             <div class="modal-body">
                                 <p></p>
                             </div>
                             <div class="modal-footer">
-                                {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                                <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
-                                    <i class="fa fa-fw fa-reply"></i> RESTORE
-                                </button>
+                                {{ ui_button('cancel')->appendClass('pull-left')->setAttribute('data-dismiss', 'modal') }}
+                                {{ ui_button('restore', 'submit')->withLoadingText() }}
                             </div>
                         </div>
                     {{ Form::close() }}
@@ -177,24 +163,22 @@
 
     {{-- DELETE MODAL --}}
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-        <div id="deleteUserModal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog" aria-labelledby="deleteUserModalLabel">
+        <div id="delete-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['method' => 'DELETE', 'id' => 'deleteUserForm', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ Form::open(['method' => 'DELETE', 'id' => 'delete-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
-                            <h4 class="modal-title" id="deleteUserModalLabel">Delete User</h4>
+                            <h4 class="modal-title">{{ trans('auth::users.modals.delete.title') }}</h4>
                         </div>
                         <div class="modal-body">
                             <p></p>
                         </div>
                         <div class="modal-footer">
-                            {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                            <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                                <i class="fa fa-fw fa-trash-o"></i> DELETE
-                            </button>
+                            {{ ui_button('cancel')->appendClass('pull-left')->setAttribute('data-dismiss', 'modal') }}
+                            {{ ui_button('delete', 'submit')->withLoadingText() }}
                         </div>
                     </div>
                 {{ Form::close() }}
@@ -207,120 +191,126 @@
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
         {{-- ACTIVATE MODAL --}}
         <script>
-            var $activateUserModal = $('div#activateUserModal'),
-                $activateUserForm  = $('form#activateUserForm'),
-                activateUserUrl    = "{{ route('admin::auth.users.activate', [':id']) }}";
+            $(function () {
+                var $activateUserModal = $('div#activate-user-modal'),
+                    $activateUserForm  = $('form#activate-user-form'),
+                    activateUserUrl    = "{{ route('admin::auth.users.activate', [':id']) }}";
 
-            $('a[href="#activateUserModal"]').on('click', function (event) {
-                event.preventDefault();
-                var enabled      = $(this).data('user-status') === 'enabled',
-                    modalMessage = 'Are you sure you want to ' + (enabled ? '<span class="label label-inverse">disable</span>' : '<span class="label label-success">activate</span>') + ' this user : <strong>:username</strong> ?';
+                $('a[href="#activate-user-modal"]').on('click', function (e) {
+                    e.preventDefault();
 
-                $activateUserForm.attr('action', activateUserUrl.replace(':id', $(this).data('user-id')));
-                $activateUserModal.find('.modal-title').text((enabled ? 'Disable' : 'Activate') + ' User');
-                $activateUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
-                if (enabled) {
-                    $activateUserForm.find('button#activateBtn').hide();
-                    $activateUserForm.find('button#disableBtn').show();
-                }
-                else {
-                    $activateUserForm.find('button#activateBtn').show();
-                    $activateUserForm.find('button#disableBtn').hide();
-                }
-                $activateUserModal.modal('show');
-            });
+                    var that           = $(this),
+                        enabled        = that.data('current-status') === 'enabled',
+                        enableTitle    = "{!! trans('auth::users.modals.enable.title') !!}",
+                        enableMessage  = '{!! trans("auth::users.modals.enable.message") !!}',
+                        disableTitle   = "{!! trans('auth::users.modals.disable.title') !!}",
+                        disableMessage = '{!! trans("auth::users.modals.disable.message") !!}';
 
-            $activateUserModal.on('hidden.bs.modal', function () {
-                $activateUserForm.attr('action', activateUserUrl);
-                $activateUserModal.find('.modal-title').text('');
-                $activateUserModal.find('.modal-body p').html('');
+                    $activateUserForm.attr('action', activateUserUrl.replace(':id', that.data('user-id')));
+                    $activateUserModal.find('.modal-title').text(enabled ? disableTitle : enableTitle);
+                    $activateUserModal.find('.modal-body p').html((enabled ? disableMessage : enableMessage).replace(':name', that.data('user-name')));
 
-                $activateUserForm.find('button[type="submit"]').hide();
-            });
-
-            $activateUserForm.submit(function (event) {
-                event.preventDefault();
-                var $submitBtn = $activateUserForm.find('button[type="submit"]');
-                    $submitBtn.button('loading');
-
-                $.ajax({
-                    url:      $activateUserForm.attr('action'),
-                    type:     $activateUserForm.attr('method'),
-                    dataType: 'json',
-                    data:     $activateUserForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $activateUserModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
+                    if (enabled) {
+                        $activateUserForm.find('button[type="submit"].btn-success').hide();
+                        $activateUserForm.find('button[type="submit"].btn-inverse').show();
                     }
+                    else {
+                        $activateUserForm.find('button[type="submit"].btn-success').show();
+                        $activateUserForm.find('button[type="submit"].btn-inverse').hide();
+                    }
+
+                    $activateUserModal.modal('show');
                 });
 
-                return false;
+                $activateUserModal.on('hidden.bs.modal', function () {
+                    $activateUserForm.attr('action', activateUserUrl);
+                    $activateUserModal.find('.modal-title').text('');
+                    $activateUserModal.find('.modal-body p').html('');
+
+                    $activateUserForm.find('button[type="submit"]').hide();
+                });
+
+                $activateUserForm.on('submit', function (e) {
+                    e.preventDefault();
+
+                    var $submitBtn = $activateUserForm.find('button[type="submit"]');
+                        $submitBtn.button('loading');
+
+                    axios.put($activateUserForm.attr('action'))
+                         .then(function (response) {
+                             if (response.data.status === 'success') {
+                                 $activateUserModal.modal('hide');
+                                 location.reload();
+                             }
+                             else {
+                                 alert('ERROR ! Check the console !');
+                                 console.error(response.data.message);
+                                 $submitBtn.button('reset');
+                             }
+                         })
+                         .catch(function (error) {
+                             alert('AJAX ERROR ! Check the console !');
+                             console.log(error);
+                             $submitBtn.button('reset');
+                         });
+
+                    return false;
+                });
             });
         </script>
 
         @if ($trashed)
         {{-- RESTORE MODAL --}}
         <script>
-            var $restoreUserModal = $('div#restoreUserModal'),
-                $restoreUserForm  = $('form#restoreUserForm'),
-                restoreUserUrl    = "{{ route('admin::auth.users.restore', [':id']) }}";
+            $(function () {
+                var $restoreUserModal = $('div#restore-user-modal'),
+                    $restoreUserForm  = $('form#restore-user-form'),
+                    restoreUserUrl    = "{{ route('admin::auth.users.restore', [':id']) }}";
 
-            $('a[href="#restoreUserModal"]').on('click', function (event) {
-                event.preventDefault();
-                var modalMessage = 'Are you sure you want to <span class="label label-primary">restore</span> this user : <strong>:username</strong> ?';
+                $('a[href="#restore-user-modal"]').on('click', function (e) {
+                    e.preventDefault();
 
-                $restoreUserForm.attr('action', restoreUserUrl.replace(':id', $(this).data('user-id')));
-                $restoreUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
+                    var that = $(this);
 
-                $restoreUserModal.modal('show');
-            });
+                    $restoreUserForm.attr('action', restoreUserUrl.replace(':id', that.data('user-id')));
+                    $restoreUserModal.find('.modal-body p').html(
+                        '{!! trans("auth::users.modals.restore.message") !!}'.replace(':name', that.data('user-name'))
+                    );
 
-            $restoreUserModal.on('hidden.bs.modal', function () {
-                $restoreUserForm.attr('action', restoreUserUrl);
-                $restoreUserModal.find('.modal-body p').html('');
-            });
-
-            $restoreUserForm.submit(function (event) {
-                event.preventDefault();
-                var $submitBtn = $restoreUserForm.find('button[type="submit"]');
-                    $submitBtn.button('loading');
-
-                $.ajax({
-                    url:      $restoreUserForm.attr('action'),
-                    type:     $restoreUserForm.attr('method'),
-                    dataType: 'json',
-                    data:     $restoreUserForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $restoreUserModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
+                    $restoreUserModal.modal('show');
                 });
 
-                return false;
+                $restoreUserModal.on('hidden.bs.modal', function () {
+                    $restoreUserForm.attr('action', restoreUserUrl);
+                    $restoreUserModal.find('.modal-body p').html('');
+                });
+
+                $restoreUserForm.on('submit', function (e) {
+                    e.preventDefault();
+
+                    var $submitBtn = $restoreUserForm.find('button[type="submit"]');
+                        $submitBtn.button('loading');
+
+                    axios.put($restoreUserForm.attr('action'))
+                         .then(function (response) {
+                             if (response.data.status === 'success') {
+                                 $restoreUserModal.modal('hide');
+                                 location.reload();
+                             }
+                             else {
+                                 alert('ERROR ! Check the console !');
+                                 console.error(response.data.message);
+                                 $submitBtn.button('reset');
+                             }
+                         })
+                         .catch(function (error) {
+                             alert('AJAX ERROR ! Check the console !');
+                             console.log(error);
+                             $submitBtn.button('reset');
+                         });
+
+                    return false;
+                });
             });
         </script>
         @endif
@@ -329,54 +319,55 @@
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
         {{-- DELETE MODAL --}}
         <script>
-            var $deleteUserModal = $('div#deleteUserModal'),
-                $deleteUserForm  = $('form#deleteUserForm'),
-                deleteUserUrl    = "{{ route('admin::auth.users.delete', [':id']) }}";
+            $(function () {
+                var $deleteUserModal = $('div#delete-user-modal'),
+                    $deleteUserForm  = $('form#delete-user-form'),
+                    deleteUserUrl    = "{{ route('admin::auth.users.delete', [':id']) }}";
 
-            $('a[href="#deleteUserModal"]').on('click', function (event) {
-                event.preventDefault();
-                var modalMessage = 'Are you sure you want to <span class="label label-danger">delete</span> this user : <strong>:username</strong> ?';
+                $('a[href="#delete-user-modal"]').on('click', function (e) {
+                    e.preventDefault();
 
-                $deleteUserForm.attr('action', deleteUserUrl.replace(':id', $(this).data('user-id')));
-                $deleteUserModal.find('.modal-body p').html(modalMessage.replace(':username', $(this).data('user-name')));
+                    var that = $(this);
 
-                $deleteUserModal.modal('show');
-            });
+                    $deleteUserForm.attr('action', deleteUserUrl.replace(':id', that.data('user-id')));
+                    $deleteUserModal.find('.modal-body p').html(
+                        '{!! trans("auth::users.modals.delete.message") !!}'.replace(':name', that.data('user-name'))
+                    );
 
-            $deleteUserModal.on('hidden.bs.modal', function () {
-                $deleteUserForm.attr('action', deleteUserUrl);
-                $deleteUserModal.find('.modal-body p').html('');
-            });
-
-            $deleteUserForm.submit(function (event) {
-                event.preventDefault();
-                var $submitBtn = $deleteUserForm.find('button[type="submit"]');
-                $submitBtn.button('loading');
-
-                $.ajax({
-                    url:      $deleteUserForm.attr('action'),
-                    type:     $deleteUserForm.attr('method'),
-                    dataType: 'json',
-                    data:     $deleteUserForm.serialize(),
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $deleteUserModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function(xhr) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
+                    $deleteUserModal.modal('show');
                 });
 
-                return false;
+                $deleteUserModal.on('hidden.bs.modal', function () {
+                    $deleteUserForm.attr('action', deleteUserUrl);
+                    $deleteUserModal.find('.modal-body p').html('');
+                });
+
+                $deleteUserForm.on('submit', function (e) {
+                    e.preventDefault();
+
+                    var $submitBtn = $deleteUserForm.find('button[type="submit"]');
+                        $submitBtn.button('loading');
+
+                    axios.delete($deleteUserForm.attr('action'))
+                         .then(function (response) {
+                             if (response.data.status === 'success') {
+                                 $deleteUserModal.modal('hide');
+                                 location.reload();
+                             }
+                             else {
+                                 alert('ERROR ! Check the console !');
+                                 console.error(response.data.message);
+                                 $submitBtn.button('reset');
+                             }
+                         })
+                         .catch(function (error) {
+                             alert('AJAX ERROR ! Check the console !');
+                             console.log(error);
+                             $submitBtn.button('reset');
+                         });
+
+                    return false;
+                });
             });
         </script>
     @endcan

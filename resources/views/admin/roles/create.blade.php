@@ -40,16 +40,11 @@
                 </div>
             </div>
             <div class="box-footer">
-                {{ link_to_route('admin::auth.roles.index', ucfirst(trans('core::actions.cancel')), [], ['class' => 'btn btn-sm btn-default']) }}
-                <button type="submit" class="btn btn-sm btn-primary pull-right" data-loading-text="{{ trans('core::generals.loading') }}">
-                    <i class="fa fa-fw fa-plus"></i> {{ ucfirst(trans('core::actions.add')) }}
-                </button>
+                {{ ui_link('cancel', route('admin::auth.roles.index')) }}
+                {{ ui_button('add', 'submit')->appendClass('pull-right')->withLoadingText() }}
             </div>
         </div>
 
         @include('auth::admin.roles._partials.permissions-checkbox', ['old' => old('permissions', collect())])
     {{ Form::close() }}
-@endsection
-
-@section('scripts')
 @endsection

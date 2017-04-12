@@ -21,26 +21,32 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($permissions as $permission)
-                <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
-                <tr>
-                    <td>
-                        {{ Form::checkbox('permissions[]', $permission->id, $old->has($permission->id), ['data-permission-group' => $permission->group_id]) }}
-                    </td>
-                    <td>
-                        @if ($permission->hasGroup())
-                            <span class="label label-primary">{{ $permission->group->name }}</span>
-                        @else
-                            <span class="label label-default">{{ trans('auth::permissions.custom-group') }}</span>
-                        @endif
-                    </td>
-                    <td>
-                        <span class="label label-success">{{ $permission->slug }}</span>
-                    </td>
-                    <td>{{ $permission->name }}</td>
-                    <td>{{ $permission->description }}</td>
-                </tr>
-                @endforeach
+                @forelse ($permissions as $permission)
+                    <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+                    <tr>
+                        <td>
+                            {{ Form::checkbox('permissions[]', $permission->id, $old->has($permission->id), ['data-permission-group' => $permission->group_id]) }}
+                        </td>
+                        <td>
+                            @if ($permission->hasGroup())
+                                <span class="label label-primary">{{ $permission->group->name }}</span>
+                            @else
+                                <span class="label label-default">{{ trans('auth::permissions.custom-group') }}</span>
+                            @endif
+                        </td>
+                        <td>
+                            <span class="label label-success">{{ $permission->slug }}</span>
+                        </td>
+                        <td>{{ $permission->name }}</td>
+                        <td>{{ $permission->description }}</td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <span class="label label-default">{{ trans('auth::permissions.list-empty') }}</span>
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
     </div>

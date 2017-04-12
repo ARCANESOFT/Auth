@@ -85,4 +85,31 @@ return [
         ],
     ],
 
+    /* -----------------------------------------------------------------
+     |  Modals
+     | -----------------------------------------------------------------
+     */
+
+    'modals' => [
+        'enable' => [
+            'title'   => 'Activate User',
+            'message' => 'Are you sure you want to <span class="label label-success">activate</span> this user: <b>:name</b> ?',
+        ],
+
+        'disable' => [
+            'title'   => 'Disable User',
+            'message' => 'Are you sure you want to <span class="label label-inverse">disable</span> this user: <b>:name</b> ?',
+        ],
+
+        'delete' => [
+            'title'   => 'Delete User',
+            'message' => 'Are you sure you want to <span class="label label-danger">delete</span> this user: <b>:name</b> ?',
+        ],
+
+        'restore' => [
+            'title'   => 'Restore User',
+            'message' => 'Are you sure you want to <span class="label label-primary">restore</span> this user: <b>:name</b> ?',
+        ],
+    ],
+
 ];

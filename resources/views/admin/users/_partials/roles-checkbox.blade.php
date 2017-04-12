@@ -26,16 +26,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ( ! $roles->isEmpty())
-                        @foreach ($roles as $role)
+                    @forelse ($roles as $role)
+                        <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
                         <tr>
                             <td>{{ Form::checkbox('roles[]', $role->id, $old->has($role->id)) }}</td>
                             <td>{{ $role->name }}</td>
                             <td><span class="label label-primary">{{ $role->name }}</span></td>
                             <td>{{ $role->description }}</td>
                         </tr>
-                        @endforeach
-                    @endif
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <span class="label label-default">{{ trans('auth::roles.list-empty') }}</span>
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>

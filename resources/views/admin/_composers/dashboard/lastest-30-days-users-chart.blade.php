@@ -1,9 +1,9 @@
 <div class="box">
     <div class="box-header with-border">
-        <h2 class="box-title">Latest 30 days created users</h2>
+        <h2 class="box-title">{{ trans('auth::dashboard.titles.latest-30-days-created-users') }}</h2>
     </div>
     <div class="box-body">
-        <canvas id="latestUsersChart" height="300"></canvas>
+        <canvas id="latest-users-chart" height="300"></canvas>
     </div>
 </div>
 
@@ -12,13 +12,13 @@
 
     <script>
         $(function () {
-            new Chart($('canvas#latestUsersChart'), {
+            new Chart($('canvas#latest-users-chart'), {
                 type: 'line',
                 data: {
                     labels: {!! $latestUsersByThirtyDays->keys() !!},
                     datasets: [
                         {
-                            label: 'Registered users',
+                            label: "{{ trans('auth::dashboard.titles.registered-users') }}",
                             data: {!! $latestUsersByThirtyDays->values() !!},
                             fill: true,
                             lineTension: 0.1,

@@ -32,8 +32,8 @@ class DashboardController extends Controller
     {
         $this->authorize(DashboardPolicy::PERMISSION_STATS);
 
-        $this->setTitle('Authorization - Dashboard');
-        $this->addBreadcrumb('Statistics');
+        $this->setTitle($title = trans('auth::dashboard.titles.statistics'));
+        $this->addBreadcrumb($title);
 
         return $this->view('admin.dashboard');
     }

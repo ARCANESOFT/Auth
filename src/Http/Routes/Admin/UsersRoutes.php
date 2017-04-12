@@ -17,14 +17,22 @@ class UsersRoutes extends RouteRegistrar
      | -----------------------------------------------------------------
      */
     /**
+     * Register the bindings.
+     */
+    public static function bindings()
+    {
+        $registrar = new static;
+
+        $registrar->bind('auth_user', function($hashedId) {
+            return User::firstHashedOrFail($hashedId);
+        });
+    }
+
+    /**
      * Map routes.
      */
     public function map()
     {
-        $this->bind('auth_user', function($hashedId) {
-            return User::firstHashedOrFail($hashedId);
-        });
-
         $this->prefix('users')->name('users.')->group(function () {
             $this->get('/', 'UsersController@index')
                  ->name('index'); // admin::auth.users.index

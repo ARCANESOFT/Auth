@@ -8,16 +8,16 @@
         <div class="box-header with-border">
             @include('core::admin._includes.pagination.labels', ['paginator' => $resets])
 
-            <div class="box-tools">
-                @unless($resets->isEmpty())
-                <a href="#clearPasswordResetsModal" class="btn btn-xs btn-primary">
-                    <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.clear-expired') }}
-                </a>
-                <a href="#deletePasswordResetsModal" class="btn btn-xs btn-danger">
-                    <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.delete-all') }}
-                </a>
-                @endunless
-            </div>
+            @unless($resets->isEmpty())
+                <div class="box-tools">
+                    <a href="#clear-password-resets-modal" class="btn btn-xs btn-warning">
+                        <i class="fa fa-fw fa-eraser"></i> {{ trans('auth::password-resets.actions.clear-expired') }}
+                    </a>
+                    <a href="#delete-password-resets-modal" class="btn btn-xs btn-danger">
+                        <i class="fa fa-fw fa-trash-o"></i> {{ trans('auth::password-resets.actions.delete-all') }}
+                    </a>
+                </div>
+            @endunless
         </div>
         <div class="box-body no-padding">
             <div class="table-responsive">
@@ -32,34 +32,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                    @if ($resets->isEmpty())
-                        <tr>
-                            <td colspan="6" class="text-center">
-                                <span class="label label-default">{{ trans('auth::password-resets.list-empty') }}</span>
-                            </td>
-                        </tr>
-                    @else
-                        @foreach ($resets as $reset)
-                        <?php /** @var  \Arcanesoft\Auth\Models\PasswordReset  $reset */ ?>
-                        <tr>
-                            <td>{{ $reset->email }}</td>
-                            <td>{{ $reset->user->full_name }}</td>
-                            <td><small>{{ $reset->created_at }}</small></td>
-                            <td class="text-center">
-                                @if ($reset->isExpired())
-                                    <span class="label label-warning">Yes</span>
-                                @else
-                                    <span class="label label-success">No</span>
-                                @endif
-                            </td>
-                            <td class="text-right">
-                                <a href="{{ route('admin::auth.users.show', [$reset->user->hashed_id]) }}" class="btn btn-xs btn-info" data-toggle="tooltip" data-original-title="Show">
-                                    <i class="fa fa-fw fa-search"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        @endforeach
-                    @endif
+                        @forelse ($resets as $reset)
+                            <?php /** @var  \Arcanesoft\Auth\Models\PasswordReset  $reset */ ?>
+                            <tr>
+                                <td>{{ $reset->email }}</td>
+                                <td>{{ $reset->user->full_name }}</td>
+                                <td><small>{{ $reset->created_at }}</small></td>
+                                <td class="text-center">
+                                    @if ($reset->isExpired())
+                                        <span class="label label-warning">Yes</span>
+                                    @else
+                                        <span class="label label-success">No</span>
+                                    @endif
+                                </td>
+                                <td class="text-right">
+                                    {{ ui_link_icon('show', route('admin::auth.users.show', [$reset->user->hashed_id])) }}
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <span class="label label-default">{{ trans('auth::password-resets.list-empty') }}</span>
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
@@ -71,132 +67,128 @@
 @endsection
 
 @section('modals')
-    <div id="clearPasswordResetsModal" class="modal fade">
-        <div class="modal-dialog">
-            {{ Form::open(['route' => 'admin::auth.password-resets.clear', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'clearPasswordResetsForm', 'autocomplete' => 'off']) }}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Clear all expired password resets</h4>
+    @unless($resets->isEmpty())
+        <div id="clear-password-resets-modal" class="modal fade">
+            <div class="modal-dialog">
+                {{ Form::open(['route' => 'admin::auth.password-resets.clear', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'clear-password-resets-form', 'autocomplete' => 'off']) }}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{{ trans('auth::password-resets.modals.clear.title') }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{!! trans('auth::password-resets.modals.clear.message') !!}</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{ ui_button('cancel')->appendClass('pull-left')->setAttribute('data-dismiss', 'modal') }}
+                            {{ ui_button('clear', 'submit')->withLoadingText() }}
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Are you sure to <span class="label label-primary">clear</span> all the expired password resets ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                        <button type="submit" class="btn btn-sm btn-primary" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> Clear
-                        </button>
-                    </div>
-                </div>
-            {{ Form::close() }}
+                {{ Form::close() }}
+            </div>
         </div>
-    </div>
 
-    <div id="deletePasswordResetsModal" class="modal fade">
-        <div class="modal-dialog">
-            {{ Form::open(['route' => 'admin::auth.password-resets.delete', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'deletePasswordResetsForm', 'autocomplete' => 'off']) }}
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Delete all password resets</h4>
+        <div id="delete-password-resets-modal" class="modal fade">
+            <div class="modal-dialog">
+                {{ Form::open(['route' => 'admin::auth.password-resets.delete', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'delete-password-resets-form', 'autocomplete' => 'off']) }}
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                            <h4 class="modal-title">{{ trans('auth::password-resets.modals.delete.title') }}</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{!! trans('auth::password-resets.modals.delete.message') !!}</p>
+                        </div>
+                        <div class="modal-footer">
+                            {{ ui_button('cancel')->appendClass('pull-left')->setAttribute('data-dismiss', 'modal') }}
+                            {{ ui_button('delete', 'submit')->withLoadingText() }}
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <p>Are you sure to <span class="label label-danger">delete</span> all password resets ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        {{ Form::button('Cancel', ['class' => 'btn btn-sm btn-default pull-left', 'data-dismiss' => 'modal']) }}
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="Loading&hellip;">
-                            <i class="fa fa-fw fa-trash-o"></i> Delete
-                        </button>
-                    </div>
-                </div>
-            {{ Form::close() }}
+                {{ Form::close() }}
+            </div>
         </div>
-    </div>
+    @endunless
 @endsection
 
 @section('scripts')
+    @unless($resets->isEmpty())
     <script>
         $(function () {
-            var $clearPasswordResetsModal = $('div#clearPasswordResetsModal'),
-                $clearPasswordResetsForm  = $('form#clearPasswordResetsForm');
+            {{-- CLEAR MODAL --}}
+            var $clearPasswordResetsModal = $('div#clear-password-resets-modal'),
+                $clearPasswordResetsForm  = $('form#clear-password-resets-form');
 
-            $('a[href="#clearPasswordResetsModal"]').on('click', function (e) {
+            $('a[href="#clear-password-resets-modal"]').on('click', function (e) {
                 e.preventDefault();
 
                 $clearPasswordResetsModal.modal('show');
             });
 
-            $clearPasswordResetsForm.submit(function (e) {
+            $clearPasswordResetsForm.on('submit', function (e) {
                 e.preventDefault();
+
                 var $submitBtn = $clearPasswordResetsForm.find('button[type="submit"]');
                     $submitBtn.button('loading');
 
-                $.ajax({
-                    url:      $clearPasswordResetsForm.attr('action'),
-                    type:     $clearPasswordResetsForm.attr('method'),
-                    dataType: 'json',
-                    data:     $clearPasswordResetsForm.serialize(),
-                    success: function (data, textStatus, xhr) {
-                        if (data.status === 'success') {
-                            $clearPasswordResetsModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                axios.delete($clearPasswordResetsForm.attr('action'))
+                     .then(function (response) {
+                         if (response.data.status === 'success') {
+                             $clearPasswordResetsModal.modal('hide');
+                             location.reload();
+                         }
+                         else {
+                             alert('ERROR ! Check the console !');
+                             console.error(response.data.message);
+                             $submitBtn.button('reset');
+                         }
+                     })
+                     .catch(function (error) {
+                         alert('AJAX ERROR ! Check the console !');
+                         console.log(error);
+                         $submitBtn.button('reset');
+                     });
 
                 return false;
             });
 
-            var $deletePasswordResetsModal = $('div#deletePasswordResetsModal'),
-                $deletePasswordResetsForm  = $('form#deletePasswordResetsForm');
+            {{-- DELETE MODAL --}}
 
-            $('a[href="#deletePasswordResetsModal"]').on('click', function (e) {
+            var $deletePasswordResetsModal = $('div#delete-password-resets-modal'),
+                $deletePasswordResetsForm  = $('form#delete-password-resets-form');
+
+            $('a[href="#delete-password-resets-modal"]').on('click', function (e) {
                 e.preventDefault();
 
                 $deletePasswordResetsModal.modal('show');
             });
 
-            $deletePasswordResetsForm.submit(function (e) {
+            $deletePasswordResetsForm.on('submit', function (e) {
                 e.preventDefault();
+
                 var $submitBtn = $deletePasswordResetsForm.find('button[type="submit"]');
                     $submitBtn.button('loading');
 
-                $.ajax({
-                    url:      $deletePasswordResetsForm.attr('action'),
-                    type:     $deletePasswordResetsForm.attr('method'),
-                    dataType: 'json',
-                    data:     $deletePasswordResetsForm.serialize(),
-                    success: function (data, textStatus, xhr) {
-                        if (data.status === 'success') {
-                            $deletePasswordResetsModal.modal('hide');
-                            location.reload();
-                        }
-                        else {
-                            alert('ERROR ! Check the console !');
-                            console.error(data.message);
-                            $submitBtn.button('reset');
-                        }
-                    },
-                    error: function (xhr, textStatus, errorThrown) {
-                        alert('AJAX ERROR ! Check the console !');
-                        console.error(xhr);
-                        $submitBtn.button('reset');
-                    }
-                });
+                axios.delete($deletePasswordResetsForm.attr('action'))
+                     .then(function (response) {
+                         if (response.data.status === 'success') {
+                             $deletePasswordResetsModal.modal('hide');
+                             location.reload();
+                         }
+                         else {
+                             alert('ERROR ! Check the console !');
+                             console.error(response.data.message);
+                             $submitBtn.button('reset');
+                         }
+                     })
+                     .catch(function (error) {
+                         alert('AJAX ERROR ! Check the console !');
+                         console.log(error);
+                         $submitBtn.button('reset');
+                     });
+
                 return false;
             })
         });
     </script>
+    @endunless
 @endsection

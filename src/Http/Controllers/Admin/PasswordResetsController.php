@@ -3,6 +3,7 @@
 use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanesoft\Auth\Models\PasswordReset;
 use Arcanesoft\Auth\Policies\PasswordResetsPolicy;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Class     PasswordResetsController
@@ -62,17 +63,45 @@ class PasswordResetsController extends Controller
     {
         $this->authorize(PasswordResetsPolicy::PERMISSION_DELETE);
 
-        // TODO: Complete the implementation
+        PasswordReset::deleteAll();
 
-        return $this->jsonResponseSuccess('The password reset was deleted!');
+        return $this->jsonResponseSuccess(
+            $this->transNotification('deleted')
+        );
     }
 
     public function clear()
     {
         $this->authorize(PasswordResetsPolicy::PERMISSION_DELETE);
 
-        PasswordReset::getTokenRepository()->deleteExpired();
+        PasswordReset::deleteExpired();
 
-        return $this->jsonResponseSuccess('All the expired password resets was cleared!');
+        return $this->jsonResponseSuccess(
+            $this->transNotification('cleared')
+        );
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+    /**
+     * Notify with translation.
+     *
+     * @param  string  $action
+     * @param  array   $replace
+     * @param  array   $context
+     *
+     * @return string
+     */
+    protected function transNotification($action, array $replace = [], array $context = [])
+    {
+        $title   = trans("auth::password-resets.messages.{$action}.title");
+        $message = trans("auth::password-resets.messages.{$action}.message", $replace);
+
+        Log::info($message, $context);
+        $this->notifySuccess($message, $title);
+
+        return $message;
     }
 }

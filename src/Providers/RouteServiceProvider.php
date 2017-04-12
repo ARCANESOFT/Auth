@@ -34,10 +34,14 @@ class RouteServiceProvider extends ServiceProvider
         });
     }
 
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
     /**
      * Define the foundation routes for the application.
      */
-    private function mapAdminRoutes()
+    protected function mapAdminRoutes()
     {
         Routes\Admin\ProfileRoutes::register();
 
@@ -49,5 +53,15 @@ class RouteServiceProvider extends ServiceProvider
                  Routes\Admin\PermissionsRoutes::register();
                  Routes\Admin\PasswordResetsRoutes::register();
              });
+    }
+
+    /**
+     * Register the route bindings.
+     */
+    protected function registerRouteBindings()
+    {
+        Routes\Admin\UsersRoutes::bindings();
+        Routes\Admin\RolesRoutes::bindings();
+        Routes\Admin\PermissionsRoutes::bindings();
     }
 }

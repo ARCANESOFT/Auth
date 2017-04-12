@@ -16,14 +16,22 @@ class RolesRoutes extends RouteRegistrar
      | -----------------------------------------------------------------
      */
     /**
+     * Register the bindings.
+     */
+    public static function bindings()
+    {
+        $registrar = new static;
+
+        $registrar->bind('auth_role', function($hashedId) {
+            return Role::firstHashedOrFail($hashedId);
+        });
+    }
+
+    /**
      * Map routes.
      */
     public function map()
     {
-        $this->bind('auth_role', function($hashedId) {
-            return Role::firstHashedOrFail($hashedId);
-        });
-
         $this->prefix('roles')->name('roles.')->group(function () {
             $this->get('/', 'RolesController@index')
                  ->name('index'); // admin::auth.roles.index
