@@ -1,3 +1,5 @@
+<?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-user"></i> Profile <small>{{ $user->full_name }}</small></h1>
 @endsection
@@ -8,106 +10,92 @@
             <div class="box box-widget widget-user-2">
                 <div class="widget-user-header bg-blue">
                     <div class="widget-user-image">
-                        {{ Html::image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
+                        {{ html()->image($user->gravatar, $user->full_name, ['class' => 'img-circle']) }}
                     </div>
                     <h3 class="widget-user-username">{{ $user->full_name }}</h3>
                     <h5 class="widget-user-desc">{{ $user->since_date }}</h5>
                 </div>
                 <div class="box-body">
-                    <table class="table table-condensed">
-                        <tbody>
-                            <tr>
-                                <th>Username :</th>
-                                <td>{{ $user->username }}</td>
-                            </tr>
-                            <tr>
-                                <th>Email :</th>
-                                <td>{{ $user->email }}</td>
-                            </tr>
-                            <tr>
-                                <th>Status :</th>
-                                <td>
-                                    @if ($user->isAdmin())
-                                        <span class="label label-warning" style="margin-right: 5px;">
-                                            <i class="fa fa-fw fa-star"></i> SUPER ADMIN
-                                        </span>
-                                    @endif
-
-                                    @if ($user->isActive())
-                                        <span class="label label-success">Acitve</span>
-                                    @else
-                                        <span class="label label-default">Disabled</span>
-                                    @endif
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Created at :</th>
-                                <td><small>{{ $user->created_at }}</small></td>
-                            </tr>
-                            <tr>
-                                <th>Updated at :</th>
-                                <td><small>{{ $user->updated_at }}</small></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-condensed no-margin">
+                            <tbody>
+                                <tr>
+                                    <th>{{ trans('auth::users.attributes.username') }} :</th>
+                                    <td>{{ $user->username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans('auth::users.attributes.email') }} :</th>
+                                    <td>{{ $user->email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans('core::generals.status') }} :</th>
+                                    <td>
+                                        @includeWhen($user->isAdmin(), 'auth::admin.users._includes.super-admin-label')
+                                        {{ label_active_status($user->isActive()) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans('core::generals.created_at') }} :</th>
+                                    <td><small>{{ $user->created_at }}</small></td>
+                                </tr>
+                                <tr>
+                                    <th>{{ trans('core::generals.updated_at') }} :</th>
+                                    <td><small>{{ $user->updated_at }}</small></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
+            {{-- EDIT PASSWORD --}}
+            {{ Form::open(['route' => ['admin::auth.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-loading']) }}
+                <div class="box box-danger">
+                    <div class="box-header with-border">
+                        <h2 class="box-title">{{ trans('auth::profile.titles.password') }}</h2>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group {{ $errors->first('old_password', 'has-error') }}">
+                            {{ Form::label('old_password', trans('auth::profile.attributes.old-password').' :', ['class' => 'control-label']) }}
+                            {{ Form::password('old_password', ['class' => 'form-control']) }}
+                            @if ($errors->has('old_password'))
+                                <span class="text-red">{!! $errors->first('old_password') !!}</span>
+                            @endif
+                        </div>
+
+                        <div class="form-group {{ $errors->first('password', 'has-error') }}">
+                            {{ Form::label('password', trans('auth::profile.attributes.new-password').' :', ['class' => 'control-label']) }}
+                            {{ Form::password('password', ['class' => 'form-control']) }}
+                            @if ($errors->has('password'))
+                                <span class="text-red">{!! $errors->first('password') !!}</span>
+                            @endif
+                        </div>
+
+                        <div class="form-group {{ $errors->first('password_confirmation', 'has-error') }}">
+                            {{ Form::label('password_confirmation', trans('auth::users.attributes.password_confirmation'), ['class' => 'control-label']) }}
+                            {{ Form::password('password_confirmation', ['class' => 'form-control']) }}
+                            @if ($errors->has('password_confirmation'))
+                                <span class="text-red">{!! $errors->first('password_confirmation') !!}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="box-footer text-right">
+                        {{ ui_button('update', 'submit')->withLoadingText() }}
+                    </div>
+                </div>
+            {{ Form::close() }}
         </div>
         <div class="col-md-8">
             <div class="nav-tabs-custom">
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a aria-expanded="false" href="#settings" data-toggle="tab">Settings</a>
-                    </li>
-                    <li>
-                        <a aria-expanded="false" href="#password" data-toggle="tab">Password</a>
+                        <a aria-expanded="false" href="#settings" data-toggle="tab">{{ trans('auth::profile.titles.settings') }}</a>
                     </li>
                 </ul>
                 <div class="tab-content">
                     {{-- SETTINGS --}}
                     <div id="settings" class="tab-pane active">
                         {{-- EMPTY --}}
-                    </div>
-
-                    {{-- PASSWORD --}}
-                    <div id="password" class="tab-pane">
-                        {{ Form::open(['route' => ['admin::auth.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-horizontal form-loading']) }}
-                            <div class="form-group {{ $errors->has('old_password') ? 'has-error' : '' }}">
-                                {{ Form::label('old_password', 'Old password :', ['class' => 'col-sm-4 control-label']) }}
-                                <div class="col-sm-8">
-                                    {{ Form::password('old_password', ['class' => 'form-control']) }}
-                                    @if ($errors->has('old_password'))
-                                        <span class="text-red">{!! $errors->first('old_password') !!}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
-                                {{ Form::label('password', 'New password :', ['class' => 'col-sm-4 control-label']) }}
-                                <div class="col-sm-8">
-                                    {{ Form::password('password', ['class' => 'form-control']) }}
-                                    @if ($errors->has('password'))
-                                        <span class="text-red">{!! $errors->first('password') !!}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
-                                {{ Form::label('password_confirmation', 'Password Confirmation :', ['class' => 'col-sm-4 control-label']) }}
-                                <div class="col-sm-8">
-                                    {{ Form::password('password_confirmation', ['class' => 'form-control']) }}
-                                    @if ($errors->has('password_confirmation'))
-                                        <span class="text-red">{!! $errors->first('password_confirmation') !!}</span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="form-group text-right">
-                                <div class="col-xs-12">
-                                    {{ Form::button('Update password', ['type' => 'submit', 'class' => 'btn btn-sm btn-warning']) }}
-                                </div>
-                            </div>
-                        {{ Form::close() }}
                     </div>
                 </div>
             </div>

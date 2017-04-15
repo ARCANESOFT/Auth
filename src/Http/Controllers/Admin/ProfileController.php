@@ -2,6 +2,8 @@
 
 use Arcanesoft\Auth\Http\Requests\Admin\Profile\UpdatePasswordRequest;
 use Arcanesoft\Contracts\Auth\Models\User;
+use Arcanesoft\Core\Http\Controllers\AdminController;
+use Arcanesoft\Core\Traits\Notifyable;
 use Log;
 
 /**
@@ -12,12 +14,20 @@ use Log;
  *
  * @todo: Adding the authorization checks
  */
-class ProfileController extends Controller
+class ProfileController extends AdminController
 {
+    /* -----------------------------------------------------------------
+     |  Traits
+     | -----------------------------------------------------------------
+     */
+
+    use Notifyable;
+
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The authenticated user.
      *
@@ -25,10 +35,18 @@ class ProfileController extends Controller
      */
     protected $user;
 
+    /**
+     * The view namespace.
+     *
+     * @var string
+     */
+    protected $viewNamespace = 'auth';
+
     /* -----------------------------------------------------------------
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * ProfileController constructor.
      */
@@ -44,6 +62,7 @@ class ProfileController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     public function index()
     {
         $user = $this->getAuthenticatedUser();
@@ -68,8 +87,7 @@ class ProfileController extends Controller
     {
         $user->update($request->only(['password']));
 
-        Log::info($message = 'The password was updated successfully !', $user->toArray());
-        $this->notifySuccess($message, 'Password Updated !');
+        $this->transNotification('password-updated', [], $user->toArray());
 
         return redirect()->route('admin::auth.profile.index');
     }
@@ -78,6 +96,7 @@ class ProfileController extends Controller
      |  Other methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the authenticated user.
      *
@@ -86,5 +105,25 @@ class ProfileController extends Controller
     private function getAuthenticatedUser()
     {
         return auth()->user();
+    }
+
+    /**
+     * Notify with translation.
+     *
+     * @param  string  $action
+     * @param  array   $replace
+     * @param  array   $context
+     *
+     * @return string
+     */
+    protected function transNotification($action, array $replace = [], array $context = [])
+    {
+        $title   = trans("auth::profile.messages.{$action}.title");
+        $message = trans("auth::profile.messages.{$action}.message", $replace);
+
+        Log::info($message, $context);
+        $this->notifySuccess($message, $title);
+
+        return $message;
     }
 }
