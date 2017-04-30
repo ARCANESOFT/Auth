@@ -22,6 +22,6 @@ class CommandServiceProvider extends ServiceProvider
      */
     protected $commands = [
         Console\PublishCommand::class,
-        Console\SetupCommand::class,
+        Console\InstallCommand::class,
     ];
 }

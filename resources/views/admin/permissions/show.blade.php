@@ -168,7 +168,7 @@
 
                     axios.delete($detachRoleForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $detachRoleModal.modal('hide');
                                  location.reload();
                              }

@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
+use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
 use Arcanedev\Support\Bases\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -17,5 +18,8 @@ class ApiController extends Controller
      |  Traits
      | -----------------------------------------------------------------
      */
-    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    use AuthorizesRequests,
+        DispatchesJobs,
+        ValidatesRequests,
+        JsonResponses;
 }

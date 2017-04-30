@@ -15,6 +15,7 @@ class PublishCommand extends Command
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The name and signature of the console command.
      *
@@ -33,6 +34,7 @@ class PublishCommand extends Command
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Execute the console command.
      */

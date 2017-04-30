@@ -199,7 +199,7 @@
 
                     axios.put($activateUserForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $activateUserModal.modal('hide');
                                  location.reload();
                              }
@@ -240,7 +240,7 @@
 
                     axios.put($restoreUserForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $restoreUserModal.modal('hide');
                                  location.reload();
                              }
@@ -283,7 +283,7 @@
 
                     axios.delete($deleteUserForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $deleteUserModal.modal('hide');
                                  location.replace(
                                      "{{ $user->trashed() ? route('admin::auth.users.index') : route('admin::auth.users.show', $user->hashed_id) }}"

@@ -19,7 +19,7 @@
         "php":                    ">=5.6.4",
         "arcanedev/gravatar":     "~2.0",
         "arcanedev/laravel-auth": "~2.0",
-        "arcanesoft/core":        "~2.3"
+        "arcanesoft/core":        "~2.4"
     },
     "require-dev": {
         "phpunit/phpcov":    "~3.0",

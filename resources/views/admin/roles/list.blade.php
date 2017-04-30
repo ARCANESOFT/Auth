@@ -188,7 +188,7 @@
 
                     axios.put($activateRoleForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $activateRoleModal.modal('hide');
                                  location.reload();
                              }
@@ -242,7 +242,7 @@
 
                     axios.delete($deleteRoleForm.attr('action'))
                          .then(function (response) {
-                             if (response.data.status === 'success') {
+                             if (response.data.code === 'success') {
                                  $deleteRoleModal.modal('hide');
                                  location.reload();
                              }

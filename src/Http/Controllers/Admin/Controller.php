@@ -15,12 +15,14 @@ abstract class Controller extends AdminController
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use Notifyable;
 
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The view namespace.
      *
@@ -32,6 +34,7 @@ abstract class Controller extends AdminController
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Controller constructor.
      */

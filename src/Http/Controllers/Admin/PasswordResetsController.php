@@ -17,12 +17,14 @@ class PasswordResetsController extends Controller
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use JsonResponses;
 
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /** @var int */
     protected $perPage = 30;
 
@@ -30,6 +32,7 @@ class PasswordResetsController extends Controller
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * PasswordResetsController constructor.
      */
@@ -45,6 +48,7 @@ class PasswordResetsController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     public function index()
     {
         $this->authorize(PasswordResetsPolicy::PERMISSION_LIST);
@@ -65,9 +69,9 @@ class PasswordResetsController extends Controller
 
         PasswordReset::deleteAll();
 
-        return $this->jsonResponseSuccess(
-            $this->transNotification('deleted')
-        );
+        return $this->jsonResponseSuccess([
+            'message' => $this->transNotification('deleted'),
+        ]);
     }
 
     public function clear()
@@ -76,15 +80,16 @@ class PasswordResetsController extends Controller
 
         PasswordReset::deleteExpired();
 
-        return $this->jsonResponseSuccess(
-            $this->transNotification('cleared')
-        );
+        return $this->jsonResponseSuccess([
+            'message' => $this->transNotification('cleared'),
+        ]);
     }
 
     /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Notify with translation.
      *

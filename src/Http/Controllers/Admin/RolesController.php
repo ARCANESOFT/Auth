@@ -19,12 +19,14 @@ class RolesController extends Controller
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use JsonResponses;
 
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The Role model.
      *
@@ -36,6 +38,7 @@ class RolesController extends Controller
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Instantiate the controller.
      *
@@ -55,6 +58,7 @@ class RolesController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     public function index()
     {
         $this->authorize(RolesPolicy::PERMISSION_LIST);
@@ -140,12 +144,16 @@ class RolesController extends Controller
             /** @var  \Arcanesoft\Auth\Models\Role  $role */
             ($active = $role->isActive()) ? $role->deactivate() : $role->activate();
 
-            return $this->jsonResponseSuccess(
-                $this->transNotification($active ? 'disabled' : 'enabled', ['name' => $role->name], $role->toArray())
+            $message = $this->transNotification(
+                $active ? 'disabled' : 'enabled',
+                ['name' => $role->name],
+                $role->toArray()
             );
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch(\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -157,12 +165,12 @@ class RolesController extends Controller
         try {
             $role->delete();
 
-            return $this->jsonResponseSuccess(
-                $this->transNotification('deleted', ['name' => $role->name], $role->toArray())
-            );
+            $message = $this->transNotification('deleted', ['name' => $role->name], $role->toArray());
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch(\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -170,6 +178,7 @@ class RolesController extends Controller
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Notify with translation.
      *

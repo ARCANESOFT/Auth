@@ -59,7 +59,7 @@ class CommandServiceProviderTest extends TestCase
     {
         $expected = [
             \Arcanesoft\Auth\Console\PublishCommand::class,
-            \Arcanesoft\Auth\Console\SetupCommand::class,
+            \Arcanesoft\Auth\Console\InstallCommand::class,
         ];
 
         $this->assertEquals($expected, $this->provider->provides());

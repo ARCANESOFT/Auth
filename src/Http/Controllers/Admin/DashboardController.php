@@ -14,6 +14,7 @@ class DashboardController extends Controller
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Instantiate the controller.
      */
@@ -28,6 +29,7 @@ class DashboardController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     public function index()
     {
         $this->authorize(DashboardPolicy::PERMISSION_STATS);

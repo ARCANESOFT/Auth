@@ -21,12 +21,14 @@ class UsersController extends Controller
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use JsonResponses;
 
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * The user model.
      *
@@ -38,6 +40,7 @@ class UsersController extends Controller
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Instantiate the controller.
      *
@@ -57,6 +60,7 @@ class UsersController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * List the users.
      *
@@ -70,9 +74,7 @@ class UsersController extends Controller
 
         $users = $this->user->with('roles');
 
-        $users = $trashed
-            ? $users->onlyTrashed()->paginate(30)
-            : $users->paginate(30);
+        $users = $trashed ? $users->onlyTrashed()->paginate(30) : $users->paginate(30);
 
         $title = trans('auth::users.titles.users-list').($trashed ? ' - '.trans('core::generals.trashed') : '');
         $this->setTitle($title);
@@ -105,7 +107,7 @@ class UsersController extends Controller
 
         $users = $role->users()->with('roles')->paginate(30);
 
-        $title = trans('auth::users.titles.users-list') ." - {$role->name} Role". ($trashed ? ' - '.trans('core::generals.trashed') : '');
+        $title = trans('auth::users.titles.users-list')." - {$role->name} Role". ($trashed ? ' - '.trans('core::generals.trashed') : '');
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
@@ -229,12 +231,16 @@ class UsersController extends Controller
         try {
             ($active = $user->isActive()) ? $user->deactivate() : $user->activate();
 
-            return $this->jsonResponseSuccess(
-                $this->transNotification($active ? 'disabled' : 'enabled', ['name' => $user->full_name], $user->toArray())
+            $message = $this->transNotification(
+                $active ? 'disabled' : 'enabled',
+                ['name' => $user->full_name],
+                $user->toArray()
             );
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch (\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -252,12 +258,12 @@ class UsersController extends Controller
         try {
             $user->restore();
 
-            return $this->jsonResponseSuccess(
-                $this->transNotification('restored', ['name' => $user->full_name], $user->toArray())
-            );
+            $message = $this->transNotification('restored', ['name' => $user->full_name], $user->toArray());
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch (\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -275,12 +281,16 @@ class UsersController extends Controller
         try {
             ($trashed = $user->trashed()) ? $user->forceDelete() : $user->delete();
 
-            return $this->jsonResponseSuccess(
-                $this->transNotification($trashed ? 'deleted' : 'trashed', ['name' => $user->full_name], $user->toArray())
+            $message = $this->transNotification(
+                $trashed ? 'deleted' : 'trashed',
+                ['name' => $user->full_name],
+                $user->toArray()
             );
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch(\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 

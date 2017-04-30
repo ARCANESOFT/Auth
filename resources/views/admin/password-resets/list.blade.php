@@ -132,7 +132,7 @@
 
                 axios.delete($clearPasswordResetsForm.attr('action'))
                      .then(function (response) {
-                         if (response.data.status === 'success') {
+                         if (response.data.code === 'success') {
                              $clearPasswordResetsModal.modal('hide');
                              location.reload();
                          }
@@ -170,7 +170,7 @@
 
                 axios.delete($deletePasswordResetsForm.attr('action'))
                      .then(function (response) {
-                         if (response.data.status === 'success') {
+                         if (response.data.code === 'success') {
                              $deletePasswordResetsModal.modal('hide');
                              location.reload();
                          }

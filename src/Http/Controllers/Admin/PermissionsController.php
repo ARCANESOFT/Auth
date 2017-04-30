@@ -19,12 +19,14 @@ class PermissionsController extends Controller
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use JsonResponses;
 
     /* -----------------------------------------------------------------
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /** @var  \Arcanesoft\Contracts\Auth\Models\Permission  */
     protected $permission;
 
@@ -35,6 +37,7 @@ class PermissionsController extends Controller
      |  Constructor
      | -----------------------------------------------------------------
      */
+
     /**
      * Instantiate the controller.
      *
@@ -54,6 +57,7 @@ class PermissionsController extends Controller
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     public function index()
     {
         $this->authorize(PermissionsPolicy::PERMISSION_LIST);
@@ -106,15 +110,16 @@ class PermissionsController extends Controller
         try {
             $permission->detachRole($role, false);
 
-            $replace = ['role' => $role->name,      'permission' => $permission->name];
-            $context = ['role' => $role->toArray(), 'permissions' => $permission->toArray()];
-
-            return $this->jsonResponseSuccess(
-                $this->transNotification('detached', $replace, $context)
+            $message = $this->transNotification(
+                'detached',
+                ['role' => $role->name,      'permission' => $permission->name],
+                ['role' => $role->toArray(), 'permissions' => $permission->toArray()]
             );
+
+            return $this->jsonResponseSuccess(compact('message'));
         }
         catch(\Exception $e) {
-            return $this->jsonResponseError($e->getMessage(), 500);
+            return $this->jsonResponseError(['message' => $e->getMessage()], 500);
         }
     }
 
@@ -122,6 +127,7 @@ class PermissionsController extends Controller
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Notify with translation.
      *
