@@ -143,8 +143,8 @@
                     $detachRoleForm  = $('form#detach-role-form'),
                     detachRoleUrl    = "{{ route('admin::auth.permissions.roles.detach', [$permission->hashed_id, ':id']) }}";
 
-                $('a[href="#detach-role-modal"]').on('click', function (e) {
-                    e.preventDefault();
+                $('a[href="#detach-role-modal"]').on('click', function (event) {
+                    event.preventDefault();
 
                     var that         = $(this),
                         modalMessage = '{!! trans('auth::permissions.modals.detach.message') !!}';
@@ -160,8 +160,8 @@
                     $detachRoleModal.find('.modal-body p').html('');
                 });
 
-                $detachRoleForm.on('submit', function (e) {
-                    e.preventDefault();
+                $detachRoleForm.on('submit', function (event) {
+                    event.preventDefault();
 
                     var submitBtn = $detachRoleForm.find('button[type="submit"]');
                         submitBtn.button('loading');
@@ -174,7 +174,6 @@
                              }
                              else {
                                  alert('ERROR ! Check the console !');
-                                 console.error(response.data.message);
                                  submitBtn.button('reset');
                              }
                          })

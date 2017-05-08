@@ -19,6 +19,7 @@ class Role extends BaseRoleModel
      |  Constants
      | -----------------------------------------------------------------
      */
+
     const ADMINISTRATOR = 'administrator';
     const MODERATOR     = 'moderator';
     const MEMBER        = 'member';
@@ -27,12 +28,14 @@ class Role extends BaseRoleModel
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use Presenters\RolePresenter;
 
     /* -----------------------------------------------------------------
      |  Scopes
      | -----------------------------------------------------------------
      */
+
     /**
      * Scope only with administrator role.
      *
@@ -73,6 +76,7 @@ class Role extends BaseRoleModel
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get a role from a hashed id or fail if not found.
      *

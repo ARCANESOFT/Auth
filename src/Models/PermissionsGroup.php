@@ -16,12 +16,14 @@ class PermissionsGroup extends BasePermissionsGroupModel
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use Presenters\PermissionsGroupPresenter;
 
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get a permission from a hashed id or fail if not found.
      *

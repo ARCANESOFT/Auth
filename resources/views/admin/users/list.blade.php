@@ -32,7 +32,9 @@
                 </div>
                 @endunless
 
-                {{ ui_link_icon('add', route('admin::auth.users.create')) }}
+                @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_CREATE)
+                    {{ ui_link_icon('add', route('admin::auth.users.create')) }}
+                @endcan
             </div>
         </div>
         <div class="box-body no-padding">
@@ -196,8 +198,8 @@
                     $activateUserForm  = $('form#activate-user-form'),
                     activateUserUrl    = "{{ route('admin::auth.users.activate', [':id']) }}";
 
-                $('a[href="#activate-user-modal"]').on('click', function (e) {
-                    e.preventDefault();
+                $('a[href="#activate-user-modal"]').on('click', function (event) {
+                    event.preventDefault();
 
                     var that           = $(this),
                         enabled        = that.data('current-status') === 'enabled',
@@ -230,8 +232,8 @@
                     $activateUserForm.find('button[type="submit"]').hide();
                 });
 
-                $activateUserForm.on('submit', function (e) {
-                    e.preventDefault();
+                $activateUserForm.on('submit', function (event) {
+                    event.preventDefault();
 
                     var $submitBtn = $activateUserForm.find('button[type="submit"]');
                         $submitBtn.button('loading');
@@ -244,7 +246,6 @@
                              }
                              else {
                                  alert('ERROR ! Check the console !');
-                                 console.error(response.data.message);
                                  $submitBtn.button('reset');
                              }
                          })
@@ -267,8 +268,8 @@
                     $restoreUserForm  = $('form#restore-user-form'),
                     restoreUserUrl    = "{{ route('admin::auth.users.restore', [':id']) }}";
 
-                $('a[href="#restore-user-modal"]').on('click', function (e) {
-                    e.preventDefault();
+                $('a[href="#restore-user-modal"]').on('click', function (event) {
+                    event.preventDefault();
 
                     var that = $(this);
 
@@ -285,8 +286,8 @@
                     $restoreUserModal.find('.modal-body p').html('');
                 });
 
-                $restoreUserForm.on('submit', function (e) {
-                    e.preventDefault();
+                $restoreUserForm.on('submit', function (event) {
+                    event.preventDefault();
 
                     var $submitBtn = $restoreUserForm.find('button[type="submit"]');
                         $submitBtn.button('loading');
@@ -299,7 +300,6 @@
                              }
                              else {
                                  alert('ERROR ! Check the console !');
-                                 console.error(response.data.message);
                                  $submitBtn.button('reset');
                              }
                          })
@@ -324,8 +324,8 @@
                     $deleteUserForm  = $('form#delete-user-form'),
                     deleteUserUrl    = "{{ route('admin::auth.users.delete', [':id']) }}";
 
-                $('a[href="#delete-user-modal"]').on('click', function (e) {
-                    e.preventDefault();
+                $('a[href="#delete-user-modal"]').on('click', function (event) {
+                    event.preventDefault();
 
                     var that = $(this);
 
@@ -342,8 +342,8 @@
                     $deleteUserModal.find('.modal-body p').html('');
                 });
 
-                $deleteUserForm.on('submit', function (e) {
-                    e.preventDefault();
+                $deleteUserForm.on('submit', function (event) {
+                    event.preventDefault();
 
                     var $submitBtn = $deleteUserForm.find('button[type="submit"]');
                         $submitBtn.button('loading');
@@ -356,7 +356,6 @@
                              }
                              else {
                                  alert('ERROR ! Check the console !');
-                                 console.error(response.data.message);
                                  $submitBtn.button('reset');
                              }
                          })

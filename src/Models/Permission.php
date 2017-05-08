@@ -14,12 +14,14 @@ class Permission extends BasePermissionModel
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use Presenters\PermissionPresenter;
 
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get a permission from a hashed id or fail if not found.
      *
@@ -48,6 +50,7 @@ class Permission extends BasePermissionModel
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if permission has a group.
      *

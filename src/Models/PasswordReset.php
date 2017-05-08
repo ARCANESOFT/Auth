@@ -16,6 +16,7 @@ class PasswordReset extends BasePasswordReset
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Delete all the records.
      *

@@ -70,7 +70,7 @@
                     </div>
                     <div class="box-footer">
                         {{ ui_link('cancel', route('admin::auth.users.index')) }}
-                        {{ ui_button('add', 'submit')->appendClass('pull-right')->withLoadingText() }}
+                        {{ ui_button('create', 'submit')->appendClass('pull-right')->withLoadingText() }}
                     </div>
                 </div>
             </div>

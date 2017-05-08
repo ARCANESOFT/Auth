@@ -56,7 +56,7 @@
 
                                     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
                                         {{ ui_link_icon('edit', route('admin::auth.roles.edit', [$role->hashed_id]), [], $role->isLocked()) }}
-                                        {{ ui_link_icon($role->isActive() ? 'disable' : 'enable', '#activate-role-modal', ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-current-status' => 'enabled'], $role->isLocked()) }}
+                                        {{ ui_link_icon($role->isActive() ? 'disable' : 'enable', '#activate-role-modal', ['data-role-id' => $role->hashed_id, 'data-role-name' => $role->name, 'data-current-status' => $role->isActive() ? 'enabled' : 'disabled'], $role->isLocked()) }}
                                     @endcan
 
                                     @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
@@ -148,7 +148,7 @@
                     e.preventDefault();
 
                     var that           = $(this),
-                        enabled        = that.data('current-status') === 'enabled',
+                        enabled        = that.attr('data-current-status') === 'enabled',
                         enableTitle    = '{{ trans('auth::roles.modals.enable.title') }}',
                         disableTitle   = '{{ trans('auth::roles.modals.disable.title') }}',
                         enableMessage  = '{!! trans('auth::roles.modals.enable.message') !!}',

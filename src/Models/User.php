@@ -16,12 +16,14 @@ class User extends BaseUserModel
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use Presenters\UserPresenter;
 
     /* -----------------------------------------------------------------
      |  Relationships
      | -----------------------------------------------------------------
      */
+
     /**
      * Password reset relationship.
      *
@@ -36,6 +38,7 @@ class User extends BaseUserModel
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get a user from a hashed id or fail if not found.
      *
@@ -54,6 +57,7 @@ class User extends BaseUserModel
      |  Check Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Check if user is an administrator.
      *
