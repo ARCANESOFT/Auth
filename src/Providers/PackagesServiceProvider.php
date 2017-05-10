@@ -85,7 +85,10 @@ class PackagesServiceProvider extends ServiceProvider
     {
         /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config = $this->config();
-        $config->set('laravel-auth', Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher']));
+        $config->set(
+            'laravel-auth',
+            Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher', 'impersonation'])
+        );
 
         if (SocialAuthenticator::isEnabled()) {
             $this->registerProvider(\Laravel\Socialite\SocialiteServiceProvider::class);
