@@ -1,8 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Routes\Admin;
 
-use Arcanedev\LaravelAuth\Services\UserImpersonator;
 use Arcanedev\Support\Routing\RouteRegistrar;
-use Arcanesoft\Auth\Models\User;
 
 /**
  * Class     UsersRoutes
@@ -72,7 +70,7 @@ class UsersRoutes extends RouteRegistrar
                      ->middleware('ajax')
                      ->name('delete'); // admin::auth.users.delete
 
-                if (UserImpersonator::isEnabled()) {
+                if (impersonator()->isEnabled()) {
                     $this->get('impersonate', 'UsersController@impersonate')
                          ->name('impersonate'); // admin::auth.users.impersonate
                 }
