@@ -100,4 +100,24 @@ class User extends BaseUserModel implements Impersonatable
     {
         return ! is_null($this->passwordReset);
     }
+
+    /**
+     * Check if the current modal can impersonate other models.
+     *
+     * @return  bool
+     */
+    public function canImpersonate()
+    {
+        return $this->isAdmin();
+    }
+
+    /**
+     * Check if the current model can be impersonated.
+     *
+     * @return  bool
+     */
+    public function canBeImpersonated()
+    {
+        return ! $this->isAdmin();
+    }
 }
