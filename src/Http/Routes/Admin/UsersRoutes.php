@@ -16,6 +16,7 @@ class UsersRoutes extends RouteRegistrar
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the bindings.
      */
@@ -24,7 +25,7 @@ class UsersRoutes extends RouteRegistrar
         $registrar = new static;
 
         $registrar->bind('auth_user', function($hashedId) {
-            return User::firstHashedOrFail($hashedId);
+            return call_user_func([config('auth.providers.users.model'), 'firstHashedOrFail'], $hashedId);
         });
     }
 

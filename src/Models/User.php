@@ -1,6 +1,8 @@
 <?php namespace Arcanesoft\Auth\Models;
 
 use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
+use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
+use Arcanedev\LaravelImpersonator\Traits\CanImpersonate;
 
 /**
  * Class     User
@@ -10,14 +12,15 @@ use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
  *
  * @property  \Arcanesoft\Auth\Models\PasswordReset  passwordReset
  */
-class User extends BaseUserModel
+class User extends BaseUserModel implements Impersonatable
 {
     /* -----------------------------------------------------------------
      |  Traits
      | -----------------------------------------------------------------
      */
 
-    use Presenters\UserPresenter;
+    use Presenters\UserPresenter,
+        CanImpersonate;
 
     /* -----------------------------------------------------------------
      |  Relationships

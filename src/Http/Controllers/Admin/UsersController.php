@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
 use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
-use Arcanedev\LaravelAuth\Services\UserImpersonator;
+use Arcanedev\LaravelImpersonator\Contracts\Impersonator;
 use Arcanesoft\Auth\Http\Requests\Admin\Users\CreateUserRequest;
 use Arcanesoft\Auth\Http\Requests\Admin\Users\UpdateUserRequest;
 use Arcanesoft\Auth\Policies\UsersPolicy;
@@ -297,13 +297,15 @@ class UsersController extends Controller
     /**
      * Impersonate a user.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \Arcanesoft\Contracts\Auth\Models\User                 $user
+     * @param  \Arcanedev\LaravelImpersonator\Contracts\Impersonator  $impersonator
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function impersonate(User $user)
+    public function impersonate(User $user, Impersonator $impersonator)
     {
-        if ( ! UserImpersonator::start($user)) {
+        /** @var  \Arcanedev\LaravelImpersonator\Contracts\Impersonatable  $user */
+        if ( ! $impersonator->start(auth()->user(), $user)) {
             $this->notifyDanger(
                 trans('auth::users.messages.impersonation-failed.message'),
                 trans('auth::users.messages.impersonation-failed.title')
@@ -319,6 +321,7 @@ class UsersController extends Controller
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Notify with translation.
      *

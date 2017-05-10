@@ -4,6 +4,7 @@ use Arcanedev\Gravatar\GravatarServiceProvider;
 use Arcanedev\LaravelApiHelper\ApiHelperServiceProvider;
 use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
 use Arcanedev\LaravelAuth\Services\SocialAuthenticator;
+use Arcanedev\LaravelImpersonator\ImpersonatorServiceProvider;
 use Arcanedev\Support\ServiceProvider;
 use Illuminate\Support\Arr;
 
@@ -29,6 +30,7 @@ class PackagesServiceProvider extends ServiceProvider
         $this->registerApiHelperPackage();
         $this->registerGravatarPackage();
         $this->registerLaravelAuthPackage();
+        $this->registerLaravelImpersonatorPackage();
     }
 
     /* -----------------------------------------------------------------
@@ -62,10 +64,20 @@ class PackagesServiceProvider extends ServiceProvider
         $this->rebindModels();
     }
 
+    /**
+     * Register the Laravel Impersonator package.
+     */
+    private function registerLaravelImpersonatorPackage()
+    {
+        $this->registerProvider(ImpersonatorServiceProvider::class);
+        $this->configLaravelImpersonatorPackage();
+    }
+
     /* -----------------------------------------------------------------
      |  Config Packages
      | -----------------------------------------------------------------
      */
+
     /**
      * Config the Laravel Auth package.
      */
@@ -78,6 +90,16 @@ class PackagesServiceProvider extends ServiceProvider
         if (SocialAuthenticator::isEnabled()) {
             $this->registerProvider(\Laravel\Socialite\SocialiteServiceProvider::class);
         }
+    }
+
+    /**
+     * Config the Laravel Impersonator Package.
+     */
+    private function configLaravelImpersonatorPackage()
+    {
+        $config = $this->config();
+
+        $config->set('impersonator', $config->get('arcanesoft.auth.impersonation', ['enabled' => false]));
     }
 
     /**

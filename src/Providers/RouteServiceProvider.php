@@ -15,12 +15,19 @@ class RouteServiceProvider extends ServiceProvider
      |  Properties
      | -----------------------------------------------------------------
      */
+
+    /**
+     * The admin controller namespace for the application.
+     *
+     * @var string
+     */
     protected $adminNamespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
 
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Define the routes for the application.
      */
@@ -38,6 +45,7 @@ class RouteServiceProvider extends ServiceProvider
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Define the foundation routes for the application.
      */
