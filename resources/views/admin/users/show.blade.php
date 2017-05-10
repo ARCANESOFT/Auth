@@ -69,11 +69,11 @@
                     </div>
                 </div>
                 <div class="box-footer text-right">
-                    @can(Arcanedev\LaravelImpersonator\Policies\ImpersonationPolicy::CAN_BE_IMPERSONATED, $user)
+                    @if ($user->canBeImpersonated())
                         <a href="{{ route('admin::auth.users.impersonate', [$user->hashed_id]) }}" class="btn btn-sm btn-default">
                             <i class="fa fa-fw fa-user-secret"></i> Impersonate
                         </a>
-                    @endcan
+                    @endif
 
                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_UPDATE)
                         {{ ui_link('edit', route('admin::auth.users.edit', [$user->hashed_id])) }}
