@@ -1,5 +1,7 @@
 <?php namespace Arcanesoft\Auth\Console;
 
+use Arcanesoft\Auth\Seeds\DatabaseSeeder;
+
 /**
  * Class     InstallCommand
  *
@@ -37,8 +39,6 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->call('db:seed', [
-            '--class' => \Arcanesoft\Auth\Seeds\DatabaseSeeder::class
-        ]);
+        $this->call('db:seed', ['--class' => DatabaseSeeder::class]);
     }
 }

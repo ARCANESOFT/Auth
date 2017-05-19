@@ -40,18 +40,13 @@ class PublishCommand extends Command
      */
     public function handle()
     {
-        $vendors = [
-            [
-                '--provider' => LaravelAuthServiceProvider::class,
-                '--tag'      => ['migrations', 'factories'],
-            ],
-            [
-                '--provider' => AuthServiceProvider::class,
-            ],
-        ];
+        $this->call('vendor:publish', [
+            '--provider' => LaravelAuthServiceProvider::class,
+            '--tag'      => ['migrations', 'factories'],
+        ]);
 
-        foreach ($vendors as $vendor) {
-            $this->call('vendor:publish', $vendor);
-        }
+        $this->call('vendor:publish', [
+            '--provider' => AuthServiceProvider::class,
+        ]);
     }
 }
