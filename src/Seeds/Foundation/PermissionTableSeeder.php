@@ -19,6 +19,7 @@ class PermissionTableSeeder extends PermissionsSeeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Run the database seeds.
      */
@@ -32,11 +33,11 @@ class PermissionTableSeeder extends PermissionsSeeder
                     'description' => 'Auth permissions group',
                 ],
                 'permissions' => array_merge(
-                    $this->getDashboardSeeds(),
-                    $this->getUsersSeeds(),
-                    $this->getRolesSeeds(),
-                    $this->getPermissionsSeeds(),
-                    $this->getPasswordResetsSeeds()
+                    $this->getDashboardPermissions(),
+                    $this->getUsersPermissions(),
+                    $this->getRolesPermissions(),
+                    $this->getPermissionsPermissions(),
+                    $this->getPasswordResetsPermissions()
                 ),
             ],
         ]);
@@ -46,12 +47,13 @@ class PermissionTableSeeder extends PermissionsSeeder
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the other permissions seeds for auth module.
      *
      * @return array
      */
-    private function getDashboardSeeds()
+    private function getDashboardPermissions()
     {
         return [
             [
@@ -67,7 +69,7 @@ class PermissionTableSeeder extends PermissionsSeeder
      *
      * @return array
      */
-    private function getUsersSeeds()
+    private function getUsersPermissions()
     {
         return [
             [
@@ -103,7 +105,7 @@ class PermissionTableSeeder extends PermissionsSeeder
      *
      * @return array
      */
-    private function getRolesSeeds()
+    private function getRolesPermissions()
     {
         return [
             [
@@ -139,7 +141,7 @@ class PermissionTableSeeder extends PermissionsSeeder
      *
      * @return array
      */
-    private function getPermissionsSeeds()
+    private function getPermissionsPermissions()
     {
         return [
             [
@@ -165,7 +167,7 @@ class PermissionTableSeeder extends PermissionsSeeder
      *
      * @return array
      */
-    private function getPasswordResetsSeeds()
+    private function getPasswordResetsPermissions()
     {
         return [
             [

@@ -15,6 +15,7 @@ abstract class PermissionsSeeder extends Seeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Seed permissions.
      *

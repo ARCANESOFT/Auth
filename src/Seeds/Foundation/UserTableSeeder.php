@@ -18,6 +18,7 @@ class UserTableSeeder extends Seeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Run the database seeds.
      */
@@ -30,6 +31,7 @@ class UserTableSeeder extends Seeder
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Seed the admin account.
      */

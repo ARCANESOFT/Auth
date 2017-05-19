@@ -12,6 +12,7 @@ abstract class UsersSeeder extends Seeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Seed users.
      *

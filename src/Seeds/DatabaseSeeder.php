@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Seeder collection.
      *

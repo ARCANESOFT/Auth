@@ -14,6 +14,7 @@ class RoleTableSeeder extends RolesSeeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Run the database seeds.
      */
