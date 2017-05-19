@@ -95,14 +95,15 @@ abstract class RolesSeeder extends Seeder
 
         foreach ($roles as $roleSlug => $permissionSlug) {
             /** @var  \Arcanesoft\Auth\Models\Role  $role */
-            $role     = Role::where('slug', $roleSlug)->first();
-            $filtered = $permissions->filter(function (Permission $permission) use ($permissionSlug) {
-                return Str::startsWith($permission->slug, $permissionSlug);
-            });
+            if ($role = Role::where('slug', $roleSlug)->first()) {
+                $filtered = $permissions->filter(function (Permission $permission) use ($permissionSlug) {
+                    return Str::startsWith($permission->slug, $permissionSlug);
+                });
 
-            $role->permissions()->sync(
-                $filtered->pluck('id')->toArray()
-            );
+                $role->permissions()->sync(
+                    $filtered->pluck('id')->toArray()
+                );
+            }
         }
     }
 }
