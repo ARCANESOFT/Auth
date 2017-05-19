@@ -14,6 +14,7 @@ class AuthServiceProvider extends PackageServiceProvider
      |  Properties
      | -----------------------------------------------------------------
      */
+
     /**
      * Package name.
      *
@@ -25,6 +26,7 @@ class AuthServiceProvider extends PackageServiceProvider
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
@@ -34,13 +36,15 @@ class AuthServiceProvider extends PackageServiceProvider
 
         $this->registerConfig();
         $this->registerSidebarItems();
+
         $this->registerProviders([
             Providers\EventServiceProvider::class,
             Providers\PackagesServiceProvider::class,
             Providers\AuthorizationServiceProvider::class,
             Providers\ViewComposerServiceProvider::class,
+            Providers\RouteServiceProvider::class,
+            Providers\ValidatorServiceProvider::class,
         ]);
-
         $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
     }
 
@@ -50,11 +54,6 @@ class AuthServiceProvider extends PackageServiceProvider
     public function boot()
     {
         parent::boot();
-
-        $this->registerProviders([
-            Providers\RouteServiceProvider::class,
-            Providers\ValidatorServiceProvider::class,
-        ]);
 
         // Publishes
         $this->publishConfig();
