@@ -17,6 +17,7 @@ abstract class RolesSeeder extends Seeder
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Seed roles.
      *
@@ -35,6 +36,7 @@ abstract class RolesSeeder extends Seeder
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Prepare roles to seed.
      *
@@ -79,5 +81,28 @@ abstract class RolesSeeder extends Seeder
     protected function slugify($value)
     {
         return Str::slug($value, config('arcanesoft.auth.roles.slug-separator', '-'));
+    }
+
+    /**
+     * Sync the roles.
+     *
+     * @param  array  $roles
+     */
+    protected function syncRoles(array $roles)
+    {
+        /** @var \Illuminate\Database\Eloquent\Collection $permissions */
+        $permissions = Permission::all();
+
+        foreach ($roles as $roleSlug => $permissionSlug) {
+            /** @var  \Arcanesoft\Auth\Models\Role  $role */
+            $role     = Role::where('slug', $roleSlug)->first();
+            $filtered = $permissions->filter(function (Permission $permission) use ($permissionSlug) {
+                return Str::startsWith($permission->slug, $permissionSlug);
+            });
+
+            $role->permissions()->sync(
+                $filtered->pluck('id')->toArray()
+            );
+        }
     }
 }
