@@ -2,7 +2,6 @@
 
 use Arcanedev\Support\ServiceProvider;
 use Closure;
-use Illuminate\Contracts\Foundation\Application;
 
 /**
  * Class     ValidatorServiceProvider
@@ -13,54 +12,31 @@ use Illuminate\Contracts\Foundation\Application;
 class ValidatorServiceProvider extends ServiceProvider
 {
     /* -----------------------------------------------------------------
-     |  Properties
+     |  Main Methods
      | -----------------------------------------------------------------
      */
-    /**
-     * The Validator instance.
-     *
-     * @var \Illuminate\Validation\Factory
-     */
-    protected $validator;
-
-    /* -----------------------------------------------------------------
-     |  Constructor
-     | -----------------------------------------------------------------
-     */
-    /**
-     * {@inheritdoc}
-     */
-    public function __construct(Application $app)
-    {
-        parent::__construct($app);
-
-        $this->validator = $app['validator'];
-    }
-
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
-     */
-    /**
-     * {@inheritdoc}
-     */
-    public function boot()
-    {
-        $this->registerUserValidators();
-    }
 
     /**
-     * {@inheritdoc}
+     * Register the service provider.
      */
     public function register()
     {
         //
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Validators
-     | ------------------------------------------------------------------------------------------------
+    /**
+     * Boot the service provider.
      */
+    public function boot()
+    {
+        $this->registerUserValidators();
+    }
+
+    /* -----------------------------------------------------------------
+     |  Validators
+     | -----------------------------------------------------------------
+     */
+
     /**
      * Register the user validators.
      */
@@ -77,10 +53,21 @@ class ValidatorServiceProvider extends ServiceProvider
         );
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Other Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
      */
+
+    /**
+     * Get the validator instance.
+     *
+     * @return \Illuminate\Validation\Factory
+     */
+    private function validator()
+    {
+        return $this->app['validator'];
+    }
+
     /**
      * Extend validator.
      *
@@ -90,9 +77,9 @@ class ValidatorServiceProvider extends ServiceProvider
      */
     private function extendValidator($name, $class, Closure $replacer = null)
     {
-        $this->validator->extend($name, "{$class}@validate" . studly_case($name));
+        $this->validator()->extend($name, "{$class}@validate" . studly_case($name));
 
         if ( ! is_null($replacer))
-            $this->validator->replacer($name, $replacer);
+            $this->validator()->replacer($name, $replacer);
     }
 }
