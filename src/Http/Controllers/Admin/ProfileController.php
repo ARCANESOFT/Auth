@@ -85,7 +85,7 @@ class ProfileController extends AdminController
 
     public function updatePassword(UpdatePasswordRequest $request, User $user)
     {
-        $user->update($request->only(['password']));
+        $user->update($request->getValidatedData());
 
         $this->transNotification('password-updated', [], $user->toArray());
 

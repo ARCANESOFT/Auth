@@ -12,6 +12,7 @@ class UpdateRoleRequest extends RoleFormRequest
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -33,7 +34,22 @@ class UpdateRoleRequest extends RoleFormRequest
         $role = $this->route('auth_role');
 
         return array_merge(parent::rules(), [
-            'slug' => ['required', 'min:3', $this->getSlugRule()->ignore($role->id)],
+            'slug' => ['required', 'string', 'min:3', $this->getSlugRule()->ignore($role->id)],
         ]);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the validated data.
+     *
+     * @return array
+     */
+    public function getValidatedData()
+    {
+        return $this->only(['name', 'slug', 'description']);
     }
 }

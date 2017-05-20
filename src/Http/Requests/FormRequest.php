@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Http\Requests;
 
-use Arcanedev\Support\Bases\FormRequest as BaseFormRequest;
+use Arcanedev\Support\Http\FormRequest as BaseFormRequest;
 
 /**
  * Class     FormRequest
@@ -11,20 +11,10 @@ use Arcanedev\Support\Bases\FormRequest as BaseFormRequest;
 abstract class FormRequest extends BaseFormRequest
 {
     /* -----------------------------------------------------------------
-     |  Properties
-     | -----------------------------------------------------------------
-     */
-    /**
-     * The message format.
-     *
-     * @var string
-     */
-    protected $errorsFormat = '<i class="fa fa-fw fa-exclamation-circle"></i> :message';
-
-    /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the database connection.
      *

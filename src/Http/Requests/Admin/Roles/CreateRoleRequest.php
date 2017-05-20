@@ -12,6 +12,7 @@ class CreateRoleRequest extends RoleFormRequest
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -30,7 +31,22 @@ class CreateRoleRequest extends RoleFormRequest
     public function rules()
     {
         return array_merge(parent::rules(), [
-            'slug' => ['required', 'min:3', $this->getSlugRule()],
+            'slug' => ['required', 'string', 'min:3', $this->getSlugRule()],
         ]);
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the validated data.
+     *
+     * @return array
+     */
+    public function getValidatedData()
+    {
+        return $this->only(['name', 'slug', 'description']);
     }
 }

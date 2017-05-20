@@ -34,4 +34,13 @@ return [
         ],
     ],
 
+    /* -----------------------------------------------------------------
+     |  Validation messages
+     | -----------------------------------------------------------------
+     */
+
+    'validation' => [
+        'password_different' => "L'anciens et le nouveau mot de passe doivent être différents.",
+    ],
+
 ];

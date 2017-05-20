@@ -74,7 +74,9 @@ class UsersController extends Controller
 
         $users = $this->user->with('roles');
 
-        $users = $trashed ? $users->onlyTrashed()->paginate(30) : $users->paginate(30);
+        $users = $trashed
+            ? $users->onlyTrashed()->paginate(30)
+            : $users->paginate(30);
 
         $title = trans('auth::users.titles.users-list').($trashed ? ' - '.trans('core::generals.trashed') : '');
         $this->setTitle($title);
@@ -145,9 +147,7 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_CREATE);
 
-        $user->fill(
-            $request->only(['username', 'email', 'first_name', 'last_name', 'password'])
-        );
+        $user->fill($request->getValidatedData());
         $user->is_active = true;
         $user->save();
         $user->roles()->sync($request->get('roles'));
@@ -209,7 +209,7 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_UPDATE);
 
-        $user->update($request->intersect(['username', 'email', 'password', 'first_name', 'last_name']));
+        $user->update($request->getValidatedData());
         $user->roles()->sync($request->get('roles'));
 
         $this->transNotification('updated', ['name' => $user->full_name], $user->toArray());

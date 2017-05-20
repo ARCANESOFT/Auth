@@ -17,6 +17,7 @@ abstract class RoleFormRequest extends FormRequest
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,9 +26,8 @@ abstract class RoleFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'        => ['required', 'min:3'],
-            'slug'        => ['required', 'min:3', $this->getSlugRule()],
-            'description' => ['required', 'min:10'],
+            'name'        => ['required', 'string', 'min:3'],
+            'description' => ['required', 'string', 'min:10'],
             'permissions' => ['required', 'array', 'in:'.Permission::getIds()->implode(',')],
         ];
     }
@@ -43,10 +43,12 @@ abstract class RoleFormRequest extends FormRequest
             'permissions' => trans('auth::permissions.titles.permissions')
         ];
     }
+
     /* -----------------------------------------------------------------
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Sanitize the inputs.
      *

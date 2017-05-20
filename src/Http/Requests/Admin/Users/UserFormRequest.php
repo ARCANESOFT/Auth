@@ -18,6 +18,7 @@ abstract class UserFormRequest extends FormRequest
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,8 +27,8 @@ abstract class UserFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => ['required', 'min:2'],
-            'last_name'  => ['required', 'min:2'],
+            'first_name' => ['required', 'string', 'min:2'],
+            'last_name'  => ['required', 'string', 'min:2'],
             'roles'      => $this->getRolesRule(),
         ];
     }
@@ -60,6 +61,7 @@ abstract class UserFormRequest extends FormRequest
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Sanitize the username.
      *
@@ -111,7 +113,7 @@ abstract class UserFormRequest extends FormRequest
     /**
      * Get the roles rule.
      *
-     * @return string
+     * @return array
      */
     protected function getRolesRule()
     {

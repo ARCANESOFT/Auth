@@ -85,14 +85,13 @@ class RolesController extends Controller
     {
         $this->authorize(RolesPolicy::PERMISSION_CREATE);
 
-        $this->role->fill($request->only('name', 'slug', 'description'));
+        $this->role->fill($request->getValidatedData());
         $this->role->save();
         $this->role->permissions()->attach($request->get('permissions'));
 
         $this->transNotification('created', ['name' => $this->role->name], $this->role->toArray());
 
-        return redirect()
-            ->route('admin::auth.roles.index');
+        return redirect()->route('admin::auth.roles.index');
     }
 
     public function show(Role $role)
@@ -126,7 +125,7 @@ class RolesController extends Controller
         $this->authorize(RolesPolicy::PERMISSION_UPDATE);
 
         /** @var  \Arcanesoft\Auth\Models\Role  $role */
-        $role->fill($request->only('name', 'slug', 'description'));
+        $role->fill($request->getValidatedData());
         $role->save();
         $role->permissions()->sync($request->get('permissions'));
 

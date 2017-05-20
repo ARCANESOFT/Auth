@@ -35,8 +35,8 @@ class UpdatePasswordRequest extends FormRequest
     public function rules()
     {
         return [
-            'old_password' => ['required', 'min:8', 'different:password', 'user_password'],
-            'password'     => ['required', 'min:8', 'different:old_password', 'confirmed'],
+            'old_password' => ['required', 'string', 'min:8', 'different:password', 'user_password'],
+            'password'     => ['required', 'string', 'min:8', 'different:old_password', 'confirmed'],
         ];
     }
 
@@ -48,8 +48,23 @@ class UpdatePasswordRequest extends FormRequest
     public function messages()
     {
         return [
-            'old_password.different' => 'The old and new passwords must be different.',
-            'password.different'     => 'The old and new passwords must be different.',
+            'old_password.different' => trans('auth::profile.validation.password_different'),
+            'password.different'     => trans('auth::profile.validation.password_different'),
         ];
+    }
+
+    /* -----------------------------------------------------------------
+     |  Other Methods
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Get the validated data.
+     *
+     * @return array
+     */
+    public function getValidatedData()
+    {
+        return $this->only(['password']);
     }
 }
