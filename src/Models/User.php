@@ -108,7 +108,7 @@ class User extends BaseUserModel implements Impersonatable
      */
     public function canImpersonate()
     {
-        return $this->isAdmin();
+        return impersonator()->isEnabled() && $this->isAdmin();
     }
 
     /**
@@ -118,6 +118,6 @@ class User extends BaseUserModel implements Impersonatable
      */
     public function canBeImpersonated()
     {
-        return ! $this->isAdmin();
+        return impersonator()->isEnabled() && ! $this->isAdmin();
     }
 }
