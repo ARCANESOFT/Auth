@@ -32,6 +32,21 @@ class Role extends BaseRoleModel
     use Presenters\RolePresenter;
 
     /* -----------------------------------------------------------------
+     |  Relationships
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Role belongs to many users.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return parent::users()->protectAdmins();
+    }
+
+    /* -----------------------------------------------------------------
      |  Scopes
      | -----------------------------------------------------------------
      */

@@ -44,7 +44,7 @@ abstract class ViewComposer
     public function getCachedUsers()
     {
         return $this->cacheResults('users.all', function() {
-            return User::all();
+            return User::protectAdmins()->get();
         });
     }
 

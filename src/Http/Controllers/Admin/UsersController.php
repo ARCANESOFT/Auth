@@ -72,7 +72,7 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_LIST);
 
-        $users = $this->user->with('roles');
+        $users = $this->user->with('roles')->protectAdmins();
 
         $users = $trashed
             ? $users->onlyTrashed()->paginate(30)

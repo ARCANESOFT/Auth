@@ -36,6 +36,15 @@ class RoleTableSeeder extends RolesSeeder
                 'description' => 'The member role.',
                 'is_locked'   => true,
             ],
+            [
+                'name'        => 'Auth Moderator',
+                'description' => 'The auth moderator role.',
+                'is_locked'   => true,
+            ],
+        ]);
+
+        $this->syncRoles([
+            'auth-moderator' => 'auth.',
         ]);
     }
 }

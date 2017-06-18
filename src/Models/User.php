@@ -3,6 +3,7 @@
 use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Arcanedev\LaravelImpersonator\Traits\CanImpersonate;
+use Illuminate\Database\Eloquent\Builder;
 
 /**
  * Class     User
@@ -38,6 +39,28 @@ class User extends BaseUserModel implements Impersonatable
     }
 
     /* -----------------------------------------------------------------
+     |  Scopes
+     | -----------------------------------------------------------------
+     */
+
+    /**
+     * Protect admins.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeProtectAdmins(Builder $query)
+    {
+        /** @var self $user */
+        $user = auth()->user();
+
+        return ($user && $user->is_admin)
+            ? $query
+            : $query->where('is_admin', false);
+    }
+
+    /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
@@ -53,7 +76,7 @@ class User extends BaseUserModel implements Impersonatable
      */
     public static function firstHashedOrFail($hashedId)
     {
-        return self::withTrashed()->withHashedId($hashedId)->firstOrFail();
+        return self::withTrashed()->protectAdmins()->withHashedId($hashedId)->firstOrFail();
     }
 
     /* -----------------------------------------------------------------
