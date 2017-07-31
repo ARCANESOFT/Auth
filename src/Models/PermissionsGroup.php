@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models;
 
-use \Arcanedev\LaravelAuth\Models\PermissionsGroup as BasePermissionsGroupModel;
+use \Arcanedev\LaravelAuth\Models\PermissionsGroup as BasePermissionsGroup;
 
 /**
  * Class     PermissionsGroup
@@ -10,7 +10,7 @@ use \Arcanedev\LaravelAuth\Models\PermissionsGroup as BasePermissionsGroupModel;
  *
  * @property  string  hashed_id
  */
-class PermissionsGroup extends BasePermissionsGroupModel
+class PermissionsGroup extends BasePermissionsGroup
 {
     /* -----------------------------------------------------------------
      |  Traits

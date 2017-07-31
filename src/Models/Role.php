@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models;
 
-use Arcanedev\LaravelAuth\Models\Role as BaseRoleModel;
+use Arcanedev\LaravelAuth\Models\Role as BaseRole;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static \Illuminate\Database\Eloquent\Builder  moderator()
  * @method static \Illuminate\Database\Eloquent\Builder  member()
  */
-class Role extends BaseRoleModel
+class Role extends BaseRole
 {
     /* -----------------------------------------------------------------
      |  Constants

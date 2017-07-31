@@ -59,7 +59,7 @@ class ViewComposerServiceProvider extends ServiceProvider
         );
 
         $this->composer(
-            'auth::admin.users.list',
+            'auth::admin.users.index',
             'Arcanesoft\Auth\ViewComposers\RolesComposer@composeFilters'
         );
 

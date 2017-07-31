@@ -1,6 +1,7 @@
 <?php namespace Arcanesoft\Auth\Console;
 
 use Arcanedev\LaravelAuth\LaravelAuthServiceProvider;
+use Arcanedev\Support\Bases\Command;
 use Arcanesoft\Auth\AuthServiceProvider;
 
 /**

@@ -68,7 +68,7 @@ class RolesController extends Controller
         $this->setTitle($title = trans('auth::roles.titles.roles-list'));
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.roles.list', compact('roles'));
+        return $this->view('admin.roles.index', compact('roles'));
     }
 
     public function create()

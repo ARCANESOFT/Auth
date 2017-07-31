@@ -60,7 +60,7 @@ class PasswordResetsController extends Controller
         $this->setTitle($title = trans('auth::password-resets.titles.password-resets-list'));
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.password-resets.list', compact('resets'));
+        return $this->view('admin.password-resets.index', compact('resets'));
     }
 
     public function delete()

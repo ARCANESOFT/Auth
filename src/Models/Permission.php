@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models;
 
-use Arcanedev\LaravelAuth\Models\Permission as BasePermissionModel;
+use Arcanedev\LaravelAuth\Models\Permission as BasePermission;
 
 /**
  * Class     Permission
@@ -8,7 +8,7 @@ use Arcanedev\LaravelAuth\Models\Permission as BasePermissionModel;
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class Permission extends BasePermissionModel
+class Permission extends BasePermission
 {
     /* -----------------------------------------------------------------
      |  Traits

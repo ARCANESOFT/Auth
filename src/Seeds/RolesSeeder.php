@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Seeds;
 
+use Arcanedev\Support\Bases\Seeder;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
 use Carbon\Carbon;
@@ -27,7 +28,7 @@ abstract class RolesSeeder extends Seeder
     {
         $roles = $this->prepareRoles($roles);
 
-        Role::insert($roles);
+        Role::query()->insert($roles);
 
         $this->syncAdminRole();
     }
@@ -95,7 +96,7 @@ abstract class RolesSeeder extends Seeder
 
         foreach ($roles as $roleSlug => $permissionSlug) {
             /** @var  \Arcanesoft\Auth\Models\Role  $role */
-            if ($role = Role::where('slug', $roleSlug)->first()) {
+            if ($role = Role::query()->where('slug', $roleSlug)->first()) {
                 $filtered = $permissions->filter(function (Permission $permission) use ($permissionSlug) {
                     return Str::startsWith($permission->slug, $permissionSlug);
                 });

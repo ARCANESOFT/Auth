@@ -14,6 +14,7 @@ class UserValidator
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Validate the user current/old password.
      *

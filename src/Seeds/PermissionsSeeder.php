@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Seeds;
 
+use Arcanedev\Support\Bases\Seeder;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\PermissionsGroup;
 
@@ -24,6 +25,7 @@ abstract class PermissionsSeeder extends Seeder
     public function seed(array $seeds)
     {
         foreach ($seeds as $seed) {
+            /** @var  \Arcanesoft\Auth\Models\PermissionsGroup  $group */
             $group       = PermissionsGroup::create($seed['group']);
             $permissions = array_map(function ($permission) {
                 return new Permission($permission);

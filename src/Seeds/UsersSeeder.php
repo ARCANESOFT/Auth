@@ -1,5 +1,7 @@
 <?php namespace Arcanesoft\Auth\Seeds;
 
+use Arcanedev\Support\Bases\Seeder;
+
 /**
  * Class     UsersSeeder
  *

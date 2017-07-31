@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Auth\Http\Controllers\Admin;
 
 use Arcanedev\LaravelApiHelper\Traits\JsonResponses;
-use Arcanedev\Support\Bases\Controller;
+use Arcanedev\Support\Http\Controller;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;

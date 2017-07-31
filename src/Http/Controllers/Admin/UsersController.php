@@ -72,17 +72,15 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_LIST);
 
-        $users = $this->user->with('roles')->protectAdmins();
-
-        $users = $trashed
-            ? $users->onlyTrashed()->paginate(30)
-            : $users->paginate(30);
+        $users = $this->user->with('roles')->protectAdmins()->when($trashed, function ($query) {
+            return $query->onlyTrashed();
+        })->paginate(30);
 
         $title = trans('auth::users.titles.users-list').($trashed ? ' - '.trans('core::generals.trashed') : '');
         $this->setTitle($title);
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.users.list', compact('trashed', 'users'));
+        return $this->view('admin.users.index', compact('trashed', 'users'));
     }
 
     /**
@@ -107,7 +105,9 @@ class UsersController extends Controller
     {
         $this->authorize(UsersPolicy::PERMISSION_LIST);
 
-        $users = $role->users()->with('roles')->paginate(30);
+        $users = $role->users()->with('roles')
+            ->protectAdmins()
+            ->paginate(30);
 
         $title = trans('auth::users.titles.users-list')." - {$role->name} Role". ($trashed ? ' - '.trans('core::generals.trashed') : '');
         $this->setTitle($title);

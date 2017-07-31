@@ -1,5 +1,6 @@
 <?php namespace Arcanesoft\Auth\Console;
 
+use Arcanedev\Support\Bases\Command;
 use Arcanesoft\Auth\Seeds\DatabaseSeeder;
 
 /**

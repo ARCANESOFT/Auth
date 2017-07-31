@@ -1,7 +1,7 @@
 <?php namespace Arcanesoft\Auth\Seeds\Foundation;
 
 use Arcanedev\LaravelAuth\Services\UserConfirmator;
-use Arcanesoft\Auth\Seeds\Seeder;
+use Arcanedev\Support\Bases\Seeder;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;
 use Carbon\Carbon;

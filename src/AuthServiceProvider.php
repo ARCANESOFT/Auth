@@ -38,12 +38,12 @@ class AuthServiceProvider extends PackageServiceProvider
         $this->registerSidebarItems();
 
         $this->registerProviders([
-            Providers\EventServiceProvider::class,
             Providers\PackagesServiceProvider::class,
             Providers\AuthorizationServiceProvider::class,
             Providers\ViewComposerServiceProvider::class,
-            Providers\RouteServiceProvider::class,
             Providers\ValidatorServiceProvider::class,
+            Providers\EventServiceProvider::class,
+            Providers\RouteServiceProvider::class,
         ]);
         $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
     }

@@ -69,7 +69,7 @@ class PermissionsController extends Controller
         $this->setTitle($title = trans('auth::permissions.titles.permissions-list'));
         $this->addBreadcrumb($title);
 
-        return $this->view('admin.permissions.list', compact('permissions'));
+        return $this->view('admin.permissions.index', compact('permissions'));
     }
 
     public function group(PermissionsGroup $group)
@@ -88,7 +88,7 @@ class PermissionsController extends Controller
         $this->setTitle($title = trans('auth::permissions.titles.permissions-list')." - $groupName");
         $this->addBreadcrumb($groupName);
 
-        return $this->view('admin.permissions.list', compact('permissions'));
+        return $this->view('admin.permissions.index', compact('permissions'));
     }
 
     public function show(Permission $permission)

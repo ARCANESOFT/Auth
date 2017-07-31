@@ -1,6 +1,6 @@
 <?php namespace Arcanesoft\Auth\Models;
 
-use Arcanedev\LaravelAuth\Models\User as BaseUserModel;
+use Arcanedev\LaravelAuth\Models\User as BaseUser;
 use Arcanedev\LaravelImpersonator\Contracts\Impersonatable;
 use Arcanedev\LaravelImpersonator\Traits\CanImpersonate;
 use Illuminate\Database\Eloquent\Builder;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Builder;
  *
  * @property  \Arcanesoft\Auth\Models\PasswordReset  passwordReset
  */
-class User extends BaseUserModel implements Impersonatable
+class User extends BaseUser implements Impersonatable
 {
     /* -----------------------------------------------------------------
      |  Traits
@@ -112,6 +112,16 @@ class User extends BaseUserModel implements Impersonatable
     public function isMember()
     {
         return $this->hasRoleSlug(Role::MEMBER);
+    }
+
+    /**
+     * Check if the user is deletable.
+     *
+     * @return bool
+     */
+    public function isDeletable()
+    {
+        return ! $this->isAdmin();
     }
 
     /**

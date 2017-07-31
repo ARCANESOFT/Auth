@@ -90,7 +90,7 @@
                                     @endcan
 
                                     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
-                                        {{ ui_link_icon('delete', '#delete-user-modal', ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name], $user->isAdmin()) }}
+                                        {{ ui_link_icon('delete', '#delete-user-modal', ['data-user-id' => $user->hashed_id, 'data-user-name' => $user->full_name], ! $user->isDeletable()) }}
                                     @endcan
                                 </td>
                             </tr>
