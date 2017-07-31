@@ -12,5 +12,6 @@ trait RolePresenter
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use HasherTrait;
 }

@@ -83,11 +83,13 @@ class PackagesServiceProvider extends ServiceProvider
      */
     private function configLaravelAuthPackage()
     {
-        /** @var  \Illuminate\Contracts\Config\Repository  $config */
         $config = $this->config();
         $config->set(
             'laravel-auth',
-            Arr::except($config->get('arcanesoft.auth'), ['route', 'hasher', 'impersonation'])
+            Arr::only($config->get('arcanesoft.auth'), [
+                'database', 'users', 'roles', 'role-user', 'permissions-groups', 'permissions', 'permission-role',
+                'password-resets', 'events', 'user-confirmation', 'track-activity', 'socialite', 'throttles', 'seeds'
+            ])
         );
 
         if (SocialAuthenticator::isEnabled()) {

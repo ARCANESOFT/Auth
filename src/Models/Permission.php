@@ -39,11 +39,11 @@ class Permission extends BasePermission
     /**
      * Get the ids of all permissions.
      *
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Support\Collection
      */
     public static function getIds()
     {
-        return self::orderBy('id')->pluck('id');
+        return self::query()->orderBy('id')->pluck('id');
     }
 
     /* -----------------------------------------------------------------
@@ -58,6 +58,6 @@ class Permission extends BasePermission
      */
     public function hasGroup()
     {
-        return $this->group_id !== 0;
+        return $this->group_id > 0;
     }
 }
