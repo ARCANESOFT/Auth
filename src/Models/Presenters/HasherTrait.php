@@ -19,6 +19,7 @@ trait HasherTrait
      |  Scopes
      | -----------------------------------------------------------------
      */
+
     /**
      * Scope with the hashed id.
      *
@@ -36,6 +37,7 @@ trait HasherTrait
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the model hash id.
      *
@@ -50,6 +52,7 @@ trait HasherTrait
      |  Other Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Get the hasher.
      *

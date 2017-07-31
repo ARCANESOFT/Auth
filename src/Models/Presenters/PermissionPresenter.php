@@ -12,5 +12,6 @@ trait PermissionPresenter
      |  Traits
      | -----------------------------------------------------------------
      */
+
     use HasherTrait;
 }
