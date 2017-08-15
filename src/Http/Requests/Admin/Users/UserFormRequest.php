@@ -71,7 +71,7 @@ abstract class UserFormRequest extends FormRequest
     {
         $username = $this->has('username')
             ? $this->get('username')
-            : Str::limit($this->get('first_name'), 1, '.').' '.$this->get('last_name');
+            : $this->get('first_name').' '.$this->get('last_name');
 
         return Str::slug($username, config('arcanesoft.auth.slug-separator', '.'));
     }
