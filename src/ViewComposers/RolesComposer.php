@@ -3,7 +3,6 @@
 use Arcanesoft\Contracts\Auth\Models\Role;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
-use Illuminate\Support\HtmlString;
 
 /**
  * Class     RolesComposer
