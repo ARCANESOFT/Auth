@@ -49,11 +49,11 @@ class RolesComposer extends ViewComposer
      */
     public function composeFilters(View $view)
     {
-        $filters = new Collection;
         $roles   = $this->cacheResults('roles.filters', function () {
             return $this->role->has('users')->get();
         });
 
+        $filters = new Collection;
         $filters->push(link_to_route('admin::auth.users.index', trans('core::generals.all')));
 
         foreach ($roles as $role) {
@@ -61,8 +61,6 @@ class RolesComposer extends ViewComposer
             $filters->push(link_to_route('admin::auth.users.roles-filter.index', $role->name, [$role->hashed_id]));
         }
 
-        $view->with('rolesFilters', $filters->transform(function ($link) {
-            return new HtmlString($link);
-        }));
+        $view->with('rolesFilters', $filters);
     }
 }
