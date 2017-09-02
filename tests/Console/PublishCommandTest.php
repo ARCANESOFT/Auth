@@ -10,13 +10,16 @@ use Arcanesoft\Auth\Tests\TestCase;
  */
 class PublishCommandTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_publish()
     {
-        $this->artisan('auth:publish');
+        $this->assertSame(0, $this->artisan('auth:publish'));
+
+        // TODO: Adding more assertions ??
     }
 }
