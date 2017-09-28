@@ -20,6 +20,7 @@ class PackagesServiceProvider extends ServiceProvider
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the service provider.
      */
@@ -37,6 +38,7 @@ class PackagesServiceProvider extends ServiceProvider
      |  Register Packages
      | -----------------------------------------------------------------
      */
+
     /**
      * Register the API Helper package.
      */
