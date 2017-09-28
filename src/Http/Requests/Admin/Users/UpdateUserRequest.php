@@ -53,6 +53,8 @@ class UpdateUserRequest extends UserFormRequest
      */
     public function getValidatedData()
     {
-        return $this->intersect(['username', 'email', 'password', 'first_name', 'last_name']);
+        return array_filter(
+            $this->only(['username', 'email', 'password', 'first_name', 'last_name'])
+        );
     }
 }
