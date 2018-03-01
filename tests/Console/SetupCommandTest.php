@@ -18,10 +18,10 @@ class SetupCommandTest extends TestCase
     /** @test */
     public function it_can_setup()
     {
-        $this->artisan('migrate', ['--database' => 'testing']);
+        $this->migrate();
         $this->artisan('auth:install');
 
-        $this->assertDatabaseHas('auth_users', [
+        static::assertDatabaseHas('auth_users', [
             'username'   => 'admin',
             'first_name' => 'Super',
             'last_name'  => 'ADMIN',

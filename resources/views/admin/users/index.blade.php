@@ -1,4 +1,4 @@
-<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $users */ ?>
+<?php /** @var  Illuminate\Pagination\LengthAwarePaginator  $users */ ?>
 
 @section('header')
     <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.users-list') }}</small></h1>
@@ -54,7 +54,7 @@
                     </thead>
                     <tbody>
                         @forelse ($users as $user)
-                            <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+                            <?php /** @var  Arcanesoft\Auth\Models\User  $user */ ?>
                             <tr>
                                 <td class="text-center">
                                     {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
@@ -106,7 +106,9 @@
             </div>
         </div>
         @if ($users->hasPages())
-            <div class="box-footer clearfix">{!! $users->render() !!}</div>
+            <div class="box-footer clearfix">
+                {{ $users->render() }}
+            </div>
         @endif
     </div>
 @endsection
@@ -116,7 +118,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activate-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['method' => 'PUT', 'id' => 'activate-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ form()->open(['method' => 'PUT', 'id' => 'activate-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -133,7 +135,7 @@
                             {{ ui_button('disable', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
 
@@ -141,7 +143,7 @@
         @if ($trashed)
             <div id="restore-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    {{ Form::open(['method' => 'PUT', 'id' => 'restore-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                    {{ form()->open(['method' => 'PUT', 'id' => 'restore-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -157,7 +159,7 @@
                                 {{ ui_button('restore', 'submit')->withLoadingText() }}
                             </div>
                         </div>
-                    {{ Form::close() }}
+                    {{ form()->close() }}
                 </div>
             </div>
         @endif
@@ -167,7 +169,7 @@
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
         <div id="delete-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['method' => 'DELETE', 'id' => 'delete-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ form()->open(['method' => 'DELETE', 'id' => 'delete-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -183,7 +185,7 @@
                             {{ ui_button('delete', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
     @endcan

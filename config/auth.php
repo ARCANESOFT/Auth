@@ -36,7 +36,7 @@ return [
      */
 
     'database'           => [
-        'connection' => config('database.default'),
+        'connection' => env('DB_CONNECTION'),
 
         'prefix'     => 'auth_'
     ],

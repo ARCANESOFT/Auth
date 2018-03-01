@@ -1,4 +1,4 @@
-<?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+<?php /** @var  Arcanesoft\Auth\Models\Role  $role */ ?>
 
 @section('header')
     <h1><i class="fa fa-fw fa-lock"></i> {{ trans('auth::roles.titles.roles') }} <small>{{ trans('auth::roles.titles.role-details') }}</small></h1>
@@ -105,7 +105,7 @@
                                         </tr>
                                     @else
                                         @foreach ($role->users as $user)
-                                        <?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+                                        <?php /** @var  Arcanesoft\Auth\Models\User  $user */ ?>
                                         <tr>
                                             <td class="text-center">
                                                 {{ html()->image($user->gravatar, $user->username, ['class' => 'img-circle', 'style' => 'width: 24px;']) }}
@@ -156,7 +156,7 @@
                                         </tr>
                                     @else
                                         @foreach ($role->permissions->sortByDesc('group_id') as $permission)
-                                            <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+                                            <?php /** @var  Arcanesoft\Auth\Models\Permission  $permission */ ?>
                                             <tr>
                                                 <td>
                                                     @php($hasGroup = $permission->hasGroup())
@@ -193,7 +193,7 @@
         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_UPDATE)
             <div id="activate-role-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    {{ Form::open(['route' => ['admin::auth.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activate-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                    {{ form()->open(['route' => ['admin::auth.roles.activate', $role->hashed_id], 'method' => 'PUT', 'id' => 'activate-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -211,7 +211,7 @@
                                 {{ ui_button($role->isActive() ? 'disable' : 'enable', 'submit')->withLoadingText() }}
                             </div>
                         </div>
-                    {{ Form::close() }}
+                    {{ form()->close() }}
                 </div>
             </div>
         @endcan
@@ -220,7 +220,7 @@
         @can(Arcanesoft\Auth\Policies\RolesPolicy::PERMISSION_DELETE)
             <div id="delete-role-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    {{ Form::open(['route' => ['admin::auth.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'delete-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                    {{ form()->open(['route' => ['admin::auth.roles.delete', $role->hashed_id], 'method' => 'DELETE', 'id' => 'delete-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -236,7 +236,7 @@
                             {{ ui_button('delete', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                    {{ Form::close() }}
+                    {{ form()->close() }}
                 </div>
             </div>
         @endcan

@@ -1,4 +1,5 @@
-<?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+<?php /** @var  Arcanesoft\Auth\Models\Permission  $permission */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-check-circle"></i> {{ trans('auth::permissions.titles.permissions') }} <small>{{ trans('auth::permissions.titles.permission-details') }}</small></h1>
 @endsection
@@ -69,7 +70,7 @@
                             </thead>
                             <tbody>
                                 @forelse ($permission->roles as $role)
-                                    <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+                                    <?php /** @var  Arcanesoft\Auth\Models\Role  $role */ ?>
                                     <tr>
                                         <td>
                                             <span class="label label-primary">{{ $role->name }}</span>
@@ -112,7 +113,7 @@
         {{-- DETACH MODAL --}}
         <div id="detach-role-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['method' => 'DELETE', 'id' => 'detach-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ form()->open(['method' => 'DELETE', 'id' => 'detach-role-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -128,7 +129,7 @@
                             {{ ui_button('detach', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
     @endcan

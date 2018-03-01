@@ -27,7 +27,7 @@ class PermissionsController extends Controller
      | -----------------------------------------------------------------
      */
 
-    /** @var  \Arcanesoft\Contracts\Auth\Models\Permission  */
+    /** @var  \Arcanesoft\Contracts\Auth\Models\Permission|\Arcanesoft\Auth\Models\Permission  */
     protected $permission;
 
     /** @var int */
@@ -62,7 +62,8 @@ class PermissionsController extends Controller
     {
         $this->authorize(PermissionsPolicy::PERMISSION_LIST);
 
-        $permissions = $this->permission->with('group', 'roles')
+        $permissions = $this->permission->with(['group'])
+            ->withCount(['roles'])
             ->orderBy('group_id')
             ->paginate($this->perPage);
 

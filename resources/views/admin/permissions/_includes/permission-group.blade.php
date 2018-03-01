@@ -1,3 +1,5 @@
+<?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+
 <div class="box box-default">
     <div class="box-header">
         <h3 class="box-title">{{ trans('auth::permission-groups.titles.permission-group') }}</h3>

@@ -1,4 +1,4 @@
-<?php /** @var  \Illuminate\Database\Eloquent\Collection  $roles */ ?>
+<?php /** @var  Illuminate\Database\Eloquent\Collection  $roles */ ?>
 <div class="box box-warning">
     <div class="box-header with-border">
         <h3 class="box-title">{{ trans('auth::roles.titles.roles') }}</h3>

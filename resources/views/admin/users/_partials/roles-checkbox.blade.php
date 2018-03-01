@@ -1,7 +1,8 @@
 <?php
 /**
- * @var  \Illuminate\Support\Collection  $roles
- * @var  \Illuminate\Support\Collection  $old
+ * @var  Illuminate\Support\Collection    $roles
+ * @var  Illuminate\Support\Collection    $old
+ * @var  Illuminate\Support\ViewErrorBag  $errors
  */
 ?>
 <div class="box box-warning">
@@ -27,9 +28,9 @@
                 </thead>
                 <tbody>
                     @forelse ($roles as $role)
-                        <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+                        <?php /** @var  Arcanesoft\Auth\Models\Role  $role */ ?>
                         <tr>
-                            <td>{{ Form::checkbox('roles[]', $role->id, $old->has($role->id)) }}</td>
+                            <td>{{ form()->checkbox('roles[]', $role->id, $old->has($role->id)) }}</td>
                             <td>{{ $role->name }}</td>
                             <td><span class="label label-primary">{{ $role->name }}</span></td>
                             <td>{{ $role->description }}</td>
