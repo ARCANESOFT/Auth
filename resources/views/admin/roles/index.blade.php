@@ -1,4 +1,4 @@
-<?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $roles */ ?>
+<?php /** @var  Illuminate\Pagination\LengthAwarePaginator  $roles */ ?>
 
 @section('header')
     <h1><i class="fa fa-fw fa-lock"></i> {{ trans('auth::roles.titles.roles') }} <small>{{ trans('auth::roles.titles.roles-list') }}</small></h1>
@@ -30,7 +30,7 @@
                     </thead>
                     <tbody>
                         @forelse($roles as $role)
-                            <?php /** @var  \Arcanesoft\Auth\Models\Role  $role */ ?>
+                            <?php /** @var  Arcanesoft\Auth\Models\Role  $role */ ?>
                             <tr>
                                 <td>{{ $role->name }}</td>
                                 <td>
@@ -38,10 +38,10 @@
                                 </td>
                                 <td>{{ $role->description }}</td>
                                 <td class="text-center">
-                                    {{ label_count($role->users->count()) }}
+                                    {{ label_count($role->users_count) }}
                                 </td>
                                 <td class="text-center">
-                                    {{ label_count($role->permissions->count()) }}
+                                    {{ label_count($role->permissions_count) }}
                                 </td>
                                 <td class="text-center">
                                     {{ label_active_icon($role->isActive()) }}
@@ -77,7 +77,7 @@
         </div>
 
         @if ($roles->hasPages())
-            <div class="box-footer clearfix">{!! $roles->render() !!}</div>
+            <div class="box-footer clearfix">{{ $roles->render() }}</div>
         @endif
     </div>
 @endsection

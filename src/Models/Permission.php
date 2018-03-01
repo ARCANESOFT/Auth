@@ -7,6 +7,10 @@ use Arcanedev\LaravelAuth\Models\Permission as BasePermission;
  *
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
+ *
+ * @property  int|null  roles_count
+ *
+ * @mixin  \Illuminate\Database\Eloquent\Builder
  */
 class Permission extends BasePermission
 {

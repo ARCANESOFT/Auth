@@ -1,4 +1,4 @@
-<?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+<?php /** @var  Arcanesoft\Auth\Models\User  $user */ ?>
 
 @section('header')
     <h1><i class="fa fa-fw fa-users"></i> {{ trans('auth::users.titles.users') }} <small>{{ trans('auth::users.titles.user-details') }}</small></h1>
@@ -104,7 +104,7 @@
         {{-- ACTIVATE MODAL --}}
         <div id="activate-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['route' => ['admin::auth.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activate-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ form()->open(['route' => ['admin::auth.users.activate', $user->hashed_id], 'method' => 'PUT', 'id' => 'activate-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -122,7 +122,7 @@
                         {{ ui_button($user->isActive() ? 'disable' : 'enable', 'submit')->withLoadingText() }}
                     </div>
                 </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
 
@@ -130,7 +130,7 @@
         @if ($user->trashed())
             <div id="restore-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
                 <div class="modal-dialog" role="document">
-                    {{ Form::open(['route' => ['admin::auth.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restore-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                    {{ form()->open(['route' => ['admin::auth.users.restore', $user->hashed_id], 'method' => 'PUT', 'id' => 'restore-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -146,7 +146,7 @@
                                 {{ ui_button('restore', 'submit')->withLoadingText() }}
                             </div>
                         </div>
-                    {{ Form::close() }}
+                    {{ form()->close() }}
                 </div>
             </div>
         @endif
@@ -156,7 +156,7 @@
     @can(Arcanesoft\Auth\Policies\UsersPolicy::PERMISSION_DELETE)
         <div id="delete-user-modal" class="modal fade" data-backdrop="false" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
-                {{ Form::open(['route' => ['admin::auth.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'delete-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
+                {{ form()->open(['route' => ['admin::auth.users.delete', $user->hashed_id], 'method' => 'DELETE', 'id' => 'delete-user-form', 'class' => 'form form-loading', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -172,7 +172,7 @@
                             {{ ui_button('delete', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
     @endcan

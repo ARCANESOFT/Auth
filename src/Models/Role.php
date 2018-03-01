@@ -9,9 +9,14 @@ use Illuminate\Database\Eloquent\Builder;
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
+ * @property  int|null  users_count
+ * @property  int|null  $permissions_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder  admin()
  * @method static \Illuminate\Database\Eloquent\Builder  moderator()
  * @method static \Illuminate\Database\Eloquent\Builder  member()
+ *
+ * @mixin  \Illuminate\Database\Eloquent\Builder
  */
 class Role extends BaseRole
 {

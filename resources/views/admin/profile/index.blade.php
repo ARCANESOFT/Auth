@@ -1,4 +1,4 @@
-<?php /** @var  \Arcanesoft\Auth\Models\User  $user */ ?>
+<?php /** @var  Arcanesoft\Auth\Models\User  $user */ ?>
 
 @section('header')
     <h1><i class="fa fa-fw fa-user"></i> Profile <small>{{ $user->full_name }}</small></h1>
@@ -49,31 +49,31 @@
             </div>
 
             {{-- EDIT PASSWORD --}}
-            {{ Form::open(['route' => ['admin::auth.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-loading']) }}
+            {{ form()->open(['route' => ['admin::auth.profile.password.update', $user->hashed_id], 'method' => 'PUT', 'id' => 'updatePasswordForm', 'class' => 'form form-loading']) }}
                 <div class="box box-danger">
                     <div class="box-header with-border">
                         <h2 class="box-title">{{ trans('auth::profile.titles.password') }}</h2>
                     </div>
                     <div class="box-body">
                         <div class="form-group {{ $errors->first('old_password', 'has-error') }}">
-                            {{ Form::label('old_password', trans('auth::profile.attributes.old-password').' :', ['class' => 'control-label']) }}
-                            {{ Form::password('old_password', ['class' => 'form-control']) }}
+                            {{ form()->label('old_password', trans('auth::profile.attributes.old-password').' :', ['class' => 'control-label']) }}
+                            {{ form()->password('old_password', ['class' => 'form-control']) }}
                             @if ($errors->has('old_password'))
                                 <span class="text-red">{!! $errors->first('old_password') !!}</span>
                             @endif
                         </div>
 
                         <div class="form-group {{ $errors->first('password', 'has-error') }}">
-                            {{ Form::label('password', trans('auth::profile.attributes.new-password').' :', ['class' => 'control-label']) }}
-                            {{ Form::password('password', ['class' => 'form-control']) }}
+                            {{ form()->label('password', trans('auth::profile.attributes.new-password').' :', ['class' => 'control-label']) }}
+                            {{ form()->password('password', ['class' => 'form-control']) }}
                             @if ($errors->has('password'))
                                 <span class="text-red">{!! $errors->first('password') !!}</span>
                             @endif
                         </div>
 
                         <div class="form-group {{ $errors->first('password_confirmation', 'has-error') }}">
-                            {{ Form::label('password_confirmation', trans('auth::users.attributes.password_confirmation'), ['class' => 'control-label']) }}
-                            {{ Form::password('password_confirmation', ['class' => 'form-control']) }}
+                            {{ form()->label('password_confirmation', trans('auth::users.attributes.password_confirmation'), ['class' => 'control-label']) }}
+                            {{ form()->password('password_confirmation', ['class' => 'form-control']) }}
                             @if ($errors->has('password_confirmation'))
                                 <span class="text-red">{!! $errors->first('password_confirmation') !!}</span>
                             @endif
@@ -83,7 +83,7 @@
                         {{ ui_button('update', 'submit')->withLoadingText() }}
                     </div>
                 </div>
-            {{ Form::close() }}
+            {{ form()->close() }}
         </div>
         <div class="col-md-8">
             <div class="nav-tabs-custom">

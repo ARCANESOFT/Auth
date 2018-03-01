@@ -18,7 +18,7 @@ class PublishCommandTest extends TestCase
     /** @test */
     public function it_can_publish()
     {
-        $this->assertSame(0, $this->artisan('auth:publish'));
+        static::assertSame(0, $this->artisan('auth:publish'));
 
         // TODO: Adding more assertions ??
     }

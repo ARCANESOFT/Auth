@@ -61,7 +61,7 @@
             </div>
         </div>
         @if ($resets->hasPages())
-            <div class="box-footer clearfix">{!! $resets->render() !!}</div>
+            <div class="box-footer clearfix">{{ $resets->render() }}</div>
         @endif
     </div>
 @endsection
@@ -70,7 +70,7 @@
     @unless($resets->isEmpty())
         <div id="clear-password-resets-modal" class="modal fade">
             <div class="modal-dialog">
-                {{ Form::open(['route' => 'admin::auth.password-resets.clear', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'clear-password-resets-form', 'autocomplete' => 'off']) }}
+                {{ form()->open(['route' => 'admin::auth.password-resets.clear', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'clear-password-resets-form', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -84,13 +84,13 @@
                             {{ ui_button('clear', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
 
         <div id="delete-password-resets-modal" class="modal fade">
             <div class="modal-dialog">
-                {{ Form::open(['route' => 'admin::auth.password-resets.delete', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'delete-password-resets-form', 'autocomplete' => 'off']) }}
+                {{ form()->open(['route' => 'admin::auth.password-resets.delete', 'method' => 'DELETE', 'class' => 'form form-loading', 'id' => 'delete-password-resets-form', 'autocomplete' => 'off']) }}
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -104,7 +104,7 @@
                             {{ ui_button('delete', 'submit')->withLoadingText() }}
                         </div>
                     </div>
-                {{ Form::close() }}
+                {{ form()->close() }}
             </div>
         </div>
     @endunless

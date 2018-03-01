@@ -52,7 +52,7 @@ class User extends BaseUser implements Impersonatable
      */
     public function scopeProtectAdmins(Builder $query)
     {
-        /** @var self $user */
+        /** @var  self  $user */
         $user = auth()->user();
 
         return ($user && $user->is_admin)

@@ -50,9 +50,9 @@ abstract class RolesSeeder extends Seeder
         $now = Carbon::now();
 
         foreach ($roles as $key => $role) {
-            $roles[$key]['slug']       = $this->slugify($role['name']);
-            $roles[$key]['is_active']  = isset($role['is_active']) ? $role['is_active'] : true;
-            $roles[$key]['is_locked']  = isset($role['is_locked']) ? $role['is_locked'] : true;
+            $roles[$key]['slug']       = $role['slug'] ?? $this->slugify($role['name']);
+            $roles[$key]['is_active']  = $role['is_active'] ?? true;
+            $roles[$key]['is_locked']  = $role['is_locked'] ?? true;
             $roles[$key]['created_at'] = $now;
             $roles[$key]['updated_at'] = $now;
         }

@@ -41,7 +41,6 @@ class AuthServiceProvider extends PackageServiceProvider
             Providers\PackagesServiceProvider::class,
             Providers\AuthorizationServiceProvider::class,
             Providers\ViewComposerServiceProvider::class,
-            Providers\ValidatorServiceProvider::class,
             Providers\RouteServiceProvider::class,
         ]);
         $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);

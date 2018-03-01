@@ -10,35 +10,38 @@ use Arcanesoft\Auth\AuthServiceProvider;
  */
 class AuthServiceProviderTest extends TestCase
 {
-    /* ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
      |  Properties
-     | ------------------------------------------------------------------------------------------------
+     | -----------------------------------------------------------------
      */
-    /** @var AuthServiceProvider */
+
+    /** @var  \Arcanesoft\Auth\AuthServiceProvider */
     private $provider;
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Main Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Main Methods
+     | -----------------------------------------------------------------
      */
-    public function setUp()
+
+    protected function setUp()
     {
         parent::setUp();
 
         $this->provider = $this->app->getProvider(AuthServiceProvider::class);
     }
 
-    public function tearDown()
+    protected function tearDown()
     {
         unset($this->provider);
 
         parent::tearDown();
     }
 
-    /* ------------------------------------------------------------------------------------------------
-     |  Test Functions
-     | ------------------------------------------------------------------------------------------------
+    /* -----------------------------------------------------------------
+     |  Tests
+     | -----------------------------------------------------------------
      */
+
     /** @test */
     public function it_can_be_instantiated()
     {
@@ -50,7 +53,7 @@ class AuthServiceProviderTest extends TestCase
         ];
 
         foreach ($expectations as $expected) {
-            $this->assertInstanceOf($expected, $this->provider);
+            static::assertInstanceOf($expected, $this->provider);
         }
     }
 
@@ -61,6 +64,6 @@ class AuthServiceProviderTest extends TestCase
             //
         ];
 
-        $this->assertEquals($expected, $this->provider->provides());
+        static::assertEquals($expected, $this->provider->provides());
     }
 }

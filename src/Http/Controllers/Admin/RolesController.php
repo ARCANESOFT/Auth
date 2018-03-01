@@ -30,7 +30,7 @@ class RolesController extends Controller
     /**
      * The Role model.
      *
-     * @var \Arcanesoft\Contracts\Auth\Models\Role
+     * @var \Arcanesoft\Contracts\Auth\Models\Role|\Arcanesoft\Auth\Models\Role
      */
     protected $role;
 
@@ -63,7 +63,7 @@ class RolesController extends Controller
     {
         $this->authorize(RolesPolicy::PERMISSION_LIST);
 
-        $roles = $this->role->with('users', 'permissions')->paginate(30);
+        $roles = $this->role->withCount(['users', 'permissions'])->paginate(30);
 
         $this->setTitle($title = trans('auth::roles.titles.roles-list'));
         $this->addBreadcrumb($title);

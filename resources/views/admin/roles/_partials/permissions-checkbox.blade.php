@@ -1,4 +1,10 @@
-<?php /** @var  \Illuminate\Database\Eloquent\Collection  $permissions */ ?>
+<?php
+/**
+ * @var  Illuminate\Database\Eloquent\Collection  $permissions
+ * @var  Illuminate\Support\ViewErrorBag          $errors
+ */
+?>
+
 <div class="box box-success">
     <div class="box-header with-border">
         <h3 class="box-title">{{ trans('auth::permissions.titles.permissions') }}</h3>
@@ -22,10 +28,10 @@
             </thead>
             <tbody>
                 @forelse ($permissions as $permission)
-                    <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+                    <?php /** @var  Arcanesoft\Auth\Models\Permission  $permission */ ?>
                     <tr>
                         <td>
-                            {{ Form::checkbox('permissions[]', $permission->id, $old->has($permission->id), ['data-permission-group' => $permission->group_id]) }}
+                            {{ form()->checkbox('permissions[]', $permission->id, $old->has($permission->id), ['data-permission-group' => $permission->group_id]) }}
                         </td>
                         <td>
                             @if ($permission->hasGroup())

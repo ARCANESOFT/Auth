@@ -1,4 +1,5 @@
 <?php /** @var  \Illuminate\Pagination\LengthAwarePaginator  $permissions */ ?>
+
 @section('header')
     <h1><i class="fa fa-fw fa-check-circle"></i> {{ trans('auth::permissions.titles.permissions') }} <small>{{ trans('auth::permissions.titles.permissions-list') }}</small></h1>
 @endsection
@@ -27,7 +28,7 @@
                     </thead>
                     <tbody>
                         @forelse($permissions as $permission)
-                            <?php /** @var  \Arcanesoft\Auth\Models\Permission  $permission */ ?>
+                            <?php /** @var  Arcanesoft\Auth\Models\Permission  $permission */ ?>
                             <tr>
                                 <td>
                                     @php($hasGroup = $permission->hasGroup())
@@ -40,7 +41,7 @@
                                 </td>
                                 <td>{{ $permission->name }}</td>
                                 <td>{{ $permission->description }}</td>
-                                <td class="text-center">{{ label_count($permission->roles->count()) }}</td>
+                                <td class="text-center">{{ label_count($permission->roles_count) }}</td>
                                 <td class="text-right">
                                     @can(Arcanesoft\Auth\Policies\PermissionsPolicy::PERMISSION_SHOW)
                                         {{ ui_link_icon('show', route('admin::auth.permissions.show', [$permission->hashed_id])) }}
@@ -60,7 +61,7 @@
         </div>
         @if ($permissions->hasPages())
             <div class="box-footer clearfix">
-                {!! $permissions->render() !!}
+                {{ $permissions->render() }}
             </div>
         @endif
     </div>

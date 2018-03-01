@@ -1,4 +1,4 @@
-<?php /** @var  \Arcanesoft\Auth\Models\PasswordReset  $passwordReset */ ?>
+<?php /** @var  Arcanesoft\Auth\Models\PasswordReset  $passwordReset */ ?>
 <div class="box">
     <div class="box-header with-border">
         <h2 class="box-title">{{ trans('auth::password-resets.titles.password-resets') }}</h2>
