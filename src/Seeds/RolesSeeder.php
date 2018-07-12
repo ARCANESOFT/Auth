@@ -26,9 +26,9 @@ abstract class RolesSeeder extends Seeder
      */
     public function seed(array $roles)
     {
-        $roles = $this->prepareRoles($roles);
-
-        Role::query()->insert($roles);
+        Role::query()->insert(
+            $this->prepareRoles($roles)
+        );
 
         $this->syncAdminRole();
     }
@@ -49,15 +49,15 @@ abstract class RolesSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        foreach ($roles as $key => $role) {
-            $roles[$key]['slug']       = $role['slug'] ?? $this->slugify($role['name']);
-            $roles[$key]['is_active']  = $role['is_active'] ?? true;
-            $roles[$key]['is_locked']  = $role['is_locked'] ?? true;
-            $roles[$key]['created_at'] = $now;
-            $roles[$key]['updated_at'] = $now;
-        }
-
-        return $roles;
+        return array_map(function ($role) use ($now) {
+            return array_merge($role, [
+                'slug'         => $role['slug'] ?? $this->slugify($role['name']),
+                'is_locked'    => $role['is_locked'] ?? true,
+                'created_at'   => $now,
+                'updated_at'   => $now,
+                'activated_at' => $role['activated_at'] ?? $now,
+            ]);
+        }, $roles);
     }
 
     /**

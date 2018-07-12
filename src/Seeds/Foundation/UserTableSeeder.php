@@ -37,26 +37,36 @@ class UserTableSeeder extends Seeder
      */
     private function seedAdminUser()
     {
-        $adminUser = new User([
-            'username'   => 'admin',
-            'first_name' => 'Super',
-            'last_name'  => 'ADMIN',
-            'email'      => env('ADMIN_EMAIL',    'admin@example.com'),
-            'password'   => env('ADMIN_PASSWORD', 'password'),
-        ]);
+        tap(new User($this->getAdminUserAttributes()), function (User $admin) {
+            $admin->save();
 
-        $adminUser->is_admin  = true;
-        $adminUser->is_active = true;
+            /** @var  \Arcanesoft\Auth\Models\Role  $adminRole */
+            $adminRole = Role::admin()->first();
+            $adminRole->attachUser($admin);
+        });
+    }
 
-        if (UserConfirmator::isEnabled()) {
-            $adminUser->is_confirmed = true;
-            $adminUser->confirmed_at = Carbon::now();
-        }
+    /**
+     * Get the admin user's attributes.
+     *
+     * @return array
+     */
+    private function getAdminUserAttributes()
+    {
+        $now        = Carbon::now();
+        $attributes = [
+            'username'     => 'admin',
+            'first_name'   => 'Super',
+            'last_name'    => 'ADMIN',
+            'email'        => env('ADMIN_EMAIL',    'admin@example.com'),
+            'password'     => env('ADMIN_PASSWORD', 'password'),
+            'is_admin'     => true,
+            'activated_at' => $now,
+        ];
 
-        $adminUser->save();
+        if (UserConfirmator::isEnabled())
+            $attributes['confirmed_at'] = $now;
 
-        /** @var  \Arcanesoft\Auth\Models\Role  $adminRole */
-        $adminRole = Role::admin()->first();
-        $adminRole->attachUser($adminUser);
+        return $attributes;
     }
 }
