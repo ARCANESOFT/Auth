@@ -3,7 +3,6 @@
 use Arcanedev\Support\Database\Seeder;
 use Arcanesoft\Auth\Models\Permission;
 use Arcanesoft\Auth\Models\Role;
-use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -47,7 +46,7 @@ abstract class RolesSeeder extends Seeder
      */
     protected function prepareRoles(array $roles)
     {
-        $now = Carbon::now();
+        $now = now();
 
         return array_map(function ($role) use ($now) {
             return array_merge($role, [
@@ -55,7 +54,7 @@ abstract class RolesSeeder extends Seeder
                 'is_locked'    => $role['is_locked'] ?? true,
                 'created_at'   => $now,
                 'updated_at'   => $now,
-                'activated_at' => $role['activated_at'] ?? $now,
+                'activated_at' => array_get($role, 'activated_at', $now),
             ]);
         }, $roles);
     }

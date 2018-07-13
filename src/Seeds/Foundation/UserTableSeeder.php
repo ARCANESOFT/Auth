@@ -4,7 +4,6 @@ use Arcanedev\LaravelAuth\Services\UserConfirmator;
 use Arcanedev\Support\Database\Seeder;
 use Arcanesoft\Auth\Models\Role;
 use Arcanesoft\Auth\Models\User;
-use Carbon\Carbon;
 
 /**
  * Class     UserTableSeeder
@@ -53,7 +52,6 @@ class UserTableSeeder extends Seeder
      */
     private function getAdminUserAttributes()
     {
-        $now        = Carbon::now();
         $attributes = [
             'username'     => 'admin',
             'first_name'   => 'Super',
@@ -61,7 +59,7 @@ class UserTableSeeder extends Seeder
             'email'        => env('ADMIN_EMAIL',    'admin@example.com'),
             'password'     => env('ADMIN_PASSWORD', 'password'),
             'is_admin'     => true,
-            'activated_at' => $now,
+            'activated_at' => $now = now(),
         ];
 
         if (UserConfirmator::isEnabled())
