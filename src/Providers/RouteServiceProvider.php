@@ -1,7 +1,11 @@
-<?php namespace Arcanesoft\Auth\Providers;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Providers;
 
 use Arcanesoft\Auth\Http\Routes;
-use Arcanesoft\Core\Bases\RouteServiceProvider as ServiceProvider;
+use Arcanesoft\Support\Providers\RouteServiceProvider as ServiceProvider;
 
 /**
  * Class     RouteServiceProvider
@@ -17,59 +21,17 @@ class RouteServiceProvider extends ServiceProvider
      */
 
     /**
-     * The admin controller namespace for the application.
+     * The routes list.
      *
-     * @var string
+     * @var array
      */
-    protected $adminNamespace = 'Arcanesoft\\Auth\\Http\\Controllers\\Admin';
+    protected $routes = [
+        Routes\DashboardRoutes::class,
+        Routes\UsersRoutes::class,
+        Routes\RolesRoutes::class,
+        Routes\PermissionsRoutes::class,
+        Routes\PasswordResetsRoutes::class,
 
-    /* -----------------------------------------------------------------
-     |  Main Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Define the routes for the application.
-     */
-    public function map()
-    {
-        // Admin Routes
-        $this->adminGroup(function () {
-            $this->name('auth.')->group(function () {
-                $this->mapAdminRoutes();
-            });
-        });
-    }
-
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Define the foundation routes for the application.
-     */
-    protected function mapAdminRoutes()
-    {
-        Routes\Admin\ProfileRoutes::register();
-
-        $this->prefix($this->config()->get('arcanesoft.auth.route.prefix', 'authorization'))
-             ->group(function () {
-                 Routes\Admin\StatsRoutes::register();
-                 Routes\Admin\UsersRoutes::register();
-                 Routes\Admin\RolesRoutes::register();
-                 Routes\Admin\PermissionsRoutes::register();
-                 Routes\Admin\PasswordResetsRoutes::register();
-             });
-    }
-
-    /**
-     * Register the route bindings.
-     */
-    protected function registerRouteBindings()
-    {
-        Routes\Admin\UsersRoutes::bindings();
-        Routes\Admin\RolesRoutes::bindings();
-        Routes\Admin\PermissionsRoutes::bindings();
-    }
+        Routes\ProfileRoutes::class,
+    ];
 }

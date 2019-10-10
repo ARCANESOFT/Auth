@@ -1,4 +1,8 @@
-<?php namespace Arcanesoft\Auth\Http\Requests;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Http\Requests;
 
 use Arcanedev\Support\Http\FormRequest as BaseFormRequest;
 
@@ -10,28 +14,5 @@ use Arcanedev\Support\Http\FormRequest as BaseFormRequest;
  */
 abstract class FormRequest extends BaseFormRequest
 {
-    /* -----------------------------------------------------------------
-     |  Other Methods
-     | -----------------------------------------------------------------
-     */
-
-    /**
-     * Get the database connection.
-     *
-     * @return string
-     */
-    protected function getDbConnection()
-    {
-        return config('arcanesoft.auth.database.connection', null);
-    }
-
-    /**
-     * Get the table's prefix.
-     *
-     * @return string
-     */
-    protected function getPrefixTable()
-    {
-        return config('arcanesoft.auth.database.prefix', 'auth_');
-    }
+    //
 }

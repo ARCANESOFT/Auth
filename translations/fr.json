@@ -1,0 +1,30 @@
+{
+    "Authorization": "Autorisation",
+
+    "Users": "Utilisateurs",
+    "User": "Utilisateur",
+    "New User": "Nouvel utilisateur",
+    "User's details": "Fiche utilisateur",
+    "Edit User": "Modifier utilisateur",
+    "Full Name": "Nom complet",
+    "Email": "Email",
+    "Status": "Status",
+    "Last activity": "Dernière activité",
+    "Email Verified at": "Email vérifié le",
+
+    "Roles": "Rôles",
+    "Role's details": "Détails du rôle",
+    "Role": "Rôle",
+    "Create Role": "Créer un rôle",
+    "Edit Role": "Modifier un rôle",
+
+    "Permissions": "Permissions",
+    "Permission's details": "Détails de la permission",
+    "Group": "Groupe",
+    "Category": "Catégorie",
+
+    "Password Resets": "Réinitialisation du mot de passe",
+
+    "Locked": "Verrouillé",
+    "Unlocked": "Déverrouillé"
+}

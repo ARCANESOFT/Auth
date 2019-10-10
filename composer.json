@@ -1,11 +1,10 @@
 {
     "name":        "arcanesoft/auth",
-    "description": "Authorization package for ARCANESOFT/Foundation.",
-    "homepage":    "https://github.com/ARCANESOFT/Auth",
-    "keywords":    [
-        "arcanesoft", "arcanedev", "auth", "acl", "authorisation", "authorization", "users", "roles", "permissions"
-    ],
-    "authors":  [
+    "description": "Auth module for ARCANESOFT.",
+    "keywords":    ["arcanedev", "arcanesoft", "auth", "framework", "laravel"],
+    "license":     "MIT",
+    "type":        "project",
+    "authors":     [
         {
             "name":     "ARCANEDEV",
             "email":    "arcanedev.maroc@gmail.com",
@@ -13,20 +12,17 @@
             "role":     "Developer"
         }
     ],
-    "type":    "library",
-    "license": "MIT",
     "require": {
-        "php":                            ">=7.0",
-        "arcanedev/gravatar":             "~2.1.0",
-        "arcanedev/laravel-auth":         "~4.1.0",
-        "arcanedev/laravel-impersonator": "~1.2.0",
-        "arcanesoft/core":                "~2.7.0"
+        "php": ">=7.2.0",
+        "arcanedev/gravatar": "^3.0",
+        "arcanedev/laravel-impersonator": "^2.0",
+        "arcanesoft/foundation": "@dev",
+        "yajra/laravel-datatables-fractal": "^1.5",
+        "yajra/laravel-datatables-oracle": "^9.7"
     },
     "require-dev": {
-        "orchestra/testbench": "~3.5.0",
-        "phpunit/phpcov":      "~4.0",
-        "phpunit/phpunit":     "~6.0",
-        "laravel/socialite":   "~3.0"
+        "phpunit/phpunit": "^8.0",
+        "phpunit/phpcov":  "^6.0"
     },
     "autoload": {
         "psr-4": {
@@ -37,5 +33,19 @@
         "psr-4": {
             "Arcanesoft\\Auth\\Tests\\": "tests/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Arcanesoft\\Auth\\AuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }

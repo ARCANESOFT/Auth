@@ -1,6 +1,12 @@
-<?php namespace Arcanesoft\Auth\Policies;
+<?php
 
-use Arcanesoft\Contracts\Auth\Models\User;
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Policies;
+
+use App\Models\User as AuthenticatedUser;
+use Arcanesoft\Auth\Models\{Permission, Role};
+use Arcanesoft\Foundation\Core\Auth\Policy;
 
 /**
  * Class     PermissionsPolicy
@@ -8,53 +14,104 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PermissionsPolicy extends AbstractPolicy
+class PermissionsPolicy extends Policy
 {
     /* -----------------------------------------------------------------
-     |  Constants
+     |  Getters
      | -----------------------------------------------------------------
      */
-    const PERMISSION_LIST   = 'auth.permissions.list';
-    const PERMISSION_SHOW   = 'auth.permissions.show';
-    const PERMISSION_UPDATE = 'auth.permissions.update';
+
+    /**
+     * Get the ability's prefix.
+     *
+     * @return string
+     */
+    protected static function prefix(): string
+    {
+        return 'admin::auth.permissions.';
+    }
 
     /* -----------------------------------------------------------------
-     |  Policies
+     |  Main Methods
      | -----------------------------------------------------------------
      */
+
+    /**
+     * Get the policy's abilities.
+     *
+     * @return \Arcanedev\LaravelPolicies\Ability[]|iterable
+     */
+    public function abilities(): iterable
+    {
+        $this->setMetas([
+            'category' => 'Permissions',
+        ]);
+
+        return [
+
+            // auth.permissions.index
+            $this->makeAbility('index')->setMetas([
+                'name'        => 'List all the permissions',
+                'description' => 'Ability to list all the permissions',
+            ]),
+
+            // auth.permissions.show
+            $this->makeAbility('show')->setMetas([
+                'name'         => 'Show a permission',
+                'description'  => "Ability to show the permission's details",
+            ]),
+
+            // auth.permissions.roles.detach
+            $this->makeAbility('roles.detach', 'detachRole')->setMetas([
+                'name'         => 'Detach a role from permission',
+                'description'  => 'Ability to detach the related role from permission',
+            ]),
+
+        ];
+    }
+
+    /* -----------------------------------------------------------------
+     |  Abilities
+     | -----------------------------------------------------------------
+     */
+
     /**
      * Allow to list all the roles.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User|mixed  $user
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function listPolicy(User $user)
+    public function index(AuthenticatedUser $user)
     {
-        return $user->may(static::PERMISSION_LIST);
+        //
     }
 
     /**
      * Allow to show a role details.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User|mixed                    $user
+     * @param  \Arcanesoft\Auth\Models\Permission|mixed  $permission
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function showPolicy(User $user)
+    public function show(AuthenticatedUser $user, ?Permission $permission = null)
     {
-        return $user->may(static::PERMISSION_SHOW);
+        //
     }
 
     /**
-     * Allow to update a role.
+     * Allow to show a role details.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User|mixed                    $user
+     * @param  \Arcanesoft\Auth\Models\Permission|mixed  $permission
+     * @param  \Arcanesoft\Auth\Models\Role|mixed        $role
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function updatePolicy(User $user)
+    public function detachRole(AuthenticatedUser $user, ?Permission $permission = null, ?Role $role = null)
     {
-        return $user->may(static::PERMISSION_UPDATE);
+        if ( ! is_null($role))
+            return ! $role->isLocked();
     }
 }

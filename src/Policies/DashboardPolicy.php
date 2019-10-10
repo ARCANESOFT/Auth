@@ -1,6 +1,11 @@
-<?php namespace Arcanesoft\Auth\Policies;
+<?php
 
-use Arcanesoft\Contracts\Auth\Models\User;
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Policies;
+
+use App\Models\User as AuthenticatedUser;
+use Arcanesoft\Foundation\Core\Auth\Policy;
 
 /**
  * Class     DashboardPolicy
@@ -8,27 +13,64 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class DashboardPolicy extends AbstractPolicy
+class DashboardPolicy extends Policy
 {
     /* -----------------------------------------------------------------
-     |  Constants
+     |  Getters
      | -----------------------------------------------------------------
      */
-    const PERMISSION_STATS = 'auth.dashboard.stats';
+
+    /**
+     * Get the ability's prefix.
+     *
+     * @return string
+     */
+    protected static function prefix(): string
+    {
+        return 'admin::auth.statistics.';
+    }
 
     /* -----------------------------------------------------------------
-     |  Policies
+     |  Main Methods
      | -----------------------------------------------------------------
      */
+
+    /**
+     * Get the policy's abilities.
+     *
+     * @return \Arcanedev\LaravelPolicies\Ability[]|iterable
+     */
+    public function abilities(): iterable
+    {
+        $this->setMetas([
+            'category' => 'Dashboard',
+        ]);
+
+        return [
+
+            // admin::auth.statistics.index
+            $this->makeAbility('index')->setMetas([
+                'name'        => 'Show all the statistics',
+                'description' => 'Ability to show all the statistics',
+            ]),
+
+        ];
+    }
+
+    /* -----------------------------------------------------------------
+     |  Abilities
+     | -----------------------------------------------------------------
+     */
+
     /**
      * Allow to access all the auth stats.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User  $user
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function statsPolicy(User $user)
+    public function index(AuthenticatedUser $user)
     {
-        return $user->may(static::PERMISSION_STATS);
+        //
     }
 }

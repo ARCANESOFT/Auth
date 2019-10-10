@@ -1,6 +1,11 @@
-<?php namespace Arcanesoft\Auth\Policies;
+<?php
 
-use Arcanesoft\Contracts\Auth\Models\User;
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Policies;
+
+use App\Models\User as AuthenticatedUser;
+use Arcanesoft\Foundation\Core\Auth\Policy;
 
 /**
  * Class     PasswordResetsPolicy
@@ -8,40 +13,100 @@ use Arcanesoft\Contracts\Auth\Models\User;
  * @package  Arcanesoft\Auth\Policies
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  */
-class PasswordResetsPolicy extends AbstractPolicy
+class PasswordResetsPolicy extends Policy
 {
     /* -----------------------------------------------------------------
-     |  Constants
+     |  Getters
      | -----------------------------------------------------------------
      */
-    const PERMISSION_LIST   = 'auth.password-resets.list';
-    const PERMISSION_DELETE = 'auth.password-resets.delete';
+
+    /**
+     * Get the ability's prefix.
+     *
+     * @return string
+     */
+    protected static function prefix(): string
+    {
+        return 'admin::auth.password-resets.';
+    }
 
     /* -----------------------------------------------------------------
-     |  Policies
+     |  Main Methods
      | -----------------------------------------------------------------
      */
+
+    /**
+     * Get the policy's abilities.
+     *
+     * @return \Arcanedev\LaravelPolicies\Ability[]|iterable
+     */
+    public function abilities(): iterable
+    {
+        $this->setMetas([
+            'category' => 'Password Resets',
+        ]);
+
+        return [
+
+            // admin::auth.password-resets.index
+            $this->makeAbility('index')->setMetas([
+                'name'        => 'List all the password resets',
+                'description' => 'Ability to list all the password resets',
+            ]),
+
+            // admin::auth.password-resets.metrics
+            $this->makeAbility('metrics')->setMetas([
+                'name'        => "List all the password resets' metrics",
+                'description' => "Ability to list all the password resets' metrics",
+            ]),
+
+            // admin::auth.password-resets.delete
+            $this->makeAbility('delete')->setMetas([
+                'name'        => 'Delete a password reset',
+                'description' => 'Ability to delete a password reset',
+            ]),
+            
+        ];
+    }
+
+    /* -----------------------------------------------------------------
+     |  Abilities
+     | -----------------------------------------------------------------
+     */
+
     /**
      * Allow to list all the password resets.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User|mixed  $user
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function listPolicy(User $user)
+    public function index(AuthenticatedUser $user)
     {
-        return $user->may(static::PERMISSION_LIST);
+        //
+    }
+
+    /**
+     * Allow to access the password resets' metrics.
+     *
+     * @param  \App\Models\User|mixed  $user
+     *
+     * @return \Illuminate\Auth\Access\Response|bool|void
+     */
+    public function metrics(AuthenticatedUser $user)
+    {
+        //
     }
 
     /**
      * Allow to delete a password reset.
      *
-     * @param  \Arcanesoft\Contracts\Auth\Models\User  $user
+     * @param  \App\Models\User|mixed  $user
      *
-     * @return bool
+     * @return \Illuminate\Auth\Access\Response|bool|void
      */
-    public function deletePolicy(User $user)
+    public function delete(AuthenticatedUser $user)
     {
-        return $user->may(static::PERMISSION_DELETE);
+        //
     }
 }

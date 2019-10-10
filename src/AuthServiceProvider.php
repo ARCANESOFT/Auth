@@ -1,6 +1,11 @@
-<?php namespace Arcanesoft\Auth;
+<?php
 
-use Arcanesoft\Core\Bases\PackageServiceProvider;
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth;
+
+use Arcanesoft\Auth\Console\{InstallCommand, MakeUser};
+use Arcanesoft\Support\Providers\PackageServiceProvider;
 
 /**
  * Class     AuthServiceProvider
@@ -16,9 +21,9 @@ class AuthServiceProvider extends PackageServiceProvider
      */
 
     /**
-     * Package name.
+     * The package name.
      *
-     * @var string
+     * @var  string
      */
     protected $package = 'auth';
 
@@ -28,47 +33,39 @@ class AuthServiceProvider extends PackageServiceProvider
      */
 
     /**
-     * Register the service provider.
+     * Register any application services.
      */
-    public function register()
+    public function register(): void
     {
-        parent::register();
-
-        $this->registerConfig();
-        $this->registerSidebarItems();
+        $this->registerMultipleConfig();
 
         $this->registerProviders([
-            Providers\PackagesServiceProvider::class,
-            Providers\AuthorizationServiceProvider::class,
-            Providers\ViewComposerServiceProvider::class,
+            Providers\AuthServiceProvider::class,
+            Providers\EventServiceProvider::class,
             Providers\RouteServiceProvider::class,
+            Providers\ViewServiceProvider::class,
+            Providers\MetricServiceProvider::class,
         ]);
-        $this->registerConsoleServiceProvider(Providers\CommandServiceProvider::class);
+
+        $this->registerCommands([
+            MakeUser::class,
+        ]);
     }
 
     /**
      * Boot the service provider.
      */
-    public function boot()
+    public function boot(): void
     {
-        parent::boot();
+        $this->loadViews();
+        $this->loadTranslations();
 
-        // Publishes
-        $this->publishConfig();
-        $this->publishViews();
-        $this->publishTranslations();
-        $this->publishSidebarItems();
-    }
+        if ($this->app->runningInConsole()) {
+            $this->publishMultipleConfig();
+            $this->publishViews(false);
+            $this->publishTranslations(false);
 
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
-    {
-        return [
-            //
-        ];
+            Auth::$runsMigrations ? $this->loadMigrations() : $this->publishMigrations();
+        }
     }
 }

@@ -1,78 +1,101 @@
-<?php namespace Arcanesoft\Auth\Models\Presenters;
+<?php
+
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Models\Presenters;
+
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 /**
  * Class     UserPresenter
  *
- * @package  Arcanesoft\Auth\Models\Observers
+ * @package  Arcanesoft\Auth\Models\Presenters
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
- * @property  string          full_name
- * @property  string          since_date
- * @property  string          gravatar
- * @property  string          formatted_last_activity
- *
- * @property  \Carbon\Carbon  last_activity
- * @property  \Carbon\Carbon  created_at
+ * @property-read  string  full_name
+ * @property-read  string  last_activity
  */
 trait UserPresenter
 {
-    /* -----------------------------------------------------------------
-     |  Traits
-     | -----------------------------------------------------------------
-     */
-
-    use HasherTrait;
-
     /* -----------------------------------------------------------------
      |  Getters & Setters
      | -----------------------------------------------------------------
      */
 
     /**
-     * Get the `full_name` attribute or use the username if empty.
+     * Set the `first_name` attribute.
      *
-     * @return string
+     * @param  string  $firstName
      */
-    public function getFullNameAttribute()
+    public function setFirstNameAttribute($firstName)
     {
-        $fullName = trim("{$this->first_name} {$this->last_name}");
-
-        return empty($fullName) ? $this->username : $fullName;
+        $this->attributes['first_name'] = Str::title(Str::lower($firstName));
     }
 
     /**
-     * Get the `since_date` attribute (translated).
+     * Set the `last_name` attribute.
      *
-     * @return string
+     * @param  string  $lastName
      */
-    public function getSinceDateAttribute()
+    public function setLastNameAttribute($lastName)
     {
-        return trans('auth::users.since', [
-            'date' => $this->created_at->toFormattedDateString()
-        ]);
+        $this->attributes['last_name'] = Str::upper($lastName);
     }
 
     /**
-     * Get the `gravatar` attribute.
+     * Set the `email` attribute.
      *
-     * @return string
+     * @param  string  $email
      */
-    public function getGravatarAttribute()
+    public function setEmailAttribute($email)
     {
-        return gravatar()
-            ->setDefaultImage('mm')->setSize(160)
-            ->src($this->email);
+        $this->attributes['email'] = Str::lower($email);
     }
 
     /**
-     * Get the `formatted_last_activity` attribute.
+     * Set the `password` attribute.
+     *
+     * @param  string  $password
+     */
+    public function setPasswordAttribute($password)
+    {
+        $this->attributes['password'] = Hash::make($password);
+    }
+
+    /**
+     * Get the `full_name` attribute.
      *
      * @return string
      */
-    public function getFormattedLastActivityAttribute()
+    public function getFullNameAttribute(): string
     {
-        return is_null($this->last_activity)
-            ? trans('auth::users.no-activity')
-            : $this->last_activity->diffForHumans();
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    /**
+     * Get the `avatar` attribute.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute(): string
+    {
+        return $this->attributes['avatar']
+            ?? gravatar()
+                ->setDefaultImage('blank')
+                ->setSize(100)
+                ->get($this->email);
+    }
+
+    /**
+     * Get the last activity as human text.
+     *
+     * @return string
+     */
+    public function getLastActivityAttribute(): string
+    {
+        return is_null($this->last_activity_at)
+            ? 'NULL'
+            : $this->last_activity_at->diffForHumans();
     }
 }

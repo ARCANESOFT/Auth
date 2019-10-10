@@ -1,6 +1,10 @@
-<?php namespace Arcanesoft\Auth\Models;
+<?php
 
-use Arcanedev\LaravelAuth\Models\PasswordReset as BasePasswordReset;
+declare(strict_types=1);
+
+namespace Arcanesoft\Auth\Models;
+
+use Arcanesoft\Auth\Auth;
 
 /**
  * Class     PasswordReset
@@ -8,30 +12,33 @@ use Arcanedev\LaravelAuth\Models\PasswordReset as BasePasswordReset;
  * @package  Arcanesoft\Auth\Models
  * @author   ARCANEDEV <arcanedev.maroc@gmail.com>
  *
- * @property  \Arcanesoft\Auth\Models\User  user
+ * @property  string                      email
+ * @property  string                      token
+ * @property  \Illuminate\Support\Carbon  created_at
  */
-class PasswordReset extends BasePasswordReset
+class PasswordReset extends Model
 {
     /* -----------------------------------------------------------------
-     |  Main Methods
+     |  Constants
+     | -----------------------------------------------------------------
+     */
+
+    const UPDATED_AT = null;
+
+    /* -----------------------------------------------------------------
+     |  Constructor
      | -----------------------------------------------------------------
      */
 
     /**
-     * Delete all the records.
+     * Create a new Eloquent model instance.
      *
-     * @return mixed
+     * @param  array  $attributes
      */
-    public static function deleteAll()
+    public function __construct(array $attributes = [])
     {
-        return self::query()->delete();
-    }
+        $this->setTable(Auth::table('password-resets', 'password_resets'));
 
-    /**
-     * Delete all the expired password resets.
-     */
-    public static function deleteExpired()
-    {
-        PasswordReset::getTokenRepository()->deleteExpired();
+        parent::__construct($attributes);
     }
 }
