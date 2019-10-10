@@ -148,7 +148,7 @@ class UsersController extends Controller
         $this->authorize(UsersPolicy::PERMISSION_CREATE);
 
         $user->fill($request->getValidatedData());
-        $user->is_active = true;
+        $user->activate(false);
         $user->save();
         $user->roles()->sync($request->get('roles'));
 
